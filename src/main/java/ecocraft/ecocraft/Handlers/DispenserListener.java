@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.util.Objects;
@@ -16,6 +17,12 @@ import java.util.Scanner;
 
 public class DispenserListener implements Listener {
     private static final String configPath = "config.cfg";
+    private Plugin plugin;
+
+    public DispenserListener(Plugin plugin) {
+        this.plugin =plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 
     private static String getLocationString(Location location)
     {

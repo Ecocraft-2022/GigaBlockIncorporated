@@ -15,8 +15,9 @@ public class MainEventHandler {
         new FurnaceEventHandler(plugin);
         new MapEventHandler(plugin);
         new PollutionHandler(plugin);
-        new FishingListener();
+        new FishingListener(plugin);
         new RainEventHandler(plugin);
+        new DispenserListener(plugin);
         NightDetector d = NightDetector.getInstance(plugin);
         d.detectNight();
     }

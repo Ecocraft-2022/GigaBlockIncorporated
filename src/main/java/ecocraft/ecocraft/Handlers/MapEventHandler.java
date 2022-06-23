@@ -33,16 +33,12 @@ public class MapEventHandler implements Listener {
              map = (MapMeta)  p.getInventory().getItemInMainHand().getItemMeta();
 
            }
-
             if(p.getInventory().getItemInOffHand().getType().equals(Material.FILLED_MAP)){
                 map = (MapMeta)  p.getInventory().getItemInOffHand().getItemMeta();
             }
-
             MapView mapView = map.getMapView();
             mapView.setCenterX(p.getLocation().getBlockX());
             mapView.setCenterZ(p.getLocation().getBlockZ());
-
-
         }
     }
 
