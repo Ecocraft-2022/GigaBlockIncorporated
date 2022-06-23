@@ -10,12 +10,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FishingListener implements Listener {
+
+    Plugin plugin;
+
+    public FishingListener(Plugin plugin) {
+        this.plugin =plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
     @EventHandler
     public void onFishCaught(PlayerFishEvent event) {
         if (event.getCaught() == null)

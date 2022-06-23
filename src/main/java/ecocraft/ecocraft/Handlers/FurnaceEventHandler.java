@@ -20,7 +20,7 @@ import java.awt.*;
 
 public class FurnaceEventHandler implements Listener {
     private Plugin plugin;
-    public FurnaceEventHandler(Ecocraft plugin) {
+    public FurnaceEventHandler(Plugin plugin) {
         this.plugin =plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

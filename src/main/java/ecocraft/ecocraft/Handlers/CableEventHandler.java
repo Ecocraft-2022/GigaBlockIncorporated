@@ -18,7 +18,7 @@ public class CableEventHandler implements Listener {
 
     Plugin plugin;
 
-    public CableEventHandler(Ecocraft plugin) {
+    public CableEventHandler(Plugin plugin) {
         this.plugin =plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
