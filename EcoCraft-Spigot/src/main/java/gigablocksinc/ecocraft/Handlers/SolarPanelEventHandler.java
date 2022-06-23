@@ -29,7 +29,6 @@ public class SolarPanelEventHandler implements Listener {
 
             u.getFurnaces().stream().forEach(
                     f ->{
-                        System.out.println(f.getX());
                         f.setBurnTime(Short.MAX_VALUE);
                         f.update();
                     }

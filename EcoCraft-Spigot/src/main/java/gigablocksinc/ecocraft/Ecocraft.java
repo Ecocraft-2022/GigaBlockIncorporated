@@ -6,6 +6,8 @@ import gigablocksinc.ecocraft.Commands.SolarPanelCommands;
 import gigablocksinc.ecocraft.CustomBlocks.Cable;
 import gigablocksinc.ecocraft.CustomBlocks.SolarPanel;
 import gigablocksinc.ecocraft.CustomBlocks.SolarPanelBase;
+import gigablocksinc.ecocraft.Handlers.CableEventHandler;
+import gigablocksinc.ecocraft.Handlers.FurnaceEventHandler;
 import gigablocksinc.ecocraft.Handlers.SolarPanelEventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +22,8 @@ public final class Ecocraft extends JavaPlugin {
         SolarPanelBase.init();
         Cable.init();
         new SolarPanelEventHandler(this);
+        new CableEventHandler(this);
+        new FurnaceEventHandler(this);
     }
 
     @Override
