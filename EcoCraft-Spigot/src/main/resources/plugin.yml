@@ -1,14 +1,4 @@
 name: Ecocraft
 version: '${project.version}'
-main: gigablocksinc.ecocraft.Ecocraft
+main: ecocraft.ecocraft.Ecocraft
 api-version: 1.19
-commands:
-  solar:
-    description: Gives solar panel
-    usage: /<command>
-  solarbase:
-    description: gives base for solar panel
-    usage: /<command>
-  cable:
-    description: gives cable
-    usage: /<command>
