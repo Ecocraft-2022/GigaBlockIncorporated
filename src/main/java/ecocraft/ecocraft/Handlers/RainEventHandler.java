@@ -12,20 +12,27 @@ import java.util.Objects;
 public class RainEventHandler implements Listener {
 
     Plugin plugin;
+    boolean isRain = false;
+    LeavesDestroyer leavesDestroyer;
 
     public RainEventHandler(Plugin plugin) {
-        this.plugin =plugin;
+        this.plugin = plugin;
+        this.leavesDestroyer = new LeavesDestroyer();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-
     }
 
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent e)
     {
-        if(e.toWeatherState())
+        if(e.toWeatherState() )
         {
-            LeavesDestroyer leavesDestroyer = new LeavesDestroyer();
-            leavesDestroyer.runTaskTimer(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Ecocraft")), 0, 40);
+            isRain = true;
+            leavesDestroyer.runTaskTimer(plugin, 0, 40);
+        }else{
+            if(isRain){
+                leavesDestroyer.cancel();
+            }
+            isRain = false;
         }
     }
 }

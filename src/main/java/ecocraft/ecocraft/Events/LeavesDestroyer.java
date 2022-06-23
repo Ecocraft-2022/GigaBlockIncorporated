@@ -40,12 +40,11 @@ public class LeavesDestroyer extends BukkitRunnable {
             for (int x = -radius; x < radius; x++) {
                 for (int y = -radius; y < radius; y++) {
                     for (int z = -radius; z < radius; z++) {
+                        assert world != null;
                         Block block = world.getBlockAt(loc.getBlockX()+x, loc.getBlockY()+y, loc.getBlockZ()+z);
                         boolean leavesBlock = false;
-                        for(int i = 0; i < leaves.size(); ++i)
-                        {
-                            if(block.getType().equals(leaves.get(i)))
-                            {
+                        for (Material leaf : leaves) {
+                            if (block.getType().equals(leaf)) {
                                 leavesBlock = true;
                                 break;
                             }
