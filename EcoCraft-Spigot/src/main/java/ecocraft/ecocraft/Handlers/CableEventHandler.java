@@ -1,8 +1,10 @@
 package ecocraft.ecocraft.Handlers;
 
 import ecocraft.ecocraft.Ecocraft;
+import ecocraft.ecocraft.Utils.NightDetector;
 import ecocraft.ecocraft.Utils.Util;
 import ecocraft.ecocraft.CustomBlocks.Cable;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -27,7 +29,8 @@ public class CableEventHandler implements Listener {
             Util u = new Util();
             Block block = e.getBlockPlaced();
             u.connected(block);
-            if (u.isConnected()) {
+
+            if (u.isConnected() && !NightDetector.getInstance(plugin).isNight()) {
                 u.findDesiredBlocks(block);
                 u.getFurnaces().stream().forEach(
                         f -> {
@@ -48,22 +51,27 @@ public class CableEventHandler implements Listener {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 public void run() {
                     for(BlockFace b: list){
-                        if(block.getRelative(b).getType().equals(Cable.getCable().getType())) {
+                        if(block.getRelative(b).getType().equals(Cable.getCable().getType()) || block.getRelative(b).getType().equals(Material.FURNACE)) {
                             Util u = new Util();
                             u.connected(block.getRelative(b));
+                            System.out.println(u.isConnected());
                            if(!u.isConnected()){
                                u.findDesiredBlocks(block);
                            }
                             u.getFurnaces().stream().forEach(
                                     f ->{
-                                        f.setBurnTime(Short.valueOf("0"));
-                                        f.update();
+                                        Util u2 = new Util();
+                                        u2.connected(f.getBlock());
+                                        if(!u2.isConnected()) {
+                                            f.setBurnTime(Short.valueOf("0"));
+                                            f.update();
+                                        }
                                     });
 
                         }
                     }
                 }
-            }, 1);
+            }, 2);
 
 
 

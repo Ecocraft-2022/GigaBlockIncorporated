@@ -1,4 +1,4 @@
-package ecocraft.ecocraft;
+package ecocraft.ecocraft.Events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

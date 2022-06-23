@@ -6,8 +6,11 @@ import ecocraft.ecocraft.Commands.SolarPanelCommands;
 import ecocraft.ecocraft.CustomBlocks.Cable;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
+import ecocraft.ecocraft.Events.NightEvent;
+import ecocraft.ecocraft.Events.RainEvent;
 import ecocraft.ecocraft.Handlers.*;
 
+import ecocraft.ecocraft.Utils.NightDetector;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Ecocraft extends JavaPlugin {
@@ -23,9 +26,12 @@ public final class Ecocraft extends JavaPlugin {
         new SolarPanelEventHandler(this);
         new CableEventHandler(this);
         new FurnaceEventHandler(this);
-        getServer().getPluginManager().registerEvents(new FurnaceListener(), this);
         getServer().getPluginManager().registerEvents(new FishingListener(), this);
         getServer().getPluginManager().registerEvents(new RainEvent(), this);
+        NightDetector d = NightDetector.getInstance(this);
+        d.detectNight();
+
+
     }
 
     @Override
