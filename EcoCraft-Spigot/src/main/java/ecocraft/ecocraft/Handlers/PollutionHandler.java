@@ -54,7 +54,7 @@ public class PollutionHandler implements Listener {
             }
         }
         for(Furnace f : furnaces){
-            if(f.getInventory().getFuel()!=null && f.getInventory().getFuel().getType().equals(Material.COAL)){
+            if(f.getInventory().getFuel()!=null && f.getInventory().getFuel().getType().equals(Material.COAL)&& f.getCookTime()>0){
                 pollutionCount++;
             }
         }
