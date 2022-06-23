@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-class LeavesDestroyer extends BukkitRunnable {
+public class LeavesDestroyer extends BukkitRunnable {
     @Override
     public void run() {
         ArrayList<Material> leaves = new ArrayList<Material>();
@@ -70,14 +70,8 @@ class LeavesDestroyer extends BukkitRunnable {
     }
 }
 
-public class RainEvent implements Listener {
-    @EventHandler
-    public void onWeatherChange(WeatherChangeEvent e)
-    {
-        if(e.toWeatherState())
-        {
-            LeavesDestroyer leavesDestroyer = new LeavesDestroyer();
-            leavesDestroyer.runTaskTimer(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Ecocraft")), 0, 40);
-        }
-    }
-}
+
+
+
+
+

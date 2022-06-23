@@ -23,7 +23,7 @@ import org.bukkit.plugin.Plugin;
 public class SolarPanelEventHandler implements Listener {
     private Plugin plugin;
 
-    public SolarPanelEventHandler(Ecocraft plugin) {
+    public SolarPanelEventHandler(Plugin plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
