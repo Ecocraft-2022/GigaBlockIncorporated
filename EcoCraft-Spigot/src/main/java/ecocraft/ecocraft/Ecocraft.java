@@ -26,6 +26,8 @@ public final class Ecocraft extends JavaPlugin {
         new SolarPanelEventHandler(this);
         new CableEventHandler(this);
         new FurnaceEventHandler(this);
+        new MapEventHandler(this);
+        new PollutionHandler(this);
         getServer().getPluginManager().registerEvents(new FishingListener(), this);
         getServer().getPluginManager().registerEvents(new RainEvent(), this);
         NightDetector d = NightDetector.getInstance(this);

@@ -46,12 +46,14 @@ public class FurnaceEventHandler implements Listener {
             Location frontLocation = e.getBlock().getRelative(direction.getFacing()).getLocation();
             Location furnaceLocation = e.getBlock().getLocation();
 
-            double x = frontLocation.getX() + furnaceLocation.getX();
-            double y = frontLocation.getY() + furnaceLocation.getY();
-            double z = frontLocation.getZ() + furnaceLocation.getZ();
+            double x = frontLocation.getX() + furnaceLocation.getBlockX()-1;
+            double y = frontLocation.getY() + furnaceLocation.getBlockY();
+            double z = frontLocation.getZ() + furnaceLocation.getBlockZ() -1;
+
             x /= 2;
-            y /= 2;
-            z /= 2;
+            y/=2;
+            z/=2;
+
             Location particleLocation = new Location(e.getBlock().getLocation().getWorld(), x, y, z);
 
             Runnable runnable = new Runnable() {
@@ -59,7 +61,8 @@ public class FurnaceEventHandler implements Listener {
                 public void run() {
                     while(true)
                     {
-                        furnaceLocation.getWorld().spawnParticle(Particle.SMOKE_LARGE, particleLocation, 0, 0, 1, 0, 0.1);
+                        furnaceLocation.getWorld().spawnParticle(Particle.SMOKE_LARGE, particleLocation, 5, 0, 1, 0, 0.1);
+
 
                         try {
                             Thread.sleep(100);
