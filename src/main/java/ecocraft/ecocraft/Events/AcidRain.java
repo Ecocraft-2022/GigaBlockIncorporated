@@ -5,17 +5,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
-public class LeavesDestroyer extends BukkitRunnable {
+public class AcidRain extends BukkitRunnable {
     @Override
     public void run() {
         ArrayList<Material> leaves = new ArrayList<Material>();
@@ -63,6 +61,16 @@ public class LeavesDestroyer extends BukkitRunnable {
                             block.setType(Material.DIRT);
                         }
                     }
+                }
+            }
+
+            for (Entity entity : player.getNearbyEntities(10, 10, 10))
+            {
+                if(entity instanceof LivingEntity)
+                {
+                    LivingEntity livingEntity = (LivingEntity) entity;
+                    livingEntity.damage(1);
+                    Bukkit.broadcastMessage(String.valueOf(livingEntity.getHealth()));
                 }
             }
         }
