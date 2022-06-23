@@ -1,7 +1,6 @@
 package ecocraft.ecocraft.Handlers;
 
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -11,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,7 @@ public class FishingListener implements Listener {
     Plugin plugin;
 
     public FishingListener(Plugin plugin) {
-        this.plugin =plugin;
+        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
     @EventHandler

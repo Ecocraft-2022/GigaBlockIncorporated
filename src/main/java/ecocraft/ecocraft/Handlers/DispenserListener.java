@@ -1,6 +1,5 @@
-package ecocraft.ecocraft;
+package ecocraft.ecocraft.Handlers;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,10 +11,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class DispenserListener implements Listener {
-    private static String configPath = "config.cfg";
+    private static final String configPath = "config.cfg";
 
     private static String getLocationString(Location location)
     {
@@ -57,9 +57,7 @@ public class DispenserListener implements Listener {
     @EventHandler
     public void onPlaced(BlockPlaceEvent e)
     {
-        Component recyclerName = Component.text("Recycler");
-        Bukkit.broadcast(Component.text(e.getItemInHand().getItemMeta().displayName().toString()));
-        if(e.getItemInHand().getItemMeta().displayName().equals(recyclerName)) {
+        if(Objects.requireNonNull(e.getItemInHand().getItemMeta()).getDisplayName().equals("Recycler")) {
             try {
                 addLocationToConfig(e.getBlock().getLocation());
             } catch (IOException ex) {
