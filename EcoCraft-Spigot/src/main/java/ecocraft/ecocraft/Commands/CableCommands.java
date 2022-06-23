@@ -1,7 +1,6 @@
-package gigablocksinc.ecocraft.Commands;
+package ecocraft.ecocraft.Commands;
 
-import gigablocksinc.ecocraft.CustomBlocks.Cable;
-import gigablocksinc.ecocraft.CustomBlocks.SolarPanelBase;
+import ecocraft.ecocraft.CustomBlocks.Cable;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

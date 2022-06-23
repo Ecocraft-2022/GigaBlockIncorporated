@@ -1,14 +1,13 @@
-package gigablocksinc.ecocraft.Handlers;
+package ecocraft.ecocraft.Handlers;
 
-import gigablocksinc.ecocraft.CustomBlocks.Cable;
-import gigablocksinc.ecocraft.Ecocraft;
-import gigablocksinc.ecocraft.Utils.Util;
+import ecocraft.ecocraft.Ecocraft;
+import ecocraft.ecocraft.Utils.Util;
+import ecocraft.ecocraft.CustomBlocks.Cable;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.Plugin;
 

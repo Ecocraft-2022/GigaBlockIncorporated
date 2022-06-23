@@ -1,9 +1,9 @@
-package gigablocksinc.ecocraft.Handlers;
+package ecocraft.ecocraft.Handlers;
 
-import gigablocksinc.ecocraft.CustomBlocks.SolarPanel;
-import gigablocksinc.ecocraft.CustomBlocks.SolarPanelBase;
-import gigablocksinc.ecocraft.Ecocraft;
-import gigablocksinc.ecocraft.Utils.Util;
+import ecocraft.ecocraft.CustomBlocks.SolarPanel;
+import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
+import ecocraft.ecocraft.Ecocraft;
+import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

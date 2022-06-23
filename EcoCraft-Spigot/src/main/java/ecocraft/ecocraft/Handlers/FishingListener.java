@@ -1,6 +1,6 @@
-package ecocraft.ecocraft;
+package ecocraft.ecocraft.Handlers;
 
-import net.kyori.adventure.text.Component;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FishingListener implements Listener {
     @EventHandler
@@ -26,9 +27,10 @@ public class FishingListener implements Listener {
         ItemStack itemStack = item.getItemStack();
         itemStack.setType(Material.ROTTEN_FLESH);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        ArrayList<Component> lore = new ArrayList<Component>();
-        lore.add(Component.text("Padlina z zanieczyszczonego jeziora"));
-        itemMeta.lore(lore);
+        List<String> lore = new ArrayList<>();
+        lore.add("Padlina z zanieczyszczonego jeziora");
+        itemMeta.setLore(lore);
+
         itemStack.setItemMeta(itemMeta);
         item.setItemStack(itemStack);
     }

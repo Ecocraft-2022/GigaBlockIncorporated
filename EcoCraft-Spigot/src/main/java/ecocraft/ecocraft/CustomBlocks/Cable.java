@@ -1,4 +1,4 @@
-package gigablocksinc.ecocraft.CustomBlocks;
+package ecocraft.ecocraft.CustomBlocks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -10,48 +10,47 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolarPanel {
+public class Cable {
 
-    private static ItemStack solarPanel;
+    private static ItemStack cable;
 
-    public static ItemStack getSolarPanel() {
-        return solarPanel;
+    public static ItemStack getCable() {
+        return cable;
     }
 
     public static void init() {
-        createSolarPanel();
+        createCable();
         createRecep();
     }
 
-    private static void createSolarPanel() {
+    private static void createCable() {
 
-        ItemStack item =  new ItemStack(Material.DAYLIGHT_DETECTOR,1);
+        ItemStack item =  new ItemStack(Material.NETHER_BRICK_FENCE,1);
 
         ItemMeta meta  = item.getItemMeta();
-        meta.setDisplayName("Solar Panel");
+        meta.setDisplayName("Cable");
         List<String> data = new ArrayList<>();
-        data.add("Solar panel - produces green energy");
+        data.add("Cable - Connect to energy source");
         meta.setLore(data);
         System.out.println(meta.getAsString());
         item.setItemMeta(meta);
-        solarPanel = item;
+        cable = item;
 
     }
 
     private static void createRecep(){
 
-        NamespacedKey key = NamespacedKey.fromString("solar_panel");
+        NamespacedKey key = NamespacedKey.fromString("cable");
 
-        ShapedRecipe sr =new ShapedRecipe(key,solarPanel);
+        ShapedRecipe sr =new ShapedRecipe(key,cable);
         sr.shape(
                 " R ",
-                "RDR",
+                " D ",
                 " R ");
         sr.setIngredient('R',Material.REDSTONE_BLOCK);
-        sr.setIngredient('D',Material.DAYLIGHT_DETECTOR);
+        sr.setIngredient('D',Material.NETHER_BRICK_FENCE);
 
         Bukkit.addRecipe(sr);
     }
+
 }
-
-

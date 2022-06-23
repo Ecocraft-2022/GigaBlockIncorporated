@@ -1,13 +1,11 @@
-package gigablocksinc.ecocraft.Utils;
+package ecocraft.ecocraft.Utils;
 
-import gigablocksinc.ecocraft.CustomBlocks.Cable;
-import gigablocksinc.ecocraft.CustomBlocks.SolarPanelBase;
+import ecocraft.ecocraft.CustomBlocks.Cable;
+import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
-import org.bukkit.block.data.Powerable;
-import org.bukkit.material.MaterialData;
 
 
 import java.util.ArrayList;

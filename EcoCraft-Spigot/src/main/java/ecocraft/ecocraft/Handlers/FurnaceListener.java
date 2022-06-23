@@ -1,6 +1,6 @@
-package ecocraft.ecocraft;
+package ecocraft.ecocraft.Handlers;
 
-import net.kyori.adventure.text.Component;
+
 import org.bukkit.*;
 import org.bukkit.block.data.Directional;
 import org.bukkit.event.EventHandler;
@@ -13,8 +13,8 @@ public class FurnaceListener implements Listener {
         if(e.getFuel().getType().equals(Material.COAL))
         {
             Directional direction = (Directional) e.getBlock().getBlockData();
-            Location frontLocation = e.getBlock().getRelative(direction.getFacing()).getLocation().toCenterLocation();
-            Location furnaceLocation = e.getBlock().getLocation().toCenterLocation();
+            Location frontLocation = e.getBlock().getRelative(direction.getFacing()).getLocation();
+            Location furnaceLocation = e.getBlock().getLocation();
 
             double x = frontLocation.getX() + furnaceLocation.getX();
             double y = frontLocation.getY() + furnaceLocation.getY();

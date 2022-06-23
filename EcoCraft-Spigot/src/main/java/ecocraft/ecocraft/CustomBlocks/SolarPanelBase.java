@@ -1,4 +1,4 @@
-package gigablocksinc.ecocraft.CustomBlocks;
+package ecocraft.ecocraft.CustomBlocks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

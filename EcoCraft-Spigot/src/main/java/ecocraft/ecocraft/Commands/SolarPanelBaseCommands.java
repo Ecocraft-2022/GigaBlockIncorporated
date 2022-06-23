@@ -1,13 +1,12 @@
-package gigablocksinc.ecocraft.Commands;
+package ecocraft.ecocraft.Commands;
 
-import gigablocksinc.ecocraft.CustomBlocks.SolarPanel;
-
+import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SolarPanelCommands implements CommandExecutor {
+public class SolarPanelBaseCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof Player)){
@@ -16,7 +15,7 @@ public class SolarPanelCommands implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        player.getInventory().addItem(SolarPanel.getSolarPanel());
+        player.getInventory().addItem(SolarPanelBase.getSolarPanel());
         return true;
     }
 }

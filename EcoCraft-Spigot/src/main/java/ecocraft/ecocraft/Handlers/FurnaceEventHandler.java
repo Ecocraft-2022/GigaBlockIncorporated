@@ -1,8 +1,7 @@
-package gigablocksinc.ecocraft.Handlers;
+package ecocraft.ecocraft.Handlers;
 
-import gigablocksinc.ecocraft.CustomBlocks.Cable;
-import gigablocksinc.ecocraft.Ecocraft;
-import gigablocksinc.ecocraft.Utils.Util;
+import ecocraft.ecocraft.Ecocraft;
+import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
@@ -22,7 +21,7 @@ public class FurnaceEventHandler implements Listener {
         Block b = e.getBlockPlaced();
         if(b.getType().equals(Material.FURNACE)){
             u.connected(b);
-   
+
             if(u.isConnected()){
                Furnace fur =  (Furnace) b.getState();
                fur.setBurnTime(Short.MAX_VALUE);
