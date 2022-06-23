@@ -33,5 +33,4 @@ public class PollutionBar {
         bar = Bukkit.createBossBar("Pollution", BarColor.WHITE, BarStyle.SOLID);
         bar.setVisible(true);
     }
-
 }

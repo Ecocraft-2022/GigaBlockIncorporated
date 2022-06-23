@@ -72,14 +72,23 @@ private void handlePollution(Player p,int pollution){
     }
 
     b.setProgress((float)pollution/5);
-    if(p.getInventory().getHelmet()!=null &&!p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
+    try {
+        if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+        }else{
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+        }
+    }catch (Exception e){
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-        if (pollution == 0) {
-            p.removePotionEffect(PotionEffectType.BLINDNESS);
-            p.removePotionEffect(PotionEffectType.SLOW);
-        }
     }
+
+    if (pollution == 0) {
+        p.removePotionEffect(PotionEffectType.BLINDNESS);
+        p.removePotionEffect(PotionEffectType.SLOW);
+    }
+
 }
 
 }

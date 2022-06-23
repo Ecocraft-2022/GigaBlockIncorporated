@@ -11,12 +11,14 @@ import ecocraft.ecocraft.Events.RainEvent;
 import ecocraft.ecocraft.Handlers.*;
 
 import ecocraft.ecocraft.Utils.NightDetector;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Ecocraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         getCommand("solar").setExecutor(new SolarPanelCommands());
         getCommand("solarbase").setExecutor(new SolarPanelBaseCommands());
         getCommand("cable").setExecutor(new CableCommands());
