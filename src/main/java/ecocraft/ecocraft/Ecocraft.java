@@ -6,8 +6,7 @@ import ecocraft.ecocraft.Commands.SolarPanelCommands;
 import ecocraft.ecocraft.CustomBlocks.Cable;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
-import ecocraft.ecocraft.Events.NightEvent;
-import ecocraft.ecocraft.Events.RainEvent;
+
 import ecocraft.ecocraft.Handlers.*;
 
 import ecocraft.ecocraft.Utils.NightDetector;
@@ -22,23 +21,20 @@ public final class Ecocraft extends JavaPlugin {
         getCommand("solar").setExecutor(new SolarPanelCommands());
         getCommand("solarbase").setExecutor(new SolarPanelBaseCommands());
         getCommand("cable").setExecutor(new CableCommands());
+
+        MainEventHandler.init(this);
         SolarPanel.init();
         SolarPanelBase.init();
         Cable.init();
-        new SolarPanelEventHandler(this);
-        new CableEventHandler(this);
-        new FurnaceEventHandler(this);
-        new MapEventHandler(this);
-        new PollutionHandler(this);
-	Recycler.register(this);
-	
+      
+        Recycler.register(this);
+
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new FishingListener(), this);
         pluginManager.registerEvents(new RainEvent(), this);
         pluginManager.registerEvents(new DispenserListener(), this);
         NightDetector d = NightDetector.getInstance(this);
         d.detectNight();
-
 
     }
 

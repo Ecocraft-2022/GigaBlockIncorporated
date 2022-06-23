@@ -3,6 +3,7 @@ package ecocraft.ecocraft.Handlers;
 import ecocraft.ecocraft.Ecocraft;
 import ecocraft.ecocraft.Utils.NightDetector;
 import ecocraft.ecocraft.Utils.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -15,9 +16,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.awt.*;
+
 public class FurnaceEventHandler implements Listener {
     private Plugin plugin;
-    public FurnaceEventHandler(Ecocraft plugin) {
+    public FurnaceEventHandler(Plugin plugin) {
         this.plugin =plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -38,32 +41,37 @@ public class FurnaceEventHandler implements Listener {
 
     }
 
+    public static Location getCenterLocation(Location loc){
+        int x = loc.getBlockX();
+        int z = loc.getBlockZ();
+        return new Location(loc.getWorld(), x > 0 ? x + 0.5 : x - 0.5, loc.getY(), z > 0 ? z + 0.5 : z - 0.5, loc.getYaw(), loc.getPitch());
+    }
+
     @EventHandler
     public void onFurnaceBurn(FurnaceBurnEvent e) {
-        if(e.getFuel().getType().equals(Material.COAL))
-        {
+        if(e.getFuel().getType().equals(Material.COAL)) {
             Directional direction = (Directional) e.getBlock().getBlockData();
-            Location frontLocation = e.getBlock().getRelative(direction.getFacing()).getLocation();
-            Location furnaceLocation = e.getBlock().getLocation();
+            Location frontLocation = getCenterLocation(e.getBlock().getRelative(direction.getFacing()).getLocation());
+            Location furnaceLocation = getCenterLocation(e.getBlock().getLocation());
 
-            double x = frontLocation.getX() + furnaceLocation.getBlockX()-1;
-            double y = frontLocation.getY() + furnaceLocation.getBlockY();
-            double z = frontLocation.getZ() + furnaceLocation.getBlockZ() -1;
+            double x = frontLocation.getX() + furnaceLocation.getX();
+            double y = frontLocation.getY() + furnaceLocation.getY();
+            double z = frontLocation.getZ() + furnaceLocation.getZ();
+
+            Bukkit.broadcastMessage(frontLocation.toString());
 
             x /= 2;
-            y/=2;
-            z/=2;
+            y /= 2;
+            z /= 2;
 
             Location particleLocation = new Location(e.getBlock().getLocation().getWorld(), x, y, z);
 
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    while(true)
-                    {
+                    while (true) {
+                        System.out.println(particleLocation);
                         furnaceLocation.getWorld().spawnParticle(Particle.SMOKE_LARGE, particleLocation, 5, 0, 1, 0, 0.1);
-
-
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ex) {
@@ -72,6 +80,7 @@ public class FurnaceEventHandler implements Listener {
                     }
                 }
             };
+
             Thread t = new Thread(runnable);
             t.start();
         }
