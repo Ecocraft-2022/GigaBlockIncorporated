@@ -1,9 +1,0 @@
-name: NazwaTyczmasowa
-version: '${project.version}'
-main: gigablocksincorporated.ecocraft.Ecocraft
-api-version: 1.19
-description: An plugin made for EcoCraft hackathon
-commands:
-  solar:
-    description: Gives solar panel to the Player
-    usage: /<command>
