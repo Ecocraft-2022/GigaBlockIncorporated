@@ -1,4 +1,4 @@
-package CustomBlocks;
+package gigablocksinc.ecocraft.CustomBlocks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,7 +34,6 @@ public class SolarPanel {
         meta.setLore(data);
         System.out.println(meta.getAsString());
         item.setItemMeta(meta);
-
         solarPanel = item;
 
     }

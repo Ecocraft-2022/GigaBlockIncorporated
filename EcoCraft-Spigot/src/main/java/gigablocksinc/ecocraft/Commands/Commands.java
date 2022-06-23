@@ -1,4 +1,4 @@
-package Commands;
+package gigablocksinc.ecocraft.Commands;
 
 public class Commands {
 

@@ -7,5 +7,8 @@ commands:
     description: Gives solar panel
     usage: /<command>
   solarbase:
-    description: gives solar panel description
+    description: gives base for solar panel
+    usage: /<command>
+  cable:
+    description: gives cable
     usage: /<command>

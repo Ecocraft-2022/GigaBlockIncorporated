@@ -1,12 +1,15 @@
 package gigablocksincorporated.ecocraft;
 
+import gigablocksincorporated.ecocraft.Commands.SolarPanelCommand;
+import gigablocksincorporated.ecocraft.CustomItems.SolarPanel;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Ecocraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        SolarPanel.init();
+        getCommand("solar").setExecutor(new SolarPanelCommand());
 
     }
 
