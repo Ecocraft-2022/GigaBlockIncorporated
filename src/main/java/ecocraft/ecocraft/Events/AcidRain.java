@@ -5,17 +5,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
-public class LeavesDestroyer extends BukkitRunnable {
+public class AcidRain extends BukkitRunnable {
     @Override
     public void run() {
         ArrayList<Material> leaves = new ArrayList<Material>();
@@ -40,12 +38,11 @@ public class LeavesDestroyer extends BukkitRunnable {
             for (int x = -radius; x < radius; x++) {
                 for (int y = -radius; y < radius; y++) {
                     for (int z = -radius; z < radius; z++) {
+                        assert world != null;
                         Block block = world.getBlockAt(loc.getBlockX()+x, loc.getBlockY()+y, loc.getBlockZ()+z);
                         boolean leavesBlock = false;
-                        for(int i = 0; i < leaves.size(); ++i)
-                        {
-                            if(block.getType().equals(leaves.get(i)))
-                            {
+                        for (Material leaf : leaves) {
+                            if (block.getType().equals(leaf)) {
                                 leavesBlock = true;
                                 break;
                             }
@@ -64,6 +61,16 @@ public class LeavesDestroyer extends BukkitRunnable {
                             block.setType(Material.DIRT);
                         }
                     }
+                }
+            }
+
+            for (Entity entity : player.getNearbyEntities(10, 10, 10))
+            {
+                if(entity instanceof LivingEntity)
+                {
+                    LivingEntity livingEntity = (LivingEntity) entity;
+                    livingEntity.damage(1);
+                    Bukkit.broadcastMessage(String.valueOf(livingEntity.getHealth()));
                 }
             }
         }

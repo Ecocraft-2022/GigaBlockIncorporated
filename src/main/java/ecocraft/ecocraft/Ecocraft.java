@@ -35,11 +35,6 @@ public final class Ecocraft extends JavaPlugin {
       
         RecyclerBlock.register(this);
 
-
-
-
-
-
     }
 
     @Override

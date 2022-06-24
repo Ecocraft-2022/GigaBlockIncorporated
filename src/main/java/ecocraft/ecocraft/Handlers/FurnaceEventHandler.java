@@ -58,8 +58,6 @@ public class FurnaceEventHandler implements Listener {
             double y = frontLocation.getY() + furnaceLocation.getY();
             double z = frontLocation.getZ() + furnaceLocation.getZ();
 
-            Bukkit.broadcastMessage(frontLocation.toString());
-
             x /= 2;
             y /= 2;
             z /= 2;
@@ -70,7 +68,6 @@ public class FurnaceEventHandler implements Listener {
                 @Override
                 public void run() {
                     while (true) {
-                        System.out.println(particleLocation);
                         furnaceLocation.getWorld().spawnParticle(Particle.SMOKE_LARGE, particleLocation, 5, 0, 1, 0, 0.1);
                         try {
                             Thread.sleep(100);

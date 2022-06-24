@@ -1,8 +1,10 @@
 package ecocraft.ecocraft.Handlers;
 
 
+import ecocraft.ecocraft.Timers.HeatTimer;
 import ecocraft.ecocraft.Utils.NightDetector;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 public class MainEventHandler {
@@ -20,6 +22,9 @@ public class MainEventHandler {
         new DispenserListener(plugin);
         NightDetector d = NightDetector.getInstance(plugin);
         d.detectNight();
+
+        HeatTimer heatTimer = new HeatTimer();
+        heatTimer.runTaskTimer(plugin, 0, 2);
     }
 
     public static MainEventHandler init(Plugin plugin){
