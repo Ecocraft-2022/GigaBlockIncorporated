@@ -28,6 +28,7 @@ public final class Ecocraft extends JavaPlugin {
         MainEventHandler.init(this);
         SolarPanel.init();
         SolarPanelBase.init();
+
         Cable.init();
 
         MainEventHandler.init(this);
