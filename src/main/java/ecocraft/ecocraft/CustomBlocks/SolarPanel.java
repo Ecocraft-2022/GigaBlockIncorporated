@@ -25,12 +25,17 @@ public class SolarPanel {
 
     private static void createSolarPanel() {
 
-        ItemStack item =  new ItemStack(Material.DAYLIGHT_DETECTOR,1);
+        ItemStack item =  new ItemStack(Material.NOTE_BLOCK,1);
 
         ItemMeta meta  = item.getItemMeta();
+
+
+
         meta.setDisplayName("Solar Panel");
         List<String> data = new ArrayList<>();
         data.add("Solar panel - produces green energy");
+        
+
         meta.setLore(data);
         System.out.println(meta.getAsString());
         item.setItemMeta(meta);

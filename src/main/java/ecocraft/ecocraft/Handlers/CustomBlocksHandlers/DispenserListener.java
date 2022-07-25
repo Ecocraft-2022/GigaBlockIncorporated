@@ -1,4 +1,4 @@
-package ecocraft.ecocraft.Handlers;
+package ecocraft.ecocraft.Handlers.CustomBlocksHandlers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

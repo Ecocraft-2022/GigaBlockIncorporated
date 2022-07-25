@@ -25,7 +25,7 @@ public class Cable {
 
     private static void createCable() {
 
-        ItemStack item =  new ItemStack(Material.NETHER_BRICK_FENCE,1);
+        ItemStack item =  new ItemStack(Material.NOTE_BLOCK,1);
 
         ItemMeta meta  = item.getItemMeta();
         meta.setDisplayName("Cable");

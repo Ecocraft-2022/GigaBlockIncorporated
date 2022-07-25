@@ -25,7 +25,7 @@ public class SolarPanelBase {
 
 
     private static void createSolarPanelBase() {
-        ItemStack item =  new ItemStack(Material.DRIED_KELP_BLOCK,1);
+        ItemStack item =  new ItemStack(Material.NOTE_BLOCK,1);
         ItemMeta meta  = item.getItemMeta();
         meta.setDisplayName("Solar Panel Base");
         List<String> data = new ArrayList<>();

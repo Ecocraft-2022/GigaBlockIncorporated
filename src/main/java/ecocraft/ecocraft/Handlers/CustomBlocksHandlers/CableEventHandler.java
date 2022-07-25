@@ -1,4 +1,4 @@
-package ecocraft.ecocraft.Handlers;
+package ecocraft.ecocraft.Handlers.CustomBlocksHandlers;
 
 import ecocraft.ecocraft.Ecocraft;
 import ecocraft.ecocraft.Utils.NightDetector;
@@ -16,16 +16,16 @@ import org.bukkit.plugin.Plugin;
 
 public class CableEventHandler implements Listener {
 
-    Plugin plugin;
+    static Plugin plugin;
 
     public CableEventHandler(Plugin plugin) {
         this.plugin =plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
-    public void onCablePlaced(BlockPlaceEvent e) {
-        if (e.getBlockPlaced().getType().equals(Cable.getCable().getType())) {
+
+    public static void onCablePlaced(BlockPlaceEvent e) {
+
             Util u = new Util();
             Block block = e.getBlockPlaced();
             u.connected(block);
@@ -40,7 +40,7 @@ public class CableEventHandler implements Listener {
                 );
             }
         }
-    }
+
     private static final BlockFace list[] ={BlockFace.DOWN,BlockFace.EAST,BlockFace.UP,BlockFace.NORTH,BlockFace.SOUTH,BlockFace.WEST};
     @EventHandler
     public void onCableDestroyed(BlockBreakEvent e){
