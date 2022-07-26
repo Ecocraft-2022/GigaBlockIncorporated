@@ -6,9 +6,11 @@ import ecocraft.ecocraft.Events.NightEvent;
 import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -57,7 +59,7 @@ public class RainEventHandler implements Listener {
                         for (int y = 0; y < 128; y++) {
                             Block test = w.getBlockAt(x, y, z);
 
-                            if (test.getType().equals(SolarPanel.getSolarPanel().getType())) {
+                            if (test.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(new SolarPanel(), (NoteBlock) test.getBlockData())) {
                                 Util u = new Util();
                                 u.findDesiredBlocks(test.getRelative(BlockFace.DOWN));
 

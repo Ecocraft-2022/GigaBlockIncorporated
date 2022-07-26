@@ -1,8 +1,6 @@
 package ecocraft.ecocraft.CustomBlocks;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -10,7 +8,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolarPanelBase {
+public class SolarPanelBase  implements CompareBlocks {
+
+    public static final Note note = Note.natural(1, Note.Tone.E);
+
+    public static final Instrument instrument = Instrument.GUITAR;
 
     private static ItemStack solarPanelBase;
 
@@ -50,4 +52,13 @@ public class SolarPanelBase {
     }
 
 
+    @Override
+    public Instrument getInstrument() {
+        return instrument;
+    }
+
+    @Override
+    public Note getNote() {
+        return note;
+    }
 }

@@ -26,9 +26,9 @@ public class DispenserListener implements Listener {
 
     private static String getLocationString(Location location)
     {
-        return  Double.toString(location.getX()) + " " +
-                Double.toString(location.getY()) + " " +
-                Double.toString(location.getZ());
+        return location.getX() + " " +
+                location.getY() + " " +
+                location.getZ();
     }
     private static void addLocationToConfig(Location location) throws IOException
     {
@@ -39,8 +39,7 @@ public class DispenserListener implements Listener {
         writer.close();
     }
 
-    private static boolean checkLocation(Location location) throws IOException
-    {
+    private static boolean checkLocation(Location location) {
         String locationStr = getLocationString(location);
         try {
             File cfg = new File(configPath);
@@ -74,7 +73,7 @@ public class DispenserListener implements Listener {
     }
 
     @EventHandler
-    public void onDispensed(BlockDispenseEvent e) throws IOException {
+    public void onDispensed(BlockDispenseEvent e) {
         if(e.getBlock().getType() != Material.DISPENSER)
             return;
 

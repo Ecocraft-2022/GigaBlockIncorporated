@@ -24,7 +24,8 @@ public class DisableRightClick implements Listener {
 
     @EventHandler
     public void onPlayerClickItem(PlayerInteractEvent event) {
-        if (event.getClickedBlock().getType() == Material.NOTE_BLOCK) {
+
+        if (event.getClickedBlock()!=null && event.getClickedBlock().getType() == Material.NOTE_BLOCK) {
             Player player = event.getPlayer();
             if ((!player.isSneaking() || player.getMainHand() == null) &&event.getAction()==Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);

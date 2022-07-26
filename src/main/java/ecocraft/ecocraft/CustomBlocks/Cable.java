@@ -1,8 +1,6 @@
 package ecocraft.ecocraft.CustomBlocks;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -10,7 +8,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cable {
+public class Cable implements CompareBlocks  {
+
+
+    public final static Note note = Note.natural(1, Note.Tone.G);
+
+    public final static Instrument instrument = Instrument.GUITAR;
+
 
     private static ItemStack cable;
 
@@ -53,4 +57,13 @@ public class Cable {
         Bukkit.addRecipe(sr);
     }
 
+    @Override
+    public Instrument getInstrument() {
+        return instrument;
+    }
+
+    @Override
+    public Note getNote() {
+        return note;
+    }
 }

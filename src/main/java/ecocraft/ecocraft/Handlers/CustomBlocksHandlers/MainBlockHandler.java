@@ -1,9 +1,9 @@
 package ecocraft.ecocraft.Handlers.CustomBlocksHandlers;
 
-import ecocraft.ecocraft.CustomBlocks.SolarPanel;
+import org.bukkit.Material;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
@@ -24,22 +24,27 @@ public class MainBlockHandler implements Listener {
     @EventHandler
     public void placeCustomBlock(PlayerInteractEvent e) {
         if(e.getItem() == null) return;
+        if(!e.getItem().getType().equals(Material.NOTE_BLOCK)) return;
         switch (e.getItem().getItemMeta().getDisplayName()) {
             case ("Solar Panel"):
-                function = SolarPanelHandler::onSolarPanelPlaced;
+                function = PlaceUtils::onSolarPanelPlaced;
                 break;
             case ("Solar Panel Base"):
-                function = SolarPanelHandler::onSolarPanelBasePlaced;
+                function = PlaceUtils::onSolarPanelBasePlaced;
                 break;
             case ("Cable"):
-                function = CableEventHandler::onCablePlaced;
+                function = PlaceUtils::onCablePlaced;
+                break;
         }
 
     }
 
     @EventHandler
     public void handle(BlockPlaceEvent e) {
-        function.handle(e);
+        if(function!=null){
+            function.handle(e);
+        }
+        function=null;
     }
 
 }
