@@ -46,7 +46,7 @@ public class Util {
 
             if (block.getRelative(b).getType().equals(Material.NOTE_BLOCK)) {
                 NoteBlock noteblock = (NoteBlock) data;
-                if (compareBlocks(new SolarPanelBase(), noteblock) || compareBlocks(new Cable(), noteblock)) {
+                if (compareBlocks(SolarPanelBase.getInstance(), noteblock) || compareBlocks(Cable.getInstance(), noteblock)) {
                     addVisited(bl);
                 }
 
@@ -75,7 +75,7 @@ public class Util {
             Block bl = block.getRelative(b);
 
 
-            if (bl.getType().equals(Material.FURNACE)) getCordinatesString(bl);
+            if (bl.getType().equals(Material.FURNACE)) getCoordinatesString(bl);
 
             BlockData data = bl.getBlockData();
 
@@ -83,18 +83,18 @@ public class Util {
 
                 NoteBlock nb = (NoteBlock) data;
 
-                if (compareBlocks(new SolarPanel(), nb) || compareBlocks(new Cable(), nb)) {
-                    if (compareBlocks(new SolarPanelBase(), nb)) {
+                if (compareBlocks( SolarPanel.getInstance(), nb) || compareBlocks(Cable.getInstance(), nb)) {
+                    if (compareBlocks(SolarPanel.getInstance(), nb)) {
                         connected = true;
                         break;
                     }
-                    getCordinatesString(bl);
+                    getCoordinatesString(bl);
                 }
             }
         }
     }
 
-    private void getCordinatesString(Block bl) {
+    private void getCoordinatesString(Block bl) {
         StringBuilder str = new StringBuilder();
         str.append(bl.getX());
         str.append(bl.getY());

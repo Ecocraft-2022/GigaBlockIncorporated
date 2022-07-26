@@ -23,8 +23,8 @@ public class MainBlockHandler implements Listener {
 
     @EventHandler
     public void placeCustomBlock(PlayerInteractEvent e) {
-        if(e.getItem() == null) return;
-        if(!e.getItem().getType().equals(Material.NOTE_BLOCK)) return;
+        if (e.getItem() == null) return;
+        if (!e.getItem().getType().equals(Material.NOTE_BLOCK)) return;
         switch (e.getItem().getItemMeta().getDisplayName()) {
             case ("Solar Panel"):
                 function = PlaceUtils::onSolarPanelPlaced;
@@ -41,10 +41,10 @@ public class MainBlockHandler implements Listener {
 
     @EventHandler
     public void handle(BlockPlaceEvent e) {
-        if(function!=null){
+        if (function != null) {
             function.handle(e);
         }
-        function=null;
+        function = null;
     }
 
 }

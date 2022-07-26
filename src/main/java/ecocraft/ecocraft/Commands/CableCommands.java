@@ -16,7 +16,7 @@ public class CableCommands implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        player.getInventory().addItem(Cable.getCable());
+        player.getInventory().addItem(Cable.getItem());
         return true;
     }
 }

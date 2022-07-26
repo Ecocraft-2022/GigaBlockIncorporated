@@ -8,9 +8,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolarPanel implements CompareBlocks  {
+public class SolarPanel implements CompareBlocks {
 
-
+    private static SolarPanel solarPanelObj;
 
     public static final Note note = Note.natural(1, Note.Tone.A);
 
@@ -19,7 +19,17 @@ public class SolarPanel implements CompareBlocks  {
 
     private static ItemStack solarPanel;
 
-    public static ItemStack getSolarPanel() {
+    public static SolarPanel getInstance() {
+        if (solarPanelObj == null) {
+            solarPanelObj = new SolarPanel();
+        }
+        return solarPanelObj;
+    }
+
+    protected SolarPanel() {
+    }
+
+    public static ItemStack getItem() {
         return solarPanel;
     }
 
@@ -30,16 +40,15 @@ public class SolarPanel implements CompareBlocks  {
 
     private static void createSolarPanel() {
 
-        ItemStack item =  new ItemStack(Material.NOTE_BLOCK,1);
+        ItemStack item = new ItemStack(Material.NOTE_BLOCK, 1);
 
-        ItemMeta meta  = item.getItemMeta();
-
+        ItemMeta meta = item.getItemMeta();
 
 
         meta.setDisplayName("Solar Panel");
         List<String> data = new ArrayList<>();
         data.add("Solar panel - produces green energy");
-        
+
 
         meta.setLore(data);
         System.out.println(meta.getAsString());
@@ -48,17 +57,17 @@ public class SolarPanel implements CompareBlocks  {
 
     }
 
-    private static void createRecep(){
+    private static void createRecep() {
 
         NamespacedKey key = NamespacedKey.fromString("solar_panel");
 
-        ShapedRecipe sr =new ShapedRecipe(key,solarPanel);
+        ShapedRecipe sr = new ShapedRecipe(key, solarPanel);
         sr.shape(
                 " R ",
                 "RDR",
                 " R ");
-        sr.setIngredient('R',Material.REDSTONE_BLOCK);
-        sr.setIngredient('D',Material.DAYLIGHT_DETECTOR);
+        sr.setIngredient('R', Material.REDSTONE_BLOCK);
+        sr.setIngredient('D', Material.DAYLIGHT_DETECTOR);
 
         Bukkit.addRecipe(sr);
     }

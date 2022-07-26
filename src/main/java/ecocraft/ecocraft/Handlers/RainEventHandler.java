@@ -50,7 +50,7 @@ public class RainEventHandler implements Listener {
 
         for (Chunk ch : c) {
 
-            if (ch.contains(SolarPanel.getSolarPanel().getType().createBlockData())) {
+            if (ch.contains(SolarPanel.getItem().getType().createBlockData())) {
                 int cx = ch.getX() << 4;
                 int cz = ch.getZ() << 4;
 
@@ -59,7 +59,7 @@ public class RainEventHandler implements Listener {
                         for (int y = 0; y < 128; y++) {
                             Block test = w.getBlockAt(x, y, z);
 
-                            if (test.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(new SolarPanel(), (NoteBlock) test.getBlockData())) {
+                            if (test.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) test.getBlockData())) {
                                 Util u = new Util();
                                 u.findDesiredBlocks(test.getRelative(BlockFace.DOWN));
 

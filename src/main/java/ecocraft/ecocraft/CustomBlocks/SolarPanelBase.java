@@ -10,13 +10,15 @@ import java.util.List;
 
 public class SolarPanelBase  implements CompareBlocks {
 
+    private static SolarPanelBase solarPanelBaseObj;
+
     public static final Note note = Note.natural(1, Note.Tone.E);
 
     public static final Instrument instrument = Instrument.GUITAR;
 
     private static ItemStack solarPanelBase;
 
-    public static ItemStack getSolarPanel() {
+    public static ItemStack getItem() {
         return solarPanelBase;
     }
 
@@ -25,6 +27,16 @@ public class SolarPanelBase  implements CompareBlocks {
         createRecep();
     }
 
+    protected SolarPanelBase(){
+
+    }
+
+    public static SolarPanelBase getInstance(){
+        if(solarPanelBaseObj == null){
+            solarPanelBaseObj = new SolarPanelBase();
+        }
+        return solarPanelBaseObj;
+    }
 
     private static void createSolarPanelBase() {
         ItemStack item =  new ItemStack(Material.NOTE_BLOCK,1);

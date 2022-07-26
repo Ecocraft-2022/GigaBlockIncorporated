@@ -20,18 +20,17 @@ public class DispenserListener implements Listener {
     private Plugin plugin;
 
     public DispenserListener(Plugin plugin) {
-        this.plugin =plugin;
+        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    private static String getLocationString(Location location)
-    {
+    private static String getLocationString(Location location) {
         return location.getX() + " " +
                 location.getY() + " " +
                 location.getZ();
     }
-    private static void addLocationToConfig(Location location) throws IOException
-    {
+
+    private static void addLocationToConfig(Location location) throws IOException {
         String locationStr = getLocationString(location);
         BufferedWriter writer = new BufferedWriter(new FileWriter(configPath, true));
         writer.append(locationStr);
@@ -45,8 +44,7 @@ public class DispenserListener implements Listener {
             File cfg = new File(configPath);
             Scanner reader = new Scanner(cfg);
             while (reader.hasNextLine()) {
-                if(reader.nextLine().equals(locationStr))
-                {
+                if (reader.nextLine().equals(locationStr)) {
                     reader.close();
                     return true;
                 }
@@ -61,9 +59,8 @@ public class DispenserListener implements Listener {
     }
 
     @EventHandler
-    public void onPlaced(BlockPlaceEvent e)
-    {
-        if(Objects.requireNonNull(e.getItemInHand().getItemMeta()).getDisplayName().equals("Recycler")) {
+    public void onPlaced(BlockPlaceEvent e) {
+        if (Objects.requireNonNull(e.getItemInHand().getItemMeta()).getDisplayName().equals("Recycler")) {
             try {
                 addLocationToConfig(e.getBlock().getLocation());
             } catch (IOException ex) {
@@ -74,7 +71,7 @@ public class DispenserListener implements Listener {
 
     @EventHandler
     public void onDispensed(BlockDispenseEvent e) {
-        if(e.getBlock().getType() != Material.DISPENSER)
+        if (e.getBlock().getType() != Material.DISPENSER)
             return;
 
         Dispenser dispenser = (Dispenser) e.getBlock().getState(); // not working rn
@@ -83,10 +80,8 @@ public class DispenserListener implements Listener {
 
         ItemStack itemStack = new ItemStack(e.getItem().getType());
 
-        if(checkLocation(e.getBlock().getLocation()))
-        {
-            switch (e.getItem().getType())
-            {
+        if (checkLocation(e.getBlock().getLocation())) {
+            switch (e.getItem().getType()) {
                 case GLASS_BOTTLE:
                 case EXPERIENCE_BOTTLE:
                 case HONEY_BOTTLE:

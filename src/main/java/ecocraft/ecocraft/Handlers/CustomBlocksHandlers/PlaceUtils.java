@@ -1,5 +1,6 @@
 package ecocraft.ecocraft.Handlers.CustomBlocksHandlers;
 
+import com.google.common.collect.Lists;
 import ecocraft.ecocraft.CustomBlocks.Cable;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
@@ -10,6 +11,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
+import java.util.List;
 
 import static ecocraft.ecocraft.Handlers.CustomBlocksHandlers.CableEventHandler.plugin;
 
@@ -20,11 +25,17 @@ public class PlaceUtils {
 
         addBlockData(e, SolarPanel.note, SolarPanel.instrument);
 
+
+//
+//        Collection<ItemStack> itemDrops = e.getBlock().getDrops();
+//        itemDrops.clear();
+//        itemDrops.add(SolarPanel.getSolarPanel());
+
         if (!e.getBlockPlaced().getRelative(BlockFace.DOWN).getType().equals(Material.NOTE_BLOCK) ) {
             e.getPlayer().sendMessage("Solar panel will not produce power");
             return;
         }
-        if(!Util.compareBlocks(new SolarPanelBase(), (NoteBlock) e.getBlockPlaced().getRelative(BlockFace.DOWN).getBlockData())) return;
+        if(!Util.compareBlocks( SolarPanelBase.getInstance(), (NoteBlock) e.getBlockPlaced().getRelative(BlockFace.DOWN).getBlockData())) return;
 
         Util u = new Util();
 

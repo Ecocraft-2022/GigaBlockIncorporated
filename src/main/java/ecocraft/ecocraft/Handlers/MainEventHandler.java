@@ -1,10 +1,7 @@
 package ecocraft.ecocraft.Handlers;
 
 
-import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.CableEventHandler;
-import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.DisableRightClick;
-import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.MainBlockHandler;
-import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.DispenserListener;
+import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.*;
 import ecocraft.ecocraft.Timers.HeatTimer;
 import ecocraft.ecocraft.Utils.NightDetector;
 
@@ -24,6 +21,7 @@ public class MainEventHandler {
         new DispenserListener(plugin);
         new MainBlockHandler(plugin);
         new DisableRightClick(plugin);
+        new DestroyCustomBlock(plugin);
         NightDetector d = NightDetector.getInstance(plugin);
         d.detectNight();
 

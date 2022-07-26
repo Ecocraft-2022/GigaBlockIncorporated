@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Cable implements CompareBlocks  {
 
-
+    private static Cable cableObj;
     public final static Note note = Note.natural(1, Note.Tone.G);
 
     public final static Instrument instrument = Instrument.GUITAR;
@@ -18,7 +18,20 @@ public class Cable implements CompareBlocks  {
 
     private static ItemStack cable;
 
-    public static ItemStack getCable() {
+
+    public static Cable getInstance(){
+        if(cableObj==null){
+            cableObj = new Cable();
+        }
+        return cableObj;
+    }
+
+    protected Cable(){
+
+    }
+
+
+    public static ItemStack getItem() {
         return cable;
     }
 
