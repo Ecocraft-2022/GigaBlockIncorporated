@@ -5,12 +5,16 @@ import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Furnace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class CableEventHandler implements Listener {
@@ -35,36 +39,20 @@ public class CableEventHandler implements Listener {
 
         if (block.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(Cable.getInstance(), (NoteBlock) data)) {
 
+
+
+
+            Util util = new Util();
+
+            List<Furnace> furnaces = util.findFurnaces(block);
+
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                for (BlockFace b : list) {
-
-                    BlockData data2 = block.getRelative(b).getBlockData();
-
-                    if (block.getRelative(b).getType().equals(Material.NOTE_BLOCK)
-                            && (Util.compareBlocks(Cable.getInstance(), (NoteBlock) data2)
-                            || block.getRelative(b).getType().equals(Material.FURNACE))) {
-                        Util u = new Util();
-
-                        u.connected(block.getRelative(b));
-
-                        if (!u.isConnected()) {
-                            u.findDesiredBlocks(block);
-                        }
-                        u.getFurnaces().stream().forEach(
-                                f -> {
-                                    Util u2 = new Util();
-                                    u2.connected(f.getBlock());
-                                    if (!u2.isConnected()) {
-                                        f.setBurnTime(Short.valueOf("0"));
-                                        f.update();
-                                    }
-                                });
+                        furnaces.stream().filter(f -> !util.isConnectedToGrid(f.getBlock())).forEach(furnace -> {
+                            furnace.setBurnTime(Short.valueOf("0"));
+                            furnace.update();
+                        });
                     }
-                }
-            }, 2);
-
-
-
+            , 2);
         }
     }
 

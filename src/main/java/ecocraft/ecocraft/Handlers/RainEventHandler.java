@@ -10,11 +10,14 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Furnace;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
 
 public class RainEventHandler implements Listener {
 
@@ -61,9 +64,11 @@ public class RainEventHandler implements Listener {
 
                             if (test.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) test.getBlockData())) {
                                 Util u = new Util();
-                                u.findDesiredBlocks(test.getRelative(BlockFace.DOWN));
+                                List<Furnace> furnaces = u.findFurnaces(test.getRelative(BlockFace.DOWN));
 
-                                u.getFurnaces().stream().forEach(
+//                                u.findDesiredBlocks(test.getRelative(BlockFace.DOWN));
+//
+                                furnaces.stream().forEach(
                                         f -> {
                                             if (e.isNight()) {
                                                 f.setBurnTime(Short.valueOf("0"));

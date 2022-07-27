@@ -26,7 +26,6 @@ public class DestroyCustomBlock implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    private final BlockFace list[] = {BlockFace.DOWN, BlockFace.EAST, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
     @EventHandler
     public void onCustomBlockDestroyed(BlockBreakEvent e){
         preventCustomBlockUpdateUpdate(e.getBlock());

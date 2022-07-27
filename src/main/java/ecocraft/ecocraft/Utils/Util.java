@@ -13,98 +13,92 @@ import org.bukkit.block.data.type.NoteBlock;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Util {
-    private boolean connected = false;
-
-    public boolean isConnected() {
-        return connected;
-    }
-
     private static final BlockFace list[] = {BlockFace.DOWN, BlockFace.EAST, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
-    private ArrayList<String> visited = new ArrayList<>();
-    private ArrayList<String> visited2 = new ArrayList<>();
-    private ArrayList<Furnace> furnaces = new ArrayList<>();
 
-    public ArrayList<Furnace> getFurnaces() {
-        return furnaces;
+    public List<Furnace> findFurnaces(Block block){
+        return findDesiredBlocks(block,new ArrayList<>(), new ArrayList<>());
     }
 
-    public void findDesiredBlocks(Block block) {
-
-
+    private List<Furnace> findDesiredBlocks(Block block,List<Furnace> result,List<String> visited) {
         for (BlockFace b : list) {
-
             Block bl = block.getRelative(b);
             BlockData data = bl.getBlockData();
 
             if (bl.getType().equals(Material.FURNACE)) {
-                furnaces.add((Furnace) bl.getState());
-                addVisited(bl);
+                result.add((Furnace) bl.getState());
+                String coordinates = cordsToString(bl);
+                if (!visited.contains(coordinates)) {
+                    visited.add(coordinates);
+                    findDesiredBlocks(bl,result,visited);
+                }
             }
 
             if (block.getRelative(b).getType().equals(Material.NOTE_BLOCK)) {
                 NoteBlock noteblock = (NoteBlock) data;
                 if (compareBlocks(SolarPanelBase.getInstance(), noteblock) || compareBlocks(Cable.getInstance(), noteblock)) {
-                    addVisited(bl);
+                    String coordinates = cordsToString(bl);
+                    if (!visited.contains(coordinates)) {
+                        visited.add(coordinates);
+                        findDesiredBlocks(bl,result,visited);
+                    }
                 }
-
             }
-
         }
-
-    }
-
-    private void addVisited(Block bl) {
-        StringBuilder str = new StringBuilder();
-        str.append(bl.getX());
-        str.append(bl.getY());
-        str.append(bl.getZ());
-        System.out.println(visited);
-        if (!visited.contains(str.toString())) {
-            visited.add(str.toString());
-            findDesiredBlocks(bl);
-        }
+        return result;
     }
 
 
-    public void connected(Block block) {
+    public Boolean isConnectedToGrid(Block block){
+        List<String> visited = new ArrayList<>();
+        List<Boolean> result = new ArrayList<>();
+        Boolean res = connected(block,visited,result);
+
+        return result.contains(true);
+    }
+
+
+
+    public Boolean connected(Block block,List<String> visited,List<Boolean> res) {
 
         for (BlockFace b : list) {
             Block bl = block.getRelative(b);
-
-
-            if (bl.getType().equals(Material.FURNACE)) getCoordinatesString(bl);
-
             BlockData data = bl.getBlockData();
 
             if (bl.getType().equals(Material.NOTE_BLOCK)) {
-
                 NoteBlock nb = (NoteBlock) data;
-
-                if (compareBlocks( SolarPanel.getInstance(), nb) || compareBlocks(Cable.getInstance(), nb)) {
-                    if (compareBlocks(SolarPanel.getInstance(), nb)) {
-                        connected = true;
-                        break;
-                    }
-                    getCoordinatesString(bl);
+                res.add(compareBlocks(SolarPanelBase.getInstance(), nb));
+                if (compareBlocks(SolarPanelBase.getInstance(), nb)) {
+                    return compareBlocks(SolarPanelBase.getInstance(),nb);
                 }
+
+                if (compareBlocks(Cable.getInstance(), nb)) {
+                    String coordinates = cordsToString(bl);
+                    if (!visited.contains(coordinates)) {
+                        visited.add(coordinates);
+                        connected(bl,visited,res);
+                    }
+                }
+
             }
+
         }
+
+    return false;
     }
 
-    private void getCoordinatesString(Block bl) {
+    private String cordsToString(Block bl) {
         StringBuilder str = new StringBuilder();
         str.append(bl.getX());
         str.append(bl.getY());
         str.append(bl.getZ());
-
-        if (!visited2.contains(str.toString())) {
-            visited2.add(str.toString());
-            connected(bl);
-        }
+        return str.toString();
     }
+
+
 
 
     public static boolean compareBlocks(CompareBlocks block1, NoteBlock block2) {

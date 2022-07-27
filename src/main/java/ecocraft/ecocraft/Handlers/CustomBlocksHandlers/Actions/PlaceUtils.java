@@ -35,12 +35,10 @@ public class PlaceUtils {
         if(!Util.compareBlocks( SolarPanelBase.getInstance(), (NoteBlock) e.getBlockPlaced().getRelative(BlockFace.DOWN).getBlockData())) return;
 
         Util u = new Util();
-
-
-        u.findDesiredBlocks(e.getBlockPlaced().getRelative(BlockFace.DOWN));
+//        u.findDesiredBlocks(e.getBlockPlaced().getRelative(BlockFace.DOWN));
         e.getPlayer().sendMessage("Solar panel is producing power");
 
-        u.getFurnaces().stream().forEach(
+        u.findFurnaces(e.getBlockPlaced().getRelative(BlockFace.DOWN)).stream().forEach(
                 f -> {
                     f.setBurnTime(Short.MAX_VALUE);
                     f.update();

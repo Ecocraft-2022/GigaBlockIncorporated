@@ -29,10 +29,9 @@ public class FurnaceEventHandler implements Listener {
     public void isConnectedToGrid(BlockPlaceEvent e){
         Util u = new Util();
         Block b = e.getBlockPlaced();
-        if(b.getType().equals(Material.FURNACE)){
-            u.connected(b);
 
-            if(u.isConnected() &&!NightDetector.getInstance(plugin).isNight()){
+        if(b.getType().equals(Material.FURNACE)){
+            if(u.isConnectedToGrid(b) && !NightDetector.getInstance(plugin).isNight()){
                Furnace fur =  (Furnace) b.getState();
                fur.setBurnTime(Short.MAX_VALUE);
                fur.update();
@@ -50,6 +49,7 @@ public class FurnaceEventHandler implements Listener {
     @EventHandler
     public void onFurnaceBurn(FurnaceBurnEvent e) {
         if(e.getFuel().getType().equals(Material.COAL)) {
+
             Directional direction = (Directional) e.getBlock().getBlockData();
             Location frontLocation = getCenterLocation(e.getBlock().getRelative(direction.getFacing()).getLocation());
             Location furnaceLocation = getCenterLocation(e.getBlock().getLocation());
@@ -64,16 +64,13 @@ public class FurnaceEventHandler implements Listener {
 
             Location particleLocation = new Location(e.getBlock().getLocation().getWorld(), x, y, z);
 
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        furnaceLocation.getWorld().spawnParticle(Particle.SMOKE_LARGE, particleLocation, 5, 0, 1, 0, 0.1);
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
+            Runnable runnable = () -> {
+                while (true) {
+                    furnaceLocation.getWorld().spawnParticle(Particle.SMOKE_LARGE, particleLocation, 5, 0, 1, 0, 0.1);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
                     }
                 }
             };
