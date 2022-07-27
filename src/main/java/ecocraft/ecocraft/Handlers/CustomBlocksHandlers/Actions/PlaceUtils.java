@@ -1,11 +1,14 @@
-package ecocraft.ecocraft.Handlers.CustomBlocksHandlers;
+package ecocraft.ecocraft.Handlers.CustomBlocksHandlers.Actions;
 
 import com.google.common.collect.Lists;
 import ecocraft.ecocraft.CustomBlocks.Cable;
+import ecocraft.ecocraft.CustomBlocks.CompareBlocks;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
+import ecocraft.ecocraft.Ecocraft;
 import ecocraft.ecocraft.Utils.NightDetector;
 import ecocraft.ecocraft.Utils.Util;
+import jdk.tools.jlink.plugin.Plugin;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,20 +19,14 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.List;
 
-import static ecocraft.ecocraft.Handlers.CustomBlocksHandlers.CableEventHandler.plugin;
+
 
 public class PlaceUtils {
 
 
     public static void onSolarPanelPlaced(BlockPlaceEvent e) {
 
-        addBlockData(e, SolarPanel.note, SolarPanel.instrument);
-
-
-//
-//        Collection<ItemStack> itemDrops = e.getBlock().getDrops();
-//        itemDrops.clear();
-//        itemDrops.add(SolarPanel.getSolarPanel());
+        addBlockData(e, SolarPanel.getInstance());
 
         if (!e.getBlockPlaced().getRelative(BlockFace.DOWN).getType().equals(Material.NOTE_BLOCK) ) {
             e.getPlayer().sendMessage("Solar panel will not produce power");
@@ -55,34 +52,33 @@ public class PlaceUtils {
 
 
     public static void onSolarPanelBasePlaced(BlockPlaceEvent e) {
-        addBlockData(e, SolarPanelBase.note,SolarPanelBase.instrument);
+        addBlockData(e, SolarPanelBase.getInstance());
     }
 
     public static void onCablePlaced(BlockPlaceEvent e) {
 
-        addBlockData(e, Cable.note,Cable.instrument);
+        addBlockData(e, Cable.getInstance());
 
-        Util u = new Util();
-
-        Block block = e.getBlockPlaced();
-        u.connected(block);
-
-
-        if (u.isConnected() && !NightDetector.getInstance(plugin).isNight()) {
-            u.findDesiredBlocks(block);
-            u.getFurnaces().stream().forEach(
-                    f -> {
-                        f.setBurnTime(Short.MAX_VALUE);
-                        f.update();
-                    }
-            );
-        }
+//        Util u = new Util();
+//        Block block = e.getBlockPlaced();
+//        u.connected(block);
+//        if (u.isConnected() && !NightDetector.getInstance().isNight()) {
+//            u.findDesiredBlocks(block);
+//            u.getFurnaces().stream().forEach(
+//                    f -> {
+//                        f.setBurnTime(Short.MAX_VALUE);
+//                        f.update();
+//                    }
+//            );
+//        }
     }
 
-    private static void addBlockData(BlockPlaceEvent e, Note note,Instrument instrument) {
+    private static void addBlockData(BlockPlaceEvent e, CompareBlocks block) {
         NoteBlock nb = (NoteBlock) e.getBlockPlaced().getBlockData();
-        nb.setInstrument(instrument);
-        nb.setNote(note);
+        nb.setInstrument(block.getInstrument());
+        nb.setNote(block.getNote());
+
+
         e.getBlock().setBlockData(nb);
         e.getBlock().getState().update();
     }

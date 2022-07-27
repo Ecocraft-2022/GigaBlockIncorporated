@@ -10,5 +10,5 @@ public interface CompareBlocks {
 
     Note getNote();
 
-
+    ItemStack getItem();
 }

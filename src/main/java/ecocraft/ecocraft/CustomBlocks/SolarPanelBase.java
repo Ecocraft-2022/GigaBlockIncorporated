@@ -18,17 +18,10 @@ public class SolarPanelBase  implements CompareBlocks {
 
     private static ItemStack solarPanelBase;
 
-    public static ItemStack getItem() {
-        return solarPanelBase;
-    }
-
-    public static void init() {
-        createSolarPanelBase();
-        createRecep();
-    }
 
     protected SolarPanelBase(){
-
+        createSolarPanelBase();
+        createRecep();
     }
 
     public static SolarPanelBase getInstance(){
@@ -73,4 +66,9 @@ public class SolarPanelBase  implements CompareBlocks {
     public Note getNote() {
         return note;
     }
+
+    public ItemStack getItem() {
+        return solarPanelBase;
+    }
+
 }

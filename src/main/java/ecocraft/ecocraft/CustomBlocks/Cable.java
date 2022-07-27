@@ -12,12 +12,8 @@ public class Cable implements CompareBlocks  {
 
     private static Cable cableObj;
     public final static Note note = Note.natural(1, Note.Tone.G);
-
     public final static Instrument instrument = Instrument.GUITAR;
-
-
     private static ItemStack cable;
-
 
     public static Cable getInstance(){
         if(cableObj==null){
@@ -27,18 +23,10 @@ public class Cable implements CompareBlocks  {
     }
 
     protected Cable(){
-
-    }
-
-
-    public static ItemStack getItem() {
-        return cable;
-    }
-
-    public static void init() {
         createCable();
         createRecep();
     }
+
 
     private static void createCable() {
 
@@ -78,5 +66,9 @@ public class Cable implements CompareBlocks  {
     @Override
     public Note getNote() {
         return note;
+    }
+
+    public ItemStack getItem() {
+        return cable;
     }
 }

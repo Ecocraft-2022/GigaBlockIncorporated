@@ -22,7 +22,7 @@ public class CableEventHandler implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    private static final BlockFace list[] = {BlockFace.DOWN, BlockFace.EAST, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
+    private final BlockFace list[] = {BlockFace.DOWN, BlockFace.EAST, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
 
     @EventHandler
     public void onCableDestroyed(BlockBreakEvent e) {
@@ -44,7 +44,9 @@ public class CableEventHandler implements Listener {
                             && (Util.compareBlocks(Cable.getInstance(), (NoteBlock) data2)
                             || block.getRelative(b).getType().equals(Material.FURNACE))) {
                         Util u = new Util();
+
                         u.connected(block.getRelative(b));
+
                         if (!u.isConnected()) {
                             u.findDesiredBlocks(block);
                         }

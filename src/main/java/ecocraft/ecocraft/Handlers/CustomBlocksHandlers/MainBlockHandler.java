@@ -1,7 +1,7 @@
 package ecocraft.ecocraft.Handlers.CustomBlocksHandlers;
 
+import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.Actions.PlaceUtils;
 import org.bukkit.Material;
-import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;

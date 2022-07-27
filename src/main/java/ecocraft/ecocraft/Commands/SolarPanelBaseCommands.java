@@ -15,7 +15,7 @@ public class SolarPanelBaseCommands implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        player.getInventory().addItem(SolarPanelBase.getItem());
+        player.getInventory().addItem(SolarPanelBase.getInstance().getItem());
         return true;
     }
 }

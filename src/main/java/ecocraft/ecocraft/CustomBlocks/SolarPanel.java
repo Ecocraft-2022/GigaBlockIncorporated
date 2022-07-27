@@ -27,16 +27,14 @@ public class SolarPanel implements CompareBlocks {
     }
 
     protected SolarPanel() {
-    }
-
-    public static ItemStack getItem() {
-        return solarPanel;
-    }
-
-    public static void init() {
         createSolarPanel();
         createRecep();
     }
+
+    public ItemStack getItem() {
+        return solarPanel;
+    }
+
 
     private static void createSolarPanel() {
 

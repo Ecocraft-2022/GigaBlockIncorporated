@@ -50,7 +50,7 @@ public class RainEventHandler implements Listener {
 
         for (Chunk ch : c) {
 
-            if (ch.contains(SolarPanel.getItem().getType().createBlockData())) {
+            if (ch.contains(SolarPanel.getInstance().getItem().getType().createBlockData())) {
                 int cx = ch.getX() << 4;
                 int cz = ch.getZ() << 4;
 

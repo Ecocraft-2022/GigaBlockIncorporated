@@ -11,12 +11,14 @@ import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import ecocraft.ecocraft.Handlers.*;
 
 import ecocraft.ecocraft.Utils.NightDetector;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
 public final class Ecocraft extends JavaPlugin {
+
 
     @Override
     public void onEnable() {
@@ -26,10 +28,10 @@ public final class Ecocraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("cable")).setExecutor(new CableCommands());
 
         MainEventHandler.init(this);
-        SolarPanel.init();
-        SolarPanelBase.init();
+        SolarPanel.getInstance();
+        SolarPanelBase.getInstance();
 
-        Cable.init();
+        Cable.getInstance();
 
         MainEventHandler.init(this);
       
@@ -41,4 +43,6 @@ public final class Ecocraft extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+
 }
