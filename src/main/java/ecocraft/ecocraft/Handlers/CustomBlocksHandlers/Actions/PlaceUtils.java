@@ -5,26 +5,26 @@ import ecocraft.ecocraft.CustomBlocks.Cable;
 import ecocraft.ecocraft.CustomBlocks.CompareBlocks;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
-import ecocraft.ecocraft.Ecocraft;
+
 import ecocraft.ecocraft.Utils.NightDetector;
 import ecocraft.ecocraft.Utils.Util;
-import jdk.tools.jlink.plugin.Plugin;
 import org.bukkit.*;
-import org.bukkit.block.Block;
+
 import org.bukkit.block.BlockFace;
+
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.List;
+import org.bukkit.plugin.Plugin;
+
+
 
 
 
 public class PlaceUtils {
 
 
-    public static void onSolarPanelPlaced(BlockPlaceEvent e) {
+    public static void onSolarPanelPlaced(BlockPlaceEvent e,Plugin plugin) {
 
         addBlockData(e, SolarPanel.getInstance());
 
@@ -40,8 +40,10 @@ public class PlaceUtils {
 
         u.findFurnaces(e.getBlockPlaced().getRelative(BlockFace.DOWN)).stream().forEach(
                 f -> {
+                    if(!NightDetector.getInstance(plugin).isNight()){
                     f.setBurnTime(Short.MAX_VALUE);
                     f.update();
+                    }
                 }
         );
 
@@ -49,14 +51,13 @@ public class PlaceUtils {
 
 
 
-    public static void onSolarPanelBasePlaced(BlockPlaceEvent e) {
+    public static void onSolarPanelBasePlaced(BlockPlaceEvent e,Plugin plugin) {
         addBlockData(e, SolarPanelBase.getInstance());
     }
 
-    public static void onCablePlaced(BlockPlaceEvent e) {
-
+    public static void onCablePlaced(BlockPlaceEvent e,Plugin plugin) {
         addBlockData(e, Cable.getInstance());
-
+        Util.activateFurnaces(e.getBlock(),plugin);
 //        Util u = new Util();
 //        Block block = e.getBlockPlaced();
 //        u.connected(block);
@@ -80,6 +81,8 @@ public class PlaceUtils {
         e.getBlock().setBlockData(nb);
         e.getBlock().getState().update();
     }
+
+
 
 
 }

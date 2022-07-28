@@ -37,7 +37,7 @@ public class Cable implements CompareBlocks  {
         List<String> data = new ArrayList<>();
         data.add("Cable - Connect to energy source");
         meta.setLore(data);
-        System.out.println(meta.getAsString());
+
         item.setItemMeta(meta);
         cable = item;
 

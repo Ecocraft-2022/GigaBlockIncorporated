@@ -28,6 +28,7 @@ public class DestroyCustomBlock implements Listener {
 
     @EventHandler
     public void onCustomBlockDestroyed(BlockBreakEvent e){
+
         preventCustomBlockUpdateUpdate(e.getBlock());
 
 
@@ -61,7 +62,7 @@ public class DestroyCustomBlock implements Listener {
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             if(block.getRelative(BlockFace.UP).getType().equals(Material.NOTE_BLOCK)){
                 NoteBlock nb = (NoteBlock) block.getRelative(BlockFace.UP).getBlockData();
-                System.out.println(nb.getAsString());
+
                 nb.setInstrument(Instrument.GUITAR);
                 block.getRelative(BlockFace.UP).setBlockData(nb);
                 block.getRelative(BlockFace.UP).getState().update();

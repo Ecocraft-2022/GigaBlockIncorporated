@@ -42,7 +42,7 @@ public class MainBlockHandler implements Listener {
     @EventHandler
     public void handle(BlockPlaceEvent e) {
         if (function != null) {
-            function.handle(e);
+            function.handle(e,plugin);
         }
         function = null;
     }

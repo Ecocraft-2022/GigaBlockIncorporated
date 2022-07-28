@@ -1,6 +1,7 @@
 package ecocraft.ecocraft.Handlers;
 
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
+import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import ecocraft.ecocraft.Events.AcidRain;
 import ecocraft.ecocraft.Events.NightEvent;
 import ecocraft.ecocraft.Utils.Util;
@@ -64,22 +65,24 @@ public class RainEventHandler implements Listener {
 
                             if (test.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) test.getBlockData())) {
                                 Util u = new Util();
-                                List<Furnace> furnaces = u.findFurnaces(test.getRelative(BlockFace.DOWN));
+
+                                if(test.getRelative(BlockFace.DOWN).getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanelBase.getInstance(),(NoteBlock) test.getRelative(BlockFace.DOWN).getBlockData())) {
+                                    List<Furnace> furnaces = u.findFurnaces(test.getRelative(BlockFace.DOWN));
 
 //                                u.findDesiredBlocks(test.getRelative(BlockFace.DOWN));
 //
-                                furnaces.stream().forEach(
-                                        f -> {
-                                            if (e.isNight()) {
-                                                f.setBurnTime(Short.valueOf("0"));
-                                                f.update();
-                                            } else {
-                                                f.setBurnTime(Short.MAX_VALUE);
-                                                f.update();
+                                    furnaces.stream().forEach(
+                                            f -> {
+                                                if (e.isNight()) {
+                                                    f.setBurnTime(Short.valueOf("0"));
+                                                    f.update();
+                                                } else {
+                                                    f.setBurnTime(Short.MAX_VALUE);
+                                                    f.update();
+                                                }
                                             }
-                                        }
-                                );
-
+                                    );
+                                }
                             }
                         }
                     }

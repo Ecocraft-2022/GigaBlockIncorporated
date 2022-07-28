@@ -49,7 +49,7 @@ public class SolarPanel implements CompareBlocks {
 
 
         meta.setLore(data);
-        System.out.println(meta.getAsString());
+
         item.setItemMeta(meta);
         solarPanel = item;
 

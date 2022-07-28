@@ -13,7 +13,7 @@ public class MainEventHandler {
     static MainEventHandler mainEventHandler;
 
     private MainEventHandler(Plugin plugin){
-        new CableEventHandler(plugin);
+        new BreakEventHandler(plugin);
         new FurnaceEventHandler(plugin);
         new MapEventHandler(plugin);
         new PollutionHandler(plugin);

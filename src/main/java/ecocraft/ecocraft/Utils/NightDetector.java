@@ -25,6 +25,10 @@ public class NightDetector {
         if(detector == null){
             detector = new NightDetector(plugin);
         }
+
+
+
+
         return detector;
     }
     public void detectNight() {
