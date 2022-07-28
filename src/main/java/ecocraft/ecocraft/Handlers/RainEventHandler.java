@@ -1,30 +1,36 @@
 package ecocraft.ecocraft.Handlers;
 
+import com.google.common.collect.Lists;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import ecocraft.ecocraft.Events.AcidRain;
 import ecocraft.ecocraft.Events.NightEvent;
 import ecocraft.ecocraft.Utils.Util;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
+import org.bukkit.block.data.type.Leaves;
 import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RainEventHandler implements Listener {
 
     Plugin plugin;
-    boolean isRain = false;
+
     AcidRain acidRain;
+
+    int task = -1;
 
     public RainEventHandler(Plugin plugin) {
         this.plugin = plugin;
@@ -33,19 +39,24 @@ public class RainEventHandler implements Listener {
     }
 
     @EventHandler
-    public void onWeatherChange(WeatherChangeEvent e)
-    {
-        if(e.toWeatherState() )
-        {
-            isRain = true;
-            acidRain.runTaskTimer(plugin, 0, 40);
-        }else{
-            if(isRain){
-                acidRain.cancel();
-            }
-            isRain = false;
+    public void onWeatherChange(WeatherChangeEvent e) {
+        AcidRain rain = new AcidRain();
+
+
+
+        if(!e.getWorld().hasStorm()) {
+
+            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> rain.rain(), 0, 50);
+
+        }else {
+            Bukkit.getScheduler().cancelTask(task);
         }
+
     }
+
+
+
+
 
     @EventHandler
     public void onNightEvent(NightEvent e) {
@@ -66,7 +77,7 @@ public class RainEventHandler implements Listener {
                             if (test.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) test.getBlockData())) {
                                 Util u = new Util();
 
-                                if(test.getRelative(BlockFace.DOWN).getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanelBase.getInstance(),(NoteBlock) test.getRelative(BlockFace.DOWN).getBlockData())) {
+                                if (test.getRelative(BlockFace.DOWN).getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanelBase.getInstance(), (NoteBlock) test.getRelative(BlockFace.DOWN).getBlockData())) {
                                     List<Furnace> furnaces = u.findFurnaces(test.getRelative(BlockFace.DOWN));
 
 //                                u.findDesiredBlocks(test.getRelative(BlockFace.DOWN));

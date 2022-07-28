@@ -1,79 +1,90 @@
 package ecocraft.ecocraft.Events;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Leaves;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class AcidRain extends BukkitRunnable {
-    @Override
-    public void run() {
-        ArrayList<Material> leaves = new ArrayList<Material>();
-        leaves.add(Material.ACACIA_LEAVES);
-        leaves.add(Material.AZALEA_LEAVES);
-        leaves.add(Material.BIRCH_LEAVES);
-        leaves.add(Material.DARK_OAK_LEAVES);
-        leaves.add(Material.FLOWERING_AZALEA_LEAVES);
-        leaves.add(Material.JUNGLE_LEAVES);
-        leaves.add(Material.MANGROVE_LEAVES);
-        leaves.add(Material.SPRUCE_LEAVES);
-        leaves.add(Material.MANGROVE_LEAVES);
-        leaves.add(Material.OAK_LEAVES);
+public class AcidRain {
 
-        Random random = new Random();
+    public void rain() {
 
-        for(Player player : Bukkit.getOnlinePlayers())
-        {
+
+        List<Block> allBlocks = new ArrayList<>();
+
+        List<Entity> allEntries = new ArrayList<>();
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
             int radius = 20;
-            Location loc = player.getLocation();
-            World world = loc.getWorld();
-            for (int x = -radius; x < radius; x++) {
-                for (int y = -radius; y < radius; y++) {
-                    for (int z = -radius; z < radius; z++) {
-                        assert world != null;
-                        Block block = world.getBlockAt(loc.getBlockX()+x, loc.getBlockY()+y, loc.getBlockZ()+z);
-                        boolean leavesBlock = false;
-                        for (Material leaf : leaves) {
-                            if (block.getType().equals(leaf)) {
-                                leavesBlock = true;
-                                break;
-                            }
-                        }
 
-                        if(leavesBlock && random.nextFloat() < 0.1) {
-                            block.setType(Material.AIR);
-                        }
+             getBlocksFromPlayerLevel(player, radius).forEach(b->{
+                 allBlocks.add(b);
+             });
 
-                        if(block.getType() == Material.GRASS_BLOCK && random.nextFloat() < 0.1)
-                        {
-                            Block topBlock = block.getLocation().add(0, 1, 0).getBlock();
-                            if(topBlock.getType() == Material.TALL_GRASS ||
-                            topBlock.getType() == Material.GRASS)
-                                topBlock.setType(Material.AIR);
-                            block.setType(Material.DIRT);
-                        }
-                    }
-                }
+            player.getNearbyEntities(10, 10, 10).forEach(entity -> {
+              allEntries.add(entity);
+            });
+
+        }
+
+         decayBlocks(allBlocks,allEntries);
+
+
+    }
+
+    private void decayBlocks(List<Block> blocks,List<Entity> entities ){
+
+            Random random = new Random();
+
+            int randomIndex = random.nextInt(blocks.size());
+            Block randomElement = blocks.get(randomIndex);
+            blocks.remove(randomIndex);
+
+            if (randomElement.getBlockData() instanceof Leaves) {
+                randomElement.setType(Material.AIR);
             }
 
-            for (Entity entity : player.getNearbyEntities(10, 10, 10))
-            {
-                if(entity instanceof LivingEntity)
-                {
-                    LivingEntity livingEntity = (LivingEntity) entity;
-                    livingEntity.damage(1);
-                    Bukkit.broadcastMessage(String.valueOf(livingEntity.getHealth()));
+            if (randomElement.getType().equals(Material.GRASS_BLOCK)) {
+                randomElement.setType(Material.DIRT);
+            }
+
+            entities.forEach(entity -> {
+                LivingEntity livingEntity = (LivingEntity) entity;
+                livingEntity.damage(1);
+            });
+
+    }
+
+    private List<Block> getBlocksFromPlayerLevel(Player player, Integer radios) {
+        int z = player.getLocation().getBlockZ();
+        int x = player.getLocation().getBlockX();
+        List<Block> result = new ArrayList<>();
+        World w = Bukkit.getWorld(player.getWorld().getName());
+        for (int xc = x - radios; xc < x + radios; xc++) {
+            for (int zc = z - radios; zc < z + radios; zc++) {
+
+                Block b = w.getHighestBlockAt(xc,zc);
+
+                if ( b.getBlockData() instanceof Leaves
+                        || b.getType().equals(Material.GRASS)
+                        || b.getType().equals(Material.TALL_GRASS)
+                        || b.getType().equals(Material.GRASS_BLOCK)
+                ) {
+                    result.add(b);
                 }
             }
         }
+        return result;
     }
 }
 
