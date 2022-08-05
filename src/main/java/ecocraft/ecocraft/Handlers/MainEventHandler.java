@@ -3,6 +3,7 @@ package ecocraft.ecocraft.Handlers;
 
 import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.*;
 import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.Actions.DestroyCustomBlock;
+import ecocraft.ecocraft.Pollution.PollutionHandler;
 import ecocraft.ecocraft.Timers.HeatTimer;
 import ecocraft.ecocraft.Utils.NightDetector;
 

@@ -36,9 +36,7 @@ public class AcidRain {
             });
 
         }
-
          decayBlocks(allBlocks,allEntries);
-
 
     }
 

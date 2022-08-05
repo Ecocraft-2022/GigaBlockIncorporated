@@ -2,6 +2,9 @@ name: Ecocraft
 version: '${project.version}'
 main: ecocraft.ecocraft.Ecocraft
 api-version: 1.19
+
+
+
 commands:
 
   solar:

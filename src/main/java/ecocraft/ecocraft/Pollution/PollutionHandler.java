@@ -1,4 +1,4 @@
-package ecocraft.ecocraft.Handlers;
+package ecocraft.ecocraft.Pollution;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
