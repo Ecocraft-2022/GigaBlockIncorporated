@@ -9,13 +9,9 @@ public class ConnectionTest {
 
     public static void main(String[] args) throws IOException {
 
-        Regions.init(3000,3000,200);
-        System.out.println(Region.getPlayerRegion(200,45).getPollutionLevel());
+        Regions.init(18432 , 9216,200000);
 
-
-
-
-
+        Region.getPlayerRegion(1000,1000).getPollutionLevel();
     }
 
 }

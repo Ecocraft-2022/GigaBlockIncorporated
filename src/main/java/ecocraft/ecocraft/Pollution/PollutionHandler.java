@@ -18,6 +18,7 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -33,6 +34,25 @@ public class PollutionHandler implements Listener {
 
     }
 
+    @EventHandler
+    public void globalPollutionHandler(PlayerMoveEvent e){
+        Player p  = e.getPlayer();
+        int x = p.getLocation().getBlockX();
+        int z = p.getLocation().getBlockZ();
+
+        Integer pollution = 0;
+
+        try {
+            pollution = Region.getPlayerRegion(x,z).getPollutionLevel();
+
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        System.out.println(pollution);
+        System.out.println(pollution*0.16/5);
+        handlePollution(p,Double.valueOf(Math.floor(pollution*0.16/5)).intValue());
+
+    }
     @EventHandler
     public void isPlayerCloseToPollution(PlayerMoveEvent e){
         Player p  = e.getPlayer();
