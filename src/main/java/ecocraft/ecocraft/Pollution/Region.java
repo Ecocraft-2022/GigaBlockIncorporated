@@ -1,8 +1,12 @@
 package ecocraft.ecocraft.Pollution;
 
+import com.google.gson.JsonObject;
+import org.json.*;
 import org.bukkit.Location;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -14,32 +18,60 @@ public class Region {
     //MAX ?
     private Integer pollutionLevel;
 
-    private final String url = "https://api.waqi.info/feed/";
+    private final String url = "https://api.waqi.info/feed";
     //TODO
     private final String token = "e7cc8c16a2d5b77601e7c2d1dcc38dd554678408";
 
     private HttpURLConnection httpURLConnection;
 
-    private Region(Location location) throws IOException {
+    private Region(Integer blockX,Integer blockZ) throws IOException {
+        //Center of region square
+        blockX = Double.valueOf(Regions.regionDim/2 * getRegionNumber(blockX,blockZ)).intValue();
+        blockZ = Double.valueOf(Regions.regionDim/2 * getRegionNumber(blockX,blockZ)).intValue();
 
-        String coordinates = minecraftCoordinatesToRealCoordinates(location.getBlockX(),location.getBlockZ());
+
+        String coordinates = minecraftCoordinatesToRealCoordinates(blockX,blockZ);
 
         StringBuilder builder = new StringBuilder(url);
 
 
+
+
         URL populatedUrl = new URL(builder.append(geoString(coordinates)).append(getToken(token)).toString());
 
-        httpURLConnection = (HttpURLConnection) populatedUrl.openConnection();
 
+
+        httpURLConnection = (HttpURLConnection) populatedUrl.openConnection();
         httpURLConnection.setRequestMethod("GET");
 
-        //TODO HANDLING JSON RESPONSE
+
+        BufferedReader content;
+
+        if(httpURLConnection.getResponseCode()!=200) throw new IOException();
+
+        content = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+        StringBuilder response = new StringBuilder();
+
+        String currentLine;
+
+        while ((currentLine = content.readLine())!=null){
+            response.append(currentLine);
+        }
+        content.close();
+
+        JSONObject jsonObject = new JSONObject(response.toString());
+
+        JSONObject data = new JSONObject(jsonObject.get("data").toString());
 
 
-
+        this.pollutionLevel = Integer.valueOf(data.get("aqi").toString());
 
 
     }
+
+
+
 
     private String getToken(String token) {
         StringBuilder builder = new StringBuilder();
@@ -48,7 +80,7 @@ public class Region {
 
     private String geoString(String coordinates) {
         StringBuilder builder = new StringBuilder();
-        return builder.append("/geo/").append(coordinates).toString();
+        return builder.append("/geo:").append(coordinates).toString();
     }
 
     private String minecraftCoordinatesToRealCoordinates(Integer blockX, Integer blockY) {
@@ -59,26 +91,26 @@ public class Region {
         String lang = blockX.toString();
         String lat = blockY.toString();
 
-        return sb.append(lat).append(":").append(lang).toString();
+        return sb.append(lat).append(";").append(lang).toString();
 
     }
 
-    public static Region getPlayerRegion(Location location) throws IOException {
-        if(!regionMap.containsKey(getRegionNumber(location))){
-           regionMap.put(getRegionNumber(location),new Region(location));
+    public static Region getPlayerRegion(Integer blockX,Integer blockZ ) throws IOException {
+        if(!regionMap.containsKey(getRegionNumber(blockX,blockZ))){
+           regionMap.put(getRegionNumber(blockX,blockZ),new Region(blockX,blockZ));
         }
-        return regionMap.get(getRegionNumber(location));
+        return regionMap.get(getRegionNumber(blockX,blockZ));
     }
 
 
 
-    private static Integer getRegionNumber(Location location){
-        Integer height = Double.valueOf(location.getBlockZ()/Regions.regionDim).intValue();
-        Integer width =  Double.valueOf(location.getBlockX()/ Regions.regionDim).intValue();
+    private static Integer getRegionNumber(Integer blockX,Integer blockZ ){
+        Integer height = Double.valueOf(blockZ/Regions.regionDim).intValue();
+        Integer width =  Double.valueOf(blockX/ Regions.regionDim).intValue();
         return width+height;
     }
 
-    public Integer getPollutionLevel() {
+    public  Integer getPollutionLevel() {
         return pollutionLevel;
     }
 }

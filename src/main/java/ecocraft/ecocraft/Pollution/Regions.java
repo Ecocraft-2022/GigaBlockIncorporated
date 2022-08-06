@@ -14,7 +14,13 @@ public class Regions {
 
     public static Double regionDim;
 
+    public static Integer width;
+
+    public static Integer height;
+
     private Regions(Integer width, Integer height,Integer numberOfRegions) {
+        this.width = width;
+        this.height = height;
          this.regionDim = Math.floor(Math.sqrt((height*width)/numberOfRegions));
     }
 
@@ -27,7 +33,7 @@ public class Regions {
     }
 
     public static Region getPlayerRegion(Location location) throws IOException {
-       return Region.getPlayerRegion(location);
+       return Region.getPlayerRegion(location.getBlockX(), location.getBlockZ());
     }
 
 }
