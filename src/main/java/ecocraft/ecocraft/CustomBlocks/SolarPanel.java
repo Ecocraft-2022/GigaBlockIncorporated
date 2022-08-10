@@ -41,7 +41,7 @@ public class SolarPanel implements CompareBlocks {
         ItemStack item = new ItemStack(Material.NOTE_BLOCK, 1);
 
         ItemMeta meta = item.getItemMeta();
-
+        meta.setCustomModelData(42069);
 
         meta.setDisplayName("Solar Panel");
         List<String> data = new ArrayList<>();

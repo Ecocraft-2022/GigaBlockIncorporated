@@ -48,8 +48,8 @@ public class PollutionHandler implements Listener {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        System.out.println(pollution);
-        System.out.println(pollution*0.16/5);
+
+    //to 0.16 to sobie tak przyjołem XD 5/300 mozna zminiejszyc
         handlePollution(p,Double.valueOf(Math.floor(pollution*0.16/5)).intValue());
 
     }

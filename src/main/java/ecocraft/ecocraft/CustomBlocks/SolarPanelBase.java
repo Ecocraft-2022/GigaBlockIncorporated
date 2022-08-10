@@ -38,7 +38,7 @@ public class SolarPanelBase  implements CompareBlocks {
         List<String> data = new ArrayList<>();
         data.add("Solar Panel Base");
         meta.setLore(data);
-
+        meta.setCustomModelData(420);
         item.setItemMeta(meta);
         solarPanelBase = item;
     }

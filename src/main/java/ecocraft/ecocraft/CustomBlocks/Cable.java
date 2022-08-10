@@ -34,6 +34,7 @@ public class Cable implements CompareBlocks  {
 
         ItemMeta meta  = item.getItemMeta();
         meta.setDisplayName("Cable");
+        meta.setCustomModelData(4206969);
         List<String> data = new ArrayList<>();
         data.add("Cable - Connect to energy source");
         meta.setLore(data);
