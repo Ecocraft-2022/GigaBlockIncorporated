@@ -34,7 +34,7 @@ public class Cable implements CompareBlocks  {
 
         ItemMeta meta  = item.getItemMeta();
         meta.setDisplayName("Cable");
-        meta.setCustomModelData(4206969);
+        meta.setCustomModelData(88888);
         List<String> data = new ArrayList<>();
         data.add("Cable - Connect to energy source");
         meta.setLore(data);
@@ -50,11 +50,11 @@ public class Cable implements CompareBlocks  {
 
         ShapedRecipe sr =new ShapedRecipe(key,cable);
         sr.shape(
-                " R ",
-                " D ",
-                " R ");
-        sr.setIngredient('R',Material.REDSTONE_BLOCK);
-        sr.setIngredient('D',Material.NETHER_BRICK_FENCE);
+                "RRR",
+                "DDD",
+                "RRR");
+        sr.setIngredient('R',Material.NETHER_BRICK_SLAB);
+        sr.setIngredient('D',Material.COPPER_BLOCK);
 
         Bukkit.addRecipe(sr);
     }

@@ -1,11 +1,5 @@
 package ecocraft.ecocraft.Pollution;
 
-
-import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
-
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class Regions {
@@ -30,10 +24,6 @@ public class Regions {
 
     public static Regions getInstance(){
         return Optional.ofNullable(regions).orElseThrow(NullPointerException::new);
-    }
-
-    public static Region getPlayerRegion(Location location) throws IOException {
-       return Region.getPlayerRegion(location.getBlockX(), location.getBlockZ());
     }
 
 }

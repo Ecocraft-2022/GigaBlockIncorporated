@@ -19,7 +19,6 @@ public class AcidRain {
 
     public void rain() {
 
-
         List<Block> allBlocks = new ArrayList<>();
 
         List<Entity> allEntries = new ArrayList<>();

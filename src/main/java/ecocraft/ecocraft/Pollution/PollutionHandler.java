@@ -41,13 +41,13 @@ public class PollutionHandler implements Listener {
         int z = p.getLocation().getBlockZ();
 
         Integer pollution = 0;
-
-        try {
-            pollution = Region.getPlayerRegion(x,z).getPollutionLevel();
-
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+//TODO potem wlaczyc  mozna dodac do konfig
+//        try {
+////            pollution = Region.getPlayerRegion(x,z).getPollutionLevel();
+//
+//        } catch (IOException ex) {
+//            throw new RuntimeException(ex);
+//        }
 
     //to 0.16 to sobie tak przyjołem XD 5/300 mozna zminiejszyc
         handlePollution(p,Double.valueOf(Math.floor(pollution*0.16/5)).intValue());

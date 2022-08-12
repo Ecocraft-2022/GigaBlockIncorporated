@@ -41,17 +41,11 @@ public class RainEventHandler implements Listener {
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent e) {
         AcidRain rain = new AcidRain();
-
-
-
         if(!e.getWorld().hasStorm()) {
-
-            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> rain.rain(), 0, 50);
-
+            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> rain.rain(), 0, 30);
         }else {
             Bukkit.getScheduler().cancelTask(task);
         }
-
     }
 
 

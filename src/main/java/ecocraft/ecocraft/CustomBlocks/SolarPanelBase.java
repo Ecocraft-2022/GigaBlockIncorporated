@@ -38,7 +38,7 @@ public class SolarPanelBase  implements CompareBlocks {
         List<String> data = new ArrayList<>();
         data.add("Solar Panel Base");
         meta.setLore(data);
-        meta.setCustomModelData(420);
+        meta.setCustomModelData(69420);
         item.setItemMeta(meta);
         solarPanelBase = item;
     }
@@ -47,11 +47,11 @@ public class SolarPanelBase  implements CompareBlocks {
 
         ShapedRecipe sr =new ShapedRecipe(key,solarPanelBase);
         sr.shape(
-                " R ",
-                " D ",
-                " R ");
-        sr.setIngredient('R',Material.REDSTONE_BLOCK);
-        sr.setIngredient('D',Material.ANDESITE);
+                "RRR",
+                "DDD",
+                "RRR");
+        sr.setIngredient('R',Material.COPPER_BLOCK);
+        sr.setIngredient('D',Material.REDSTONE_BLOCK);
 
         Bukkit.addRecipe(sr);
     }

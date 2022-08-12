@@ -11,7 +11,8 @@ public class ConnectionTest {
 
         Regions.init(18432 , 9216,200000);
 
-        Region.getPlayerRegion(1000,1000).getPollutionLevel();
+        System.out.println(Region.getPlayerRegion(1000,1000).getPollutionLevel());
+
     }
 
 }

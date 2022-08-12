@@ -24,8 +24,9 @@ public class MainEventHandler {
         new MainBlockHandler(plugin);
         new DisableRightClick(plugin);
         new DestroyCustomBlock(plugin);
-        NightDetector d = NightDetector.getInstance(plugin);
-        d.detectNight();
+
+        NightDetector.getInstance(plugin).detectNight();
+
 
         HeatTimer heatTimer = new HeatTimer();
         heatTimer.runTaskTimer(plugin, 0, 2);

@@ -15,13 +15,12 @@ public class Region {
     private Integer pollutionLevel;
 
     private final String url = "https://api.waqi.info/feed";
-
+    //TODO token do config
     private final String token = "e7cc8c16a2d5b77601e7c2d1dcc38dd554678408";
 
     private HttpURLConnection httpURLConnection;
 
     private Region(Integer blockX,Integer blockZ) throws IOException {
-
 
         //Center of region square
         blockX = Double.valueOf(Regions.regionDim/2 * getRegionNumber(blockX,blockZ)).intValue();
@@ -87,8 +86,6 @@ public class Region {
         StringBuilder sb  = new StringBuilder();
 
 
-
-        //TODO CALCULATE CORDINATES
         Double langFactor = 180/ Double.valueOf(Regions.width);
         Double latFactor = 360 / Double.valueOf(Regions.height);
 
@@ -110,12 +107,11 @@ public class Region {
     }
 
 
-
+//  TODO ZROBIC LEPIEJ
     private static Integer getRegionNumber(Integer blockX,Integer blockZ ){
         Integer height = Double.valueOf(blockZ/Regions.regionDim).intValue();
         Integer width =  Double.valueOf(blockX/ Regions.regionDim).intValue();
-
-        return width+height;
+        return width + height;
     }
 
     public  Integer getPollutionLevel() {
