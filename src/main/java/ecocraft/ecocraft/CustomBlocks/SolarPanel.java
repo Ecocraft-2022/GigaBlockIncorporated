@@ -45,7 +45,7 @@ public class SolarPanel implements CompareBlocks {
 
         meta.setDisplayName("Solar Panel");
         List<String> data = new ArrayList<>();
-        data.add("Solar panel - produces green energy");
+        data.add("Solar panel - produces green energy. Place on solar base");
 
 
         meta.setLore(data);
