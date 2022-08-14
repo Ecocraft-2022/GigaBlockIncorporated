@@ -27,12 +27,11 @@ public class Cable implements CompareBlocks  {
         createRecep();
     }
 
-
     private static void createCable() {
-
         ItemStack item =  new ItemStack(Material.NOTE_BLOCK,1);
 
         ItemMeta meta  = item.getItemMeta();
+        assert meta != null;
         meta.setDisplayName("Cable");
         meta.setCustomModelData(88888);
         List<String> data = new ArrayList<>();
@@ -45,10 +44,10 @@ public class Cable implements CompareBlocks  {
     }
 
     private static void createRecep(){
-
         NamespacedKey key = NamespacedKey.fromString("cable");
+        assert key != null;
 
-        ShapedRecipe sr =new ShapedRecipe(key,cable);
+        ShapedRecipe sr = new ShapedRecipe(key, cable);
         sr.shape(
                 "RRR",
                 "DDD",
