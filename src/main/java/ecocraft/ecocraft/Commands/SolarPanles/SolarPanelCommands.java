@@ -1,4 +1,4 @@
-package ecocraft.ecocraft.Commands;
+package ecocraft.ecocraft.Commands.SolarPanles;
 
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 

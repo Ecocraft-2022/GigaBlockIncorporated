@@ -13,3 +13,5 @@ commands:
     description: test
   cable:
     description: test
+  where:
+    description: test

@@ -1,4 +1,5 @@
 package ecocraft.ecocraft.Pollution;
+import com.google.gson.JsonObject;
 import org.json.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +14,8 @@ public class Region {
     private static Map<Integer,Region> regionMap = new HashMap<>();
 
     private Integer pollutionLevel;
+
+    public  Map<String,String> regionInfo = new HashMap<>();
 
     private final String url = "https://api.waqi.info/feed";
     //TODO token do config
@@ -59,11 +62,28 @@ public class Region {
         JSONObject jsonObject = new JSONObject(response.toString());
 
         JSONObject data = new JSONObject(jsonObject.get("data").toString());
+
+
+
+        JSONObject iaqi = new JSONObject(data.get("iaqi").toString());
+
+        JSONObject city = new JSONObject(data.get("city").toString());
+
+        addToHashmap(iaqi);
+        addToHashmap(city);
+
             if( Integer.valueOf(data.get("aqi").toString())>300){
                 this.pollutionLevel = 5;
             }else {
                 this.pollutionLevel = Double.valueOf(  Integer.valueOf(data.get("aqi").toString())).intValue();
             }
+
+    }
+
+
+    private void addToHashmap(JSONObject object){
+
+        object.keys().forEachRemaining( key -> regionInfo.put(key,object.get(key).toString()));
 
     }
 

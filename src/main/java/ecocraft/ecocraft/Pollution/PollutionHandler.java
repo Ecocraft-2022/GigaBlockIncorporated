@@ -41,6 +41,7 @@ public class PollutionHandler implements Listener {
         int z = p.getLocation().getBlockZ();
 
         Integer pollution = 0;
+
 //TODO potem wlaczyc  mozna dodac do konfig
 //        try {
 ////            pollution = Region.getPlayerRegion(x,z).getPollutionLevel();
