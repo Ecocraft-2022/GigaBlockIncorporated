@@ -1,0 +1,9 @@
+# EcoCraft config file
+
+## Basic world configuration
+
+### World width and height in blocks
+worldWidth: 18432
+worldHeight: 9216
+### Number of regions for the plugin to implement
+numberOfRegions: 200,000
