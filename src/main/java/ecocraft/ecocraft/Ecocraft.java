@@ -18,7 +18,7 @@ import java.util.Objects;
 public final class Ecocraft extends JavaPlugin {
     @Override
     public void onEnable() {
-        // Loading config file
+        // Loading main config file
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
