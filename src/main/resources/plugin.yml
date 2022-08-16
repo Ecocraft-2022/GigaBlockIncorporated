@@ -15,3 +15,7 @@ commands:
     description: test
   where:
     description: test
+  realTp:
+    description: test
+  details:
+    description: test

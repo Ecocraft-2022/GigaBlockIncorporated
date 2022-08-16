@@ -1,5 +1,7 @@
 package ecocraft.ecocraft;
 
+import ecocraft.ecocraft.Commands.Pollution.PollutionDetails;
+import ecocraft.ecocraft.Commands.Pollution.RealCoordinatesCommand;
 import ecocraft.ecocraft.Commands.Pollution.WhereCommand;
 import ecocraft.ecocraft.Commands.SolarPanles.CableCommands;
 import ecocraft.ecocraft.Commands.SolarPanles.SolarPanelBaseCommands;
@@ -16,18 +18,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
+
 public final class Ecocraft extends JavaPlugin {
 
 
     @Override
     public void onEnable() {
 
+        if (!getDataFolder().exists()) getDataFolder().mkdir();
+        saveDefaultConfig();
+        Objects.requireNonNull(getCommand("realTp")).setExecutor(new RealCoordinatesCommand());
         Objects.requireNonNull(getCommand("solar")).setExecutor(new SolarPanelCommands());
         Objects.requireNonNull(getCommand("solarbase")).setExecutor(new SolarPanelBaseCommands());
         Objects.requireNonNull(getCommand("cable")).setExecutor(new CableCommands());
         Objects.requireNonNull(getCommand("where")).setExecutor(new WhereCommand());
+        Objects.requireNonNull(getCommand("details")).setExecutor(new PollutionDetails());
         //TODO wartosci w pilku konfiguracyjnym
-        Regions.init(18432 , 9216,200000);
+        Regions.init(getConfig());
 
         MainEventHandler.init(this);
         SolarPanel.getInstance();
@@ -38,7 +45,6 @@ public final class Ecocraft extends JavaPlugin {
         MainEventHandler.init(this);
 
         RecyclerBlock.register(this);
-
     }
 
     @Override

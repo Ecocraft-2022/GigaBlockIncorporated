@@ -106,14 +106,14 @@ public class Region {
         StringBuilder sb  = new StringBuilder();
 
 
-        Double langFactor = 180/ Double.valueOf(Regions.width);
-        Double latFactor = 360 / Double.valueOf(Regions.height);
+        Double langFactor = 360/ Double.valueOf(Regions.width);
+        Double latFactor = 180 / Double.valueOf(Regions.height);
 
 
-        Double lang =Double.valueOf( blockX * langFactor);
-        Double lat =Double.valueOf( blockZ*latFactor);
+        Double lang = Double.valueOf( blockX * langFactor);
+        Double lat = Double.valueOf( (-1)*blockZ*latFactor);
 
-
+//        System.out.println(sb.append(lat).append(";").append(lang).toString());
 
         return sb.append(lat).append(";").append(lang).toString();
 
