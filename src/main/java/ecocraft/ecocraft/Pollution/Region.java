@@ -1,5 +1,7 @@
 package ecocraft.ecocraft.Pollution;
 import com.google.gson.JsonObject;
+import ecocraft.ecocraft.Utils.Util;
+import jdk.internal.net.http.common.Pair;
 import org.json.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,16 +36,14 @@ public class Region {
 
         StringBuilder builder = new StringBuilder(url);
 
-
-
-
+        //population gur
         URL populatedUrl = new URL(builder.append(geoString(coordinates)).append(getToken(token)).toString());
 
-
+        //connection to api
         httpURLConnection = (HttpURLConnection) populatedUrl.openConnection();
         httpURLConnection.setRequestMethod("GET");
 
-
+        //Reaing data
         BufferedReader content;
 
         if(httpURLConnection.getResponseCode()!=200) throw new IOException();
@@ -61,13 +61,14 @@ public class Region {
 
         JSONObject jsonObject = new JSONObject(response.toString());
 
+
+
         JSONObject data = new JSONObject(jsonObject.get("data").toString());
-
-
 
         JSONObject iaqi = new JSONObject(data.get("iaqi").toString());
 
         JSONObject city = new JSONObject(data.get("city").toString());
+
 
         addToHashmap(iaqi);
         addToHashmap(city);
@@ -82,9 +83,7 @@ public class Region {
 
 
     private void addToHashmap(JSONObject object){
-
         object.keys().forEachRemaining( key -> regionInfo.put(key,object.get(key).toString()));
-
     }
 
 
@@ -106,12 +105,11 @@ public class Region {
         StringBuilder sb  = new StringBuilder();
 
 
-        Double langFactor = 360/ Double.valueOf(Regions.width);
-        Double latFactor = 180 / Double.valueOf(Regions.height);
+       Pair<Double,Double> coordinates =  Util.calculateToRealCoordinates(Double.valueOf(blockX),Double.valueOf(blockZ));
 
 
-        Double lang = Double.valueOf( blockX * langFactor);
-        Double lat = Double.valueOf( (-1)*blockZ*latFactor);
+        Double lang = coordinates.first;
+        Double lat = coordinates.second;
 
 //        System.out.println(sb.append(lat).append(";").append(lang).toString());
 

@@ -1,6 +1,8 @@
 package ecocraft.ecocraft.Commands.Pollution;
 
 import ecocraft.ecocraft.Pollution.Regions;
+import ecocraft.ecocraft.Utils.Util;
+import jdk.internal.net.http.common.Pair;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,18 +17,18 @@ public class RealCoordinatesCommand implements CommandExecutor {
             return true;
         }
 
-        Double blockX = Double.valueOf(strings[0]);
-        Double blockZ = Double.valueOf(strings[2]);
+        Double lang = Double.valueOf(strings[0]);
+        Double lat = Double.valueOf(strings[2]);
         Double blockY = Double.valueOf(strings[1]);
 
-        Double langFactor = 360/ Double.valueOf(Regions.width);
-        Double latFactor = 180 / Double.valueOf(Regions.height);
+        Pair<Double,Double> coorindates = Util.calculateToMinecraftCoordinates(lat ,lang);
 
-        Double lang = Double.valueOf( blockX / langFactor);
-        Double lat = Double.valueOf( (-1)*blockZ / latFactor);
+        Double blockX =coorindates.first;
+        Double blockZ =coorindates.second;
 
-
-        ((Player) sender).teleport(new Location(((Player) sender).getWorld(),lang,blockY,lat));
+        ((Player) sender).teleport(new Location(((Player) sender).getWorld(),blockX,blockY,blockZ));
      return true;
     }
 }
+
+

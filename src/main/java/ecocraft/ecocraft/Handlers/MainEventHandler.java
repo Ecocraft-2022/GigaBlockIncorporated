@@ -24,7 +24,7 @@ public class MainEventHandler {
         new MainBlockHandler(plugin);
         new DisableRightClick(plugin);
         new DestroyCustomBlock(plugin);
-
+        new TexturePackHandler(plugin);
         NightDetector.getInstance(plugin).detectNight();
 
 
