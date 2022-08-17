@@ -3,7 +3,7 @@
 ## Basic world configuration
 
 ### World width and height in blocks
-worldWidth: 18432
-worldHeight: 9216
+worldWidth: 24576
+worldHeight: 12288
 ### Number of regions for the plugin to implement
-numberOfRegions: 200000
+numberOfRegions: 800000

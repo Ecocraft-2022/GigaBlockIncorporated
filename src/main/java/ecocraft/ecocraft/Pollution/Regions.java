@@ -24,17 +24,7 @@ public class Regions {
     public static void init(Integer width,Integer height,Integer numberOfRegions){
         regions = new Regions(width,height,numberOfRegions);
     }
-    public static void init(FileConfiguration config){
-        if (regions != null) return;
-        System.out.println(
-                config.getInt("worldWidth") + " " +
-                        config.getInt("worldHeight") + " " +
-                        config.getInt("numberOfRegions"));
-        regions = new Regions(
-                config.getInt("worldWidth"),
-                config.getInt("worldHeight"),
-                config.getInt("numberOfRegions"));
-    }
+
 
     public static void init(FileConfiguration config){
         if (regions != null) return;
