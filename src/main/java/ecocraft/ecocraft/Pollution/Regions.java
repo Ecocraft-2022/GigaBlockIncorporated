@@ -5,7 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.Optional;
 
 public class Regions {
-
     private static Regions regions;
 
     public static Double regionDim;
@@ -18,6 +17,7 @@ public class Regions {
         this.width = width;
         this.height = height;
          this.regionDim = Math.floor(Math.sqrt((height*width)/numberOfRegions));
+
 
     }
 
@@ -34,6 +34,19 @@ public class Regions {
                 config.getInt("worldWidth"),
                 config.getInt("worldHeight"),
                 config.getInt("numberOfRegions"));
+    }
+
+    public static void init(FileConfiguration config){
+        if (regions != null) return;
+        System.out.println(
+                config.getInt("worldWidth") + " " +
+                config.getInt("worldHeight") + " " +
+                config.getInt("numberOfRegions"));
+        regions = new Regions(
+                config.getInt("worldWidth"),
+                config.getInt("worldHeight"),
+                config.getInt("numberOfRegions")
+        );
     }
 
     public static Regions getInstance(){

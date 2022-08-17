@@ -20,10 +20,11 @@ import java.util.Objects;
 
 
 public final class Ecocraft extends JavaPlugin {
-
-
     @Override
     public void onEnable() {
+        // Loading main config file
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
 
         if (!getDataFolder().exists()) getDataFolder().mkdir();
         saveDefaultConfig();
@@ -33,7 +34,12 @@ public final class Ecocraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("cable")).setExecutor(new CableCommands());
         Objects.requireNonNull(getCommand("where")).setExecutor(new WhereCommand());
         Objects.requireNonNull(getCommand("details")).setExecutor(new PollutionDetails());
-        //TODO wartosci w pilku konfiguracyjnym
+       
+
+
+
+        // Initialize regions using config file
+
         Regions.init(getConfig());
 
         MainEventHandler.init(this);
@@ -51,6 +57,5 @@ public final class Ecocraft extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
-
 
 }
