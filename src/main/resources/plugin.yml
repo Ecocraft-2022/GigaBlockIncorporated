@@ -13,3 +13,9 @@ commands:
     description: test
   cable:
     description: test
+  where:
+    description: test
+  realTp:
+    description: test
+  details:
+    description: test

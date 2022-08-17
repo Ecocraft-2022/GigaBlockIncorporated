@@ -1,23 +1,21 @@
 package ecocraft.ecocraft.Utils;
 
-import com.google.common.collect.Lists;
 import ecocraft.ecocraft.CustomBlocks.Cable;
 import ecocraft.ecocraft.CustomBlocks.CompareBlocks;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
+import ecocraft.ecocraft.Pollution.Regions;
 import org.bukkit.Material;
-import org.bukkit.Note;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.units.qual.A;
+import org.javatuples.Pair;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -181,6 +179,27 @@ public class Util {
                     , 2);
         }
 
+    }
+
+    public static Pair<Double,Double> calculateToRealCoordinates(Double blockX, Double blockZ){
+        Double latFactor = 180/ Double.valueOf(Regions.height);
+        Double langFactor = 360 / Double.valueOf(Regions.width);
+
+        Double lang = Double.valueOf( blockX * langFactor);
+        Double lat = Double.valueOf( (-1)*blockZ * latFactor);
+
+        return new Pair<>(lat,lang);
+    }
+
+    public static Pair<Double,Double> calculateToMinecraftCoordinates(Double lang, Double lat){
+
+        Double latFactor = 180/ Double.valueOf(Regions.height);
+        Double langFactor = 360 / Double.valueOf(Regions.width);
+
+        Double blockX = Double.valueOf( lat / langFactor);
+        Double blockZ = Double.valueOf( (-1)*lang / latFactor);
+
+        return new Pair<>(blockX,blockZ);
     }
 
 
