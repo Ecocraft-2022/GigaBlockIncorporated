@@ -1,7 +1,7 @@
 package ecocraft.ecocraft.Pollution;
 import com.google.gson.JsonObject;
 import ecocraft.ecocraft.Utils.Util;
-import jdk.internal.net.http.common.Pair;
+import org.javatuples.Pair;
 import org.json.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Region {
 
-    private static Map<Integer,Region> regionMap = new HashMap<>();
+    private static Map<Pair<Integer,Integer>,Region> regionMap = new HashMap<>();
 
     private Integer pollutionLevel;
 
@@ -27,9 +27,11 @@ public class Region {
 
     private Region(Integer blockX,Integer blockZ) throws IOException {
 
+        Pair<Integer,Integer> regionNumber = getRegionNumber(blockX,blockZ);
+
         //Center of region square
-        blockX = Double.valueOf(Regions.regionDim/2 * getRegionNumber(blockX,blockZ)).intValue();
-        blockZ = Double.valueOf(Regions.regionDim/2 * getRegionNumber(blockX,blockZ)).intValue();
+        blockX = Double.valueOf((Regions.regionDim * regionNumber.getValue1()) - Regions.regionDim).intValue()  ;
+        blockZ = Double.valueOf((Regions.regionDim * regionNumber.getValue0()) - Regions.regionDim).intValue();
 
 
         String coordinates = minecraftCoordinatesToRealCoordinates(blockX,blockZ);
@@ -108,8 +110,8 @@ public class Region {
        Pair<Double,Double> coordinates =  Util.calculateToRealCoordinates(Double.valueOf(blockX),Double.valueOf(blockZ));
 
 
-        Double lang = coordinates.first;
-        Double lat = coordinates.second;
+        Double lang = coordinates.getValue1();
+        Double lat = coordinates.getValue0();
 
 //        System.out.println(sb.append(lat).append(";").append(lang).toString());
 
@@ -126,10 +128,10 @@ public class Region {
 
 
 //  TODO ZROBIC LEPIEJ
-    private static Integer getRegionNumber(Integer blockX,Integer blockZ ){
+    private static Pair<Integer,Integer> getRegionNumber(Integer blockX,Integer blockZ ){
         Integer height = Double.valueOf(blockZ/Regions.regionDim).intValue();
         Integer width =  Double.valueOf(blockX/ Regions.regionDim).intValue();
-        return width + height;
+        return new Pair<Integer, Integer>(height,width);
     }
 
     public  Integer getPollutionLevel() {
