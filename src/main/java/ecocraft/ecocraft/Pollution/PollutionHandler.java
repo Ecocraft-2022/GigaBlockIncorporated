@@ -2,89 +2,173 @@ package ecocraft.ecocraft.Pollution;
 
 import ecocraft.ecocraft.Events.ChangeRegionEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.Furnace;
+import org.bukkit.block.data.type.Sapling;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.javatuples.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+
 
 public class PollutionHandler implements Listener {
 
     Plugin plugin;
 
     public PollutionHandler(Plugin plugin) {
-        this.plugin =plugin;
+        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
     }
 
     @EventHandler
-    public void regionChangeJoin(PlayerJoinEvent join){
+    public void regionChangeJoin(PlayerJoinEvent join) {
         regionChangeEvent(join.getPlayer());
     }
+
     @EventHandler
-    public void regionChangeMove(PlayerMoveEvent e){
+    public void regionChangeMove(PlayerMoveEvent e) {
         regionChangeEvent(e.getPlayer());
     }
 
 
-    private void regionChangeEvent(Player player){
+    private void regionChangeEvent(Player player) {
         Scoreboard sb = player.getScoreboard();
         Objective obj;
 
-        if(player.getScoreboard().getObjective("")!=null){
+        if (player.getScoreboard().getObjective("") != null) {
             obj = player.getScoreboard().getObjective("");
-        }else{
-            obj = sb.registerNewObjective("","dummy","");
+        } else {
+            obj = sb.registerNewObjective("", "dummy", "");
         }
-//            ScoreboardManager manager = Bukkit.getScoreboardManager();
-//            sb =  manager.getNewScoreboard();
         Score score = obj.getScore("region");
-        Pair<Integer,Integer> regionN = Region.getRegionNumber(player.getLocation().getBlockX(),player.getLocation().getBlockZ());
+        Pair<Integer, Integer> regionN = Region.getRegionNumber(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
 
-        if(score.getScore() != regionN.getValue0()+regionN.getValue1()){
-            score.setScore(regionN.getValue0()+regionN.getValue1());
+        if (score.getScore() != regionN.getValue0() + regionN.getValue1()) {
+            score.setScore(regionN.getValue0() + regionN.getValue1());
             try {
                 ChangeRegionEvent event = new ChangeRegionEvent(player);
                 Bukkit.getServer().getPluginManager().callEvent(event);
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
-
     }
 
     @EventHandler
-    public void localPollution(ChangeRegionEvent e  ){
-        System.out.println(e.getRegion().getPollutionLevel());
+    public void localPollution(ChangeRegionEvent e) {
+
+        Region region = e.getRegion();
+        Integer localPollution = region.getLocalPollution();
+        if (localPollution == null) {
+            localPollution = 0;
+            Pair<Integer, Integer> leftBottom = new Pair<>(Double.valueOf(region.getCenter().getValue0() - Regions.regionDim).intValue()
+                    , Double.valueOf(region.getCenter().getValue1() - Regions.regionDim).intValue());
+            Pair<Integer, Integer> rightTop = new Pair<>(Double.valueOf(region.getCenter().getValue0() + Regions.regionDim).intValue()
+                    , Double.valueOf(region.getCenter().getValue1() + Regions.regionDim).intValue());
+
+            World world = e.getPlayer().getWorld();
+
+            for (int x = leftBottom.getValue0(); x < rightTop.getValue0(); x++) {
+                for (int z = leftBottom.getValue1(); z < rightTop.getValue1(); z++) {
+                    for (int y = 20; y < 255; y++) {
+                        Block b = world.getBlockAt(new Location(world, x, y, z));
+                        if (b.getType().equals(Material.FURNACE)) {
+                            localPollution++;
+                        }
+                    }
+                }
+            }
+            region.setLocalPollution(localPollution);
+        }
+        System.out.println(region.getLocalPollution());
+    }
+
+    @EventHandler
+    public void localPollutionOnPlace(BlockPlaceEvent e) {
+
+        Block blockPlaced = e.getBlockPlaced();
+
+        Player player = e.getPlayer();
+
+        Region region;
+
+        try {
+            region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+        } catch (IOException ex) {
+            return;
+        }
+
+        Integer localPollution = region.getLocalPollution();
+
+        if (blockPlaced.getType().equals(Material.FURNACE)) {
+            localPollution++;
+        }
+        if (blockPlaced.getType().equals(Material.SPRUCE_SAPLING) ||
+                blockPlaced.getType().equals(Material.ACACIA_SAPLING) ||
+                blockPlaced.getType().equals(Material.BIRCH_SAPLING) ||
+                blockPlaced.getType().equals(Material.OAK_SAPLING) ||
+                blockPlaced.getType().equals(Material.DARK_OAK_SAPLING) ||
+                blockPlaced.getType().equals(Material.JUNGLE_SAPLING)
+        ) {
+                localPollution--;
+        }
+        region.setLocalPollution(localPollution);
+    }
+
+    @EventHandler
+    public void localPollutionOnBreak(BlockBreakEvent e) {
+
+        Block blockPlaced = e.getBlock();
+
+        Player player = e.getPlayer();
+
+        Region region;
+
+        try {
+            region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+        } catch (IOException ex) {
+            return;
+        }
+
+        Integer localPollution = region.getLocalPollution();
+
+        if (blockPlaced.getType().equals(Material.FURNACE)) {
+            localPollution--;
+        }
+
+        if (blockPlaced.getType().equals(Material.SPRUCE_SAPLING) ||
+                blockPlaced.getType().equals(Material.ACACIA_SAPLING) ||
+                blockPlaced.getType().equals(Material.BIRCH_SAPLING) ||
+                blockPlaced.getType().equals(Material.OAK_SAPLING) ||
+                blockPlaced.getType().equals(Material.DARK_OAK_SAPLING) ||
+                blockPlaced.getType().equals(Material.JUNGLE_SAPLING)
+        ) {
+            localPollution++;
+        }
+        region.setLocalPollution(localPollution);
     }
 
 
-
-//    @EventHandler
+    //    @EventHandler
 //    public void isPlayerCloseToPollution(PlayerMoveEvent e){
 //        Player p  = e.getPlayer();
 //        int x = p.getLocation().getBlockX();
@@ -112,34 +196,35 @@ public class PollutionHandler implements Listener {
 //        }
 //        handlePollution(p,pollutionCount);
 //    }
-private BossBar b;
-private void handlePollution(Player p,int pollution){
-    if(b==null) {
-        b = Bukkit.createBossBar("Pollution", BarColor.WHITE, BarStyle.SOLID);
-    }
-    b.setVisible(true);
-    if(!b.getPlayers().contains(p)){
-        b.addPlayer(p);
-    }
+    private BossBar b;
 
-    b.setProgress((float)pollution/5);
-    try {
-        if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-        }else{
+    private void handlePollution(Player p, int pollution) {
+        if (b == null) {
+            b = Bukkit.createBossBar("Pollution", BarColor.WHITE, BarStyle.SOLID);
+        }
+        b.setVisible(true);
+        if (!b.getPlayers().contains(p)) {
+            b.addPlayer(p);
+        }
+
+        b.setProgress((float) pollution / 5);
+        try {
+            if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+            } else {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+            }
+        } catch (Exception e) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
         }
-    }catch (Exception e){
-        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-    }
 
-    if (pollution == 0) {
-        p.removePotionEffect(PotionEffectType.BLINDNESS);
-        p.removePotionEffect(PotionEffectType.SLOW);
-    }
+        if (pollution == 0) {
+            p.removePotionEffect(PotionEffectType.BLINDNESS);
+            p.removePotionEffect(PotionEffectType.SLOW);
+        }
 
-}
+    }
 
 }
