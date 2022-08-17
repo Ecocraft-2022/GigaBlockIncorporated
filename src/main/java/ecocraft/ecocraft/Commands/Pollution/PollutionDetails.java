@@ -3,7 +3,6 @@ package ecocraft.ecocraft.Commands.Pollution;
 import ecocraft.ecocraft.Pollution.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,7 +20,11 @@ public class PollutionDetails implements CommandExecutor {
             return true;
         }
 
+        if(((Player) sender).getScoreboard().getObjective("LocalPollution")!=null && ((Player) sender).getScoreboard().getObjective("LocalPollution").getDisplaySlot() != null){
 
+            ((Player) sender).getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+            return true;
+        }
 
         //getting scoreboard manager
         ScoreboardManager sm = Bukkit.getScoreboardManager();
@@ -40,18 +43,22 @@ public class PollutionDetails implements CommandExecutor {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Objective obj = sb.registerNewObjective("LocalPollution","dummy","Local Pollution");
+        Objective obj = sb.registerNewObjective("LocalPollution","dummy","Pollution Details");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
 
         for (String key : data.keySet()){
+
         try {
-            Score score = obj.getScore(key);
-            JSONObject v = new JSONObject(data.get(key));
-            System.out.println(v.getInt("v"));
-            score.setScore(v.getInt("v"));
+            if(key.equals("pm25")|| key.equals("pm10")||key.equals("o3")||key.equals("no2")||key.equals("so2")||key.equals("co")) {
+
+                Score score = obj.getScore(key.toUpperCase());
+                JSONObject v = new JSONObject(data.get(key));
+                score.setScore(v.getInt("v"));
+            }
         }catch (Exception e){}
         }
+
 
         ((Player) sender).setScoreboard(sb);
 

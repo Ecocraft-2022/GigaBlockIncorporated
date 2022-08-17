@@ -1,7 +1,6 @@
 package ecocraft.ecocraft.Commands.Pollution;
 
 import ecocraft.ecocraft.Pollution.Region;
-import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +27,6 @@ public class WhereCommand implements CommandExecutor {
         try {
             Region region = Region.getPlayerRegion(playerLocation.getBlockX(),playerLocation.getBlockZ());
 
-            System.out.println(Util.calculateToRealCoordinates(playerLocation.getX(), playerLocation.getZ()));
 
             regionData = region.regionInfo;
         } catch (IOException e) {

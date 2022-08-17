@@ -27,7 +27,6 @@ public class HeatTimer extends BukkitRunnable {
                     if(ft <= 200){
                         p.setFreezeTicks(ft + 5);
                     }
-                    System.out.println(ft);
                 }
             }
         }

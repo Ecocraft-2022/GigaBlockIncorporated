@@ -16,9 +16,7 @@ public class Regions {
     private Regions(Integer width, Integer height,Integer numberOfRegions) {
         this.width = width;
         this.height = height;
-         this.regionDim = Math.floor(Math.sqrt((height*width)/numberOfRegions));
-
-
+        this.regionDim = Math.floor(Math.sqrt((height*width)/numberOfRegions));
     }
 
     public static void init(Integer width,Integer height,Integer numberOfRegions){
