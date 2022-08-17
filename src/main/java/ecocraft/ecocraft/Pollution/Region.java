@@ -15,6 +15,10 @@ public class Region {
 
     private static Map<Pair<Integer,Integer>,Region> regionMap = new HashMap<>();
 
+    private Integer localPollution = null;
+
+    private Pair<Integer,Integer> center;
+
     private Integer pollutionLevel;
 
     public  Map<String,String> regionInfo = new HashMap<>();
@@ -33,6 +37,7 @@ public class Region {
         blockX = Double.valueOf((Regions.regionDim * regionNumber.getValue1()) - Regions.regionDim).intValue()  ;
         blockZ = Double.valueOf((Regions.regionDim * regionNumber.getValue0()) - Regions.regionDim).intValue();
 
+        this.center = new Pair<>(blockX,blockZ);
 
         String coordinates = minecraftCoordinatesToRealCoordinates(blockX,blockZ);
 
@@ -113,8 +118,6 @@ public class Region {
         Double lang = coordinates.getValue1();
         Double lat = coordinates.getValue0();
 
-//        System.out.println(sb.append(lat).append(";").append(lang).toString());
-
         return sb.append(lat).append(";").append(lang).toString();
 
     }
@@ -136,4 +139,16 @@ public class Region {
     public  Integer getPollutionLevel() {
         return   pollutionLevel ;
     }
+    public Pair<Integer, Integer> getCenter() {
+        return center;
+    }
+
+    public Integer getLocalPollution() {
+        return localPollution;
+    }
+
+    public void setLocalPollution(Integer localPollution) {
+        this.localPollution = localPollution;
+    }
 }
+
