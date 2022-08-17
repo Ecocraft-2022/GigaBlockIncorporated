@@ -127,8 +127,7 @@ public class Region {
     }
 
 
-//  TODO ZROBIC LEPIEJ
-    private static Pair<Integer,Integer> getRegionNumber(Integer blockX,Integer blockZ ){
+    public static Pair<Integer,Integer> getRegionNumber(Integer blockX,Integer blockZ ){
         Integer height = Double.valueOf(blockZ/Regions.regionDim).intValue();
         Integer width =  Double.valueOf(blockX/ Regions.regionDim).intValue();
         return new Pair<Integer, Integer>(height,width);

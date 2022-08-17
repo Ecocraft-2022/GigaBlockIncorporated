@@ -1,6 +1,5 @@
 package ecocraft.ecocraft.Commands.Pollution;
 
-import ecocraft.ecocraft.Pollution.Regions;
 import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Location;
 import org.bukkit.command.Command;

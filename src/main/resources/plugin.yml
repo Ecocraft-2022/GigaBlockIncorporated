@@ -6,16 +6,17 @@ api-version: 1.19
 
 
 commands:
-
   solar:
     description: test
+    permission:
+
   solarbase:
     description: test
   cable:
     description: test
   where:
-    description: test
+    description: where you are
   realTp:
-    description: test
+    description: teleport based on real coordinates
   details:
-    description: test
+    description: region details

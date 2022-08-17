@@ -1,5 +1,6 @@
 package ecocraft.ecocraft.Pollution;
 
+import ecocraft.ecocraft.Events.ChangeRegionEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -12,11 +13,17 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.javatuples.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,54 +42,76 @@ public class PollutionHandler implements Listener {
     }
 
     @EventHandler
-    public void globalPollutionHandler(PlayerMoveEvent e){
-        Player p  = e.getPlayer();
-        int x = p.getLocation().getBlockX();
-        int z = p.getLocation().getBlockZ();
-
-        Integer pollution = 0;
-
-//TODO potem wlaczyc  mozna dodac do konfig
-//        try {
-////            pollution = Region.getPlayerRegion(x,z).getPollutionLevel();
-//
-//        } catch (IOException ex) {
-//            throw new RuntimeException(ex);
-//        }
-
-    //to 0.16 to sobie tak przyjołem XD 5/300 mozna zminiejszyc
-        handlePollution(p,Double.valueOf(Math.floor(pollution*0.16/5)).intValue());
-
+    public void regionChangeJoin(PlayerJoinEvent join){
+        regionChangeEvent(join.getPlayer());
     }
     @EventHandler
-    public void isPlayerCloseToPollution(PlayerMoveEvent e){
-        Player p  = e.getPlayer();
-        int x = p.getLocation().getBlockX();
-        int z = p.getLocation().getBlockZ();
-        int y = p.getLocation().getBlockY();
+    public void regionChangeMove(PlayerMoveEvent e){
+        regionChangeEvent(e.getPlayer());
+    }
 
-        int pollutionCount = 0;
 
-        List<Furnace> furnaces= new ArrayList<>();
-        for (int i = x-5;i<=x+5;i++){
-            for(int j = z-5;j<z+5;j++){
-                for (int k = y-3; k <= y+3; k++) {
-                    Block b = Bukkit.getWorld(Bukkit.getWorlds().stream().findFirst().get().getName()).getBlockAt(i,k,j);
-                    if(b.getType().equals(Material.FURNACE)){
-                        furnaces.add((Furnace )b.getState());
-                    }
-                }
+    private void regionChangeEvent(Player player){
+        Scoreboard sb = player.getScoreboard();
+        Objective obj;
+
+        if(player.getScoreboard().getObjective("")!=null){
+            obj = player.getScoreboard().getObjective("");
+        }else{
+            obj = sb.registerNewObjective("","dummy","");
+        }
+//            ScoreboardManager manager = Bukkit.getScoreboardManager();
+//            sb =  manager.getNewScoreboard();
+        Score score = obj.getScore("region");
+        Pair<Integer,Integer> regionN = Region.getRegionNumber(player.getLocation().getBlockX(),player.getLocation().getBlockZ());
+
+        if(score.getScore() != regionN.getValue0()+regionN.getValue1()){
+            score.setScore(regionN.getValue0()+regionN.getValue1());
+            try {
+                ChangeRegionEvent event = new ChangeRegionEvent(player);
+                Bukkit.getServer().getPluginManager().callEvent(event);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         }
-
-        for(Furnace f : furnaces){
-            if(f.getInventory().getFuel()!=null && f.getInventory().getFuel().getType().equals(Material.COAL)&& f.getCookTime()>0){
-                pollutionCount++;
-            }
-        }
-        handlePollution(p,pollutionCount);
 
     }
+
+    @EventHandler
+    public void localPollution(ChangeRegionEvent e  ){
+        System.out.println(e.getRegion().getPollutionLevel());
+    }
+
+
+
+//    @EventHandler
+//    public void isPlayerCloseToPollution(PlayerMoveEvent e){
+//        Player p  = e.getPlayer();
+//        int x = p.getLocation().getBlockX();
+//        int z = p.getLocation().getBlockZ();
+//        int y = p.getLocation().getBlockY();
+//
+//        int pollutionCount = 0;
+//
+//        List<Furnace> furnaces= new ArrayList<>();
+//        for (int i = x-5;i<=x+5;i++){
+//            for(int j = z-5;j<z+5;j++){
+//                for (int k = y-3; k <= y+3; k++) {
+//                    Block b = Bukkit.getWorld(Bukkit.getWorlds().stream().findFirst().get().getName()).getBlockAt(i,k,j);
+//                    if(b.getType().equals(Material.FURNACE)){
+//                        furnaces.add((Furnace )b.getState());
+//                    }
+//                }
+//            }
+//        }
+//
+//        for(Furnace f : furnaces){
+//            if(f.getInventory().getFuel()!=null && f.getInventory().getFuel().getType().equals(Material.COAL)&& f.getCookTime()>0){
+//                pollutionCount++;
+//            }
+//        }
+//        handlePollution(p,pollutionCount);
+//    }
 private BossBar b;
 private void handlePollution(Player p,int pollution){
     if(b==null) {

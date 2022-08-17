@@ -35,7 +35,7 @@ public class Cable implements CompareBlocks  {
         meta.setDisplayName("Cable");
         meta.setCustomModelData(88888);
         List<String> data = new ArrayList<>();
-        data.add("Cable - Connect to solar panel base to transfer energy");
+        data.add("Cable - used to transport the energy generated from solar panels. connect to solar panel base to input power or to furnace to output power");
         meta.setLore(data);
 
         item.setItemMeta(meta);
