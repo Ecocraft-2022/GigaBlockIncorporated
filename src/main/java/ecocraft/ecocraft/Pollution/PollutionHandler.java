@@ -28,8 +28,10 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.javatuples.Pair;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 
 public class PollutionHandler implements Listener {
@@ -198,6 +200,34 @@ public class PollutionHandler implements Listener {
         handlePollution(e.getPlayer(), region);
     }
 
+    @EventHandler
+    public void UpdateRegionData(ChangeRegionEvent e){
+        Region r = e.getRegion();
+        Player player = e.getPlayer();
+
+        Map<String,String> data =r.regionInfo;
+
+        if( player.getScoreboard().getObjective("LocalPollution") == null){
+            return;
+        }
+        Scoreboard sb = player.getScoreboard();
+        Objective obj = sb.getObjective("LocalPollution");
+
+        for (String key : data.keySet()){
+            //region data that is usefull here is stored in JSON format
+            //this try checks if its JSON, if it is sets new score to scoreboard
+            try {
+                if(key.equals("pm25")|| key.equals("pm10")||key.equals("o3")||key.equals("no2")||key.equals("so2")||key.equals("co")) {
+                    Score score = obj.getScore(key.toUpperCase());
+                    JSONObject v = new JSONObject(data.get(key));
+                    score.setScore(v.getInt("v"));
+                }
+            }catch (Exception xe){}
+        }
+
+        (player).setScoreboard(sb);
+
+    }
 
     //    @EventHandler
 //    public void isPlayerCloseToPollution(PlayerMoveEvent e){
