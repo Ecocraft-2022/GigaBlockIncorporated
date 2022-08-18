@@ -1,5 +1,7 @@
 # EcoCraft config file
-
+########TOKEN###########
+apiToken: "e7cc8c16a2d5b77601e7c2d1dcc38dd554678408"
+########################
 ## Basic world configuration
 
 ### World width and height in blocks
@@ -7,3 +9,12 @@ worldWidth: 24576
 worldHeight: 12288
 ### Number of regions for the plugin to implement
 numberOfRegions: 800000
+
+### Pollution related ###
+
+#Max pollution value
+maxPollution: 120
+#Upper boundary of low pollution level (no negative effects)
+lowPollutionEnd: 40
+#Upper boundary of medium pollution level (some negative effects)
+mediumPollutionEnd: 80

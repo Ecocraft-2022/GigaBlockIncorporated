@@ -25,7 +25,7 @@ public class Region {
 
     private final String url = "https://api.waqi.info/feed";
     //TODO token do config
-    private final String token = "e7cc8c16a2d5b77601e7c2d1dcc38dd554678408";
+    private final String token = Regions.apiToken;
 
     private HttpURLConnection httpURLConnection;
 

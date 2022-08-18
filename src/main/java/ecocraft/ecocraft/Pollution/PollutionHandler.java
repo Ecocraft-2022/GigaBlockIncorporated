@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
@@ -94,63 +95,66 @@ public class PollutionHandler implements Listener {
                 for (int z = leftBottom.getValue1(); z < rightTop.getValue1(); z++) {
                     for (int y = 20; y < 255; y++) {
                         Block b = world.getBlockAt(new Location(world, x, y, z));
-                        if (b.getType().equals(Material.FURNACE)) {
-                            localPollution++;
-                        }
-                        if (b.getType().equals(Material.SPRUCE_SAPLING) ||
-                                b.getType().equals(Material.ACACIA_SAPLING) ||
-                                b.getType().equals(Material.BIRCH_SAPLING) ||
-                                b.getType().equals(Material.OAK_SAPLING) ||
-                                b.getType().equals(Material.DARK_OAK_SAPLING) ||
-                                b.getType().equals(Material.JUNGLE_SAPLING)
-                        ) {
-                            localPollution--;
-                        }
-                        if(b.getType().equals(Material.NOTE_BLOCK)) {
-                            if (Util.compareBlocks(SolarPanel.getInstance(),(NoteBlock) b.getBlockData())){
-                                localPollution--;
-                            }
-                        }
+                        localPollution = goodPollution(localPollution, b);
                     }
                 }
             }
             region.setLocalPollution(localPollution);
         }
-        handlePollution(e.getPlayer(),region);
+        handlePollution(e.getPlayer(), region);
+    }
+
+
+    private Integer goodPollution(Integer polluton, Block b) {
+
+        Integer localPollution = polluton;
+
+        if (b.getType().equals(Material.FURNACE)) {
+            localPollution++;
+        }
+
+        if (b.getType().equals(Material.SPRUCE_SAPLING) ||
+                b.getType().equals(Material.ACACIA_SAPLING) ||
+                b.getType().equals(Material.BIRCH_SAPLING) ||
+                b.getType().equals(Material.OAK_SAPLING) ||
+                b.getType().equals(Material.DARK_OAK_SAPLING) ||
+                b.getType().equals(Material.JUNGLE_SAPLING)
+        ) {
+            localPollution--;
+        }
+
+        if (b.getType().equals(Material.NOTE_BLOCK)) {
+            if (Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) b.getBlockData())) {
+                localPollution--;
+            }
+        }
+
+        return localPollution;
     }
 
     @EventHandler
     public void localPollutionOnPlace(BlockPlaceEvent e) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            Block blockPlaced = e.getBlockPlaced();
 
-        Block blockPlaced = e.getBlockPlaced();
+            Player player = e.getPlayer();
 
-        Player player = e.getPlayer();
+            Region region;
 
-        Region region;
+            try {
+                region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+            } catch (IOException ex) {
+                return;
+            }
 
-        try {
-            region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-        } catch (IOException ex) {
-            return;
-        }
+            Integer localPollution = region.getLocalPollution();
 
-        Integer localPollution = region.getLocalPollution();
+            localPollution = goodPollution(localPollution, blockPlaced);
 
-        if (blockPlaced.getType().equals(Material.FURNACE)) {
-            localPollution++;
-        }
-        if (blockPlaced.getType().equals(Material.SPRUCE_SAPLING) ||
-                blockPlaced.getType().equals(Material.ACACIA_SAPLING) ||
-                blockPlaced.getType().equals(Material.BIRCH_SAPLING) ||
-                blockPlaced.getType().equals(Material.OAK_SAPLING) ||
-                blockPlaced.getType().equals(Material.DARK_OAK_SAPLING) ||
-                blockPlaced.getType().equals(Material.JUNGLE_SAPLING)
-        ) {
-                localPollution--;
-        }
-        region.setLocalPollution(localPollution);
+            region.setLocalPollution(localPollution);
 
-        handlePollution(e.getPlayer(),region);
+            handlePollution(e.getPlayer(), region);
+        }, 2);
     }
 
     @EventHandler
@@ -183,17 +187,16 @@ public class PollutionHandler implements Listener {
         ) {
             localPollution++;
         }
+        if (blockPlaced.getType().equals(Material.NOTE_BLOCK)) {
+            if (Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) blockPlaced.getBlockData())) {
+                localPollution++;
+            }
+        }
+
         region.setLocalPollution(localPollution);
 
-        handlePollution(e.getPlayer(),region);
+        handlePollution(e.getPlayer(), region);
     }
-
-
-
-
-
-
-
 
 
     //    @EventHandler
@@ -233,8 +236,8 @@ public class PollutionHandler implements Listener {
     private void handlePollution(Player p, Region region) {
 
         StringBuilder BossBarTitle = new StringBuilder();
-        Integer overallPollution = region.getPollutionLevel()+region.getLocalPollution();
-       String title = BossBarTitle
+        Integer overallPollution = region.getPollutionLevel() + region.getLocalPollution();
+        String title = BossBarTitle
 //               .append("Local Pollution: ").append(region.getLocalPollution()).append("\n")
                 .append("Pollution: ").append(overallPollution).toString();
 
@@ -242,17 +245,7 @@ public class PollutionHandler implements Listener {
             b = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
         }
 
-        if(between(overallPollution,0,40)){
-            b.setColor(BarColor.GREEN);
-        }
 
-        if(between(overallPollution,41,80)){
-            b.setColor(BarColor.YELLOW);
-        }
-
-        if(between(overallPollution,81,120)){
-            b.setColor(BarColor.RED);
-        }
 
 
         b.setTitle(title);
@@ -262,11 +255,30 @@ public class PollutionHandler implements Listener {
             b.addPlayer(p);
         }
 
-        Integer pollution = region.getLocalPollution()+region.getPollutionLevel();
+        Integer pollution = region.getLocalPollution() + region.getPollutionLevel();
 
-        Float barPol  = (float) pollution / 120;
+        Integer maxPollution = plugin.getConfig().getInt("maxPollution");
 
-        if(barPol>1){
+        Integer lowPollution = plugin.getConfig().getInt("lowPollutionEnd");
+
+        Integer mediumPollution = plugin.getConfig().getInt("mediumPollutionEnd");
+
+        Float barPol = (float) pollution / maxPollution;
+
+
+        if (between(overallPollution, 0, lowPollution)) {
+            b.setColor(BarColor.GREEN);
+        }
+
+        if (between(overallPollution, lowPollution+1, mediumPollution)) {
+            b.setColor(BarColor.YELLOW);
+        }
+
+        if (between(overallPollution, mediumPollution+1, maxPollution)) {
+            b.setColor(BarColor.RED);
+        }
+
+        if (barPol > 1) {
             barPol = 1f;
         }
 
