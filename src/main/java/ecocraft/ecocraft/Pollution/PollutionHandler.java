@@ -1,11 +1,14 @@
 package ecocraft.ecocraft.Pollution;
 
+import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.Events.ChangeRegionEvent;
+import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.block.data.type.Sapling;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -15,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
@@ -24,8 +28,10 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.javatuples.Pair;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 
 public class PollutionHandler implements Listener {
@@ -91,47 +97,66 @@ public class PollutionHandler implements Listener {
                 for (int z = leftBottom.getValue1(); z < rightTop.getValue1(); z++) {
                     for (int y = 20; y < 255; y++) {
                         Block b = world.getBlockAt(new Location(world, x, y, z));
-                        if (b.getType().equals(Material.FURNACE)) {
-                            localPollution++;
-                        }
+                        localPollution = goodPollution(localPollution, b);
                     }
                 }
             }
             region.setLocalPollution(localPollution);
         }
-        System.out.println(region.getLocalPollution());
+        handlePollution(e.getPlayer(), region);
+    }
+
+
+    private Integer goodPollution(Integer polluton, Block b) {
+
+        Integer localPollution = polluton;
+
+        if (b.getType().equals(Material.FURNACE)) {
+            localPollution++;
+        }
+
+        if (b.getType().equals(Material.SPRUCE_SAPLING) ||
+                b.getType().equals(Material.ACACIA_SAPLING) ||
+                b.getType().equals(Material.BIRCH_SAPLING) ||
+                b.getType().equals(Material.OAK_SAPLING) ||
+                b.getType().equals(Material.DARK_OAK_SAPLING) ||
+                b.getType().equals(Material.JUNGLE_SAPLING)
+        ) {
+            localPollution--;
+        }
+
+        if (b.getType().equals(Material.NOTE_BLOCK)) {
+            if (Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) b.getBlockData())) {
+                localPollution--;
+            }
+        }
+
+        return localPollution;
     }
 
     @EventHandler
     public void localPollutionOnPlace(BlockPlaceEvent e) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            Block blockPlaced = e.getBlockPlaced();
 
-        Block blockPlaced = e.getBlockPlaced();
+            Player player = e.getPlayer();
 
-        Player player = e.getPlayer();
+            Region region;
 
-        Region region;
+            try {
+                region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+            } catch (IOException ex) {
+                return;
+            }
 
-        try {
-            region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-        } catch (IOException ex) {
-            return;
-        }
+            Integer localPollution = region.getLocalPollution();
 
-        Integer localPollution = region.getLocalPollution();
+            localPollution = goodPollution(localPollution, blockPlaced);
 
-        if (blockPlaced.getType().equals(Material.FURNACE)) {
-            localPollution++;
-        }
-        if (blockPlaced.getType().equals(Material.SPRUCE_SAPLING) ||
-                blockPlaced.getType().equals(Material.ACACIA_SAPLING) ||
-                blockPlaced.getType().equals(Material.BIRCH_SAPLING) ||
-                blockPlaced.getType().equals(Material.OAK_SAPLING) ||
-                blockPlaced.getType().equals(Material.DARK_OAK_SAPLING) ||
-                blockPlaced.getType().equals(Material.JUNGLE_SAPLING)
-        ) {
-                localPollution--;
-        }
-        region.setLocalPollution(localPollution);
+            region.setLocalPollution(localPollution);
+
+            handlePollution(e.getPlayer(), region);
+        }, 2);
     }
 
     @EventHandler
@@ -164,9 +189,45 @@ public class PollutionHandler implements Listener {
         ) {
             localPollution++;
         }
+        if (blockPlaced.getType().equals(Material.NOTE_BLOCK)) {
+            if (Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) blockPlaced.getBlockData())) {
+                localPollution++;
+            }
+        }
+
         region.setLocalPollution(localPollution);
+
+        handlePollution(e.getPlayer(), region);
     }
 
+    @EventHandler
+    public void UpdateRegionData(ChangeRegionEvent e){
+        Region r = e.getRegion();
+        Player player = e.getPlayer();
+
+        Map<String,String> data =r.regionInfo;
+
+        if( player.getScoreboard().getObjective("LocalPollution") == null){
+            return;
+        }
+        Scoreboard sb = player.getScoreboard();
+        Objective obj = sb.getObjective("LocalPollution");
+
+        for (String key : data.keySet()){
+            //region data that is usefull here is stored in JSON format
+            //this try checks if its JSON, if it is sets new score to scoreboard
+            try {
+                if(key.equals("pm25")|| key.equals("pm10")||key.equals("o3")||key.equals("no2")||key.equals("so2")||key.equals("co")) {
+                    Score score = obj.getScore(key.toUpperCase());
+                    JSONObject v = new JSONObject(data.get(key));
+                    score.setScore(v.getInt("v"));
+                }
+            }catch (Exception xe){}
+        }
+
+        (player).setScoreboard(sb);
+
+    }
 
     //    @EventHandler
 //    public void isPlayerCloseToPollution(PlayerMoveEvent e){
@@ -198,32 +259,76 @@ public class PollutionHandler implements Listener {
 //    }
     private BossBar b;
 
-    private void handlePollution(Player p, int pollution) {
+    public static boolean between(int variable, int minValueInclusive, int maxValueInclusive) {
+        return variable >= minValueInclusive && variable <= maxValueInclusive;
+    }
+
+    private void handlePollution(Player p, Region region) {
+
+        StringBuilder BossBarTitle = new StringBuilder();
+        Integer overallPollution = region.getPollutionLevel() + region.getLocalPollution();
+        String title = BossBarTitle
+//               .append("Local Pollution: ").append(region.getLocalPollution()).append("\n")
+                .append("Pollution: ").append(overallPollution).toString();
+
         if (b == null) {
-            b = Bukkit.createBossBar("Pollution", BarColor.WHITE, BarStyle.SOLID);
+            b = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
         }
+
+
+
+
+        b.setTitle(title);
+
         b.setVisible(true);
         if (!b.getPlayers().contains(p)) {
             b.addPlayer(p);
         }
 
-        b.setProgress((float) pollution / 5);
-        try {
-            if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-            } else {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-            }
-        } catch (Exception e) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+        Integer pollution = region.getLocalPollution() + region.getPollutionLevel();
+
+        Integer maxPollution = plugin.getConfig().getInt("maxPollution");
+
+        Integer lowPollution = plugin.getConfig().getInt("lowPollutionEnd");
+
+        Integer mediumPollution = plugin.getConfig().getInt("mediumPollutionEnd");
+
+        Float barPol = (float) pollution / maxPollution;
+
+
+        if (between(overallPollution, 0, lowPollution)) {
+            b.setColor(BarColor.GREEN);
         }
 
-        if (pollution == 0) {
-            p.removePotionEffect(PotionEffectType.BLINDNESS);
-            p.removePotionEffect(PotionEffectType.SLOW);
+        if (between(overallPollution, lowPollution+1, mediumPollution)) {
+            b.setColor(BarColor.YELLOW);
         }
+
+        if (between(overallPollution, mediumPollution+1, maxPollution)) {
+            b.setColor(BarColor.RED);
+        }
+
+        if (barPol > 1) {
+            barPol = 1f;
+        }
+
+        b.setProgress(barPol);
+//        try {
+//            if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
+//                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+//            } else {
+//                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
+//                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+//            }
+//        } catch (Exception e) {
+//            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
+//            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+//        }
+
+//        if (pollution == 0) {
+//            p.removePotionEffect(PotionEffectType.BLINDNESS);
+//            p.removePotionEffect(PotionEffectType.SLOW);
+//        }
 
     }
 

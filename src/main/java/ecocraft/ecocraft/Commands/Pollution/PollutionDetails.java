@@ -54,7 +54,6 @@ public class PollutionDetails implements CommandExecutor {
         //this try checks if its JSON, if it is sets new score to scoreboard
         try {
             if(key.equals("pm25")|| key.equals("pm10")||key.equals("o3")||key.equals("no2")||key.equals("so2")||key.equals("co")) {
-
                 Score score = obj.getScore(key.toUpperCase());
                 JSONObject v = new JSONObject(data.get(key));
                 score.setScore(v.getInt("v"));
