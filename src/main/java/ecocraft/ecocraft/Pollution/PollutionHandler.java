@@ -99,7 +99,7 @@ public class PollutionHandler implements Listener {
             }
             region.setLocalPollution(localPollution);
         }
-        System.out.println(region.getLocalPollution());
+        handlePollution(e.getPlayer(),region);
     }
 
     @EventHandler
@@ -132,6 +132,8 @@ public class PollutionHandler implements Listener {
                 localPollution--;
         }
         region.setLocalPollution(localPollution);
+
+        handlePollution(e.getPlayer(),region);
     }
 
     @EventHandler
@@ -165,7 +167,16 @@ public class PollutionHandler implements Listener {
             localPollution++;
         }
         region.setLocalPollution(localPollution);
+
+        handlePollution(e.getPlayer(),region);
     }
+
+
+
+
+
+
+
 
 
     //    @EventHandler
@@ -198,32 +209,67 @@ public class PollutionHandler implements Listener {
 //    }
     private BossBar b;
 
-    private void handlePollution(Player p, int pollution) {
+    public static boolean between(int variable, int minValueInclusive, int maxValueInclusive) {
+        return variable >= minValueInclusive && variable <= maxValueInclusive;
+    }
+
+    private void handlePollution(Player p, Region region) {
+
+        StringBuilder BossBarTitle = new StringBuilder();
+        Integer overallPollution = region.getPollutionLevel()+region.getLocalPollution();
+       String title = BossBarTitle
+//               .append("Local Pollution: ").append(region.getLocalPollution()).append("\n")
+                .append("Pollution: ").append(overallPollution).toString();
+
         if (b == null) {
-            b = Bukkit.createBossBar("Pollution", BarColor.WHITE, BarStyle.SOLID);
+            b = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
         }
+
+        if(between(overallPollution,0,40)){
+            b.setColor(BarColor.GREEN);
+        }
+
+        if(between(overallPollution,41,80)){
+            b.setColor(BarColor.YELLOW);
+        }
+
+        if(between(overallPollution,81,120)){
+            b.setColor(BarColor.RED);
+        }
+
+
+        b.setTitle(title);
+
         b.setVisible(true);
         if (!b.getPlayers().contains(p)) {
             b.addPlayer(p);
         }
 
-        b.setProgress((float) pollution / 5);
-        try {
-            if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-            } else {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-            }
-        } catch (Exception e) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+        Integer pollution = region.getLocalPollution()+region.getPollutionLevel();
+
+        Float barPol  = (float) pollution / 120;
+
+        if(barPol>1){
+            barPol = 1f;
         }
 
-        if (pollution == 0) {
-            p.removePotionEffect(PotionEffectType.BLINDNESS);
-            p.removePotionEffect(PotionEffectType.SLOW);
-        }
+        b.setProgress(barPol);
+//        try {
+//            if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
+//                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+//            } else {
+//                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
+//                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+//            }
+//        } catch (Exception e) {
+//            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
+//            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
+//        }
+
+//        if (pollution == 0) {
+//            p.removePotionEffect(PotionEffectType.BLINDNESS);
+//            p.removePotionEffect(PotionEffectType.SLOW);
+//        }
 
     }
 
