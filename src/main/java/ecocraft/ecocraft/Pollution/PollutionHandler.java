@@ -1,11 +1,14 @@
 package ecocraft.ecocraft.Pollution;
 
+import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.Events.ChangeRegionEvent;
+import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.block.data.type.Sapling;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -93,6 +96,20 @@ public class PollutionHandler implements Listener {
                         Block b = world.getBlockAt(new Location(world, x, y, z));
                         if (b.getType().equals(Material.FURNACE)) {
                             localPollution++;
+                        }
+                        if (b.getType().equals(Material.SPRUCE_SAPLING) ||
+                                b.getType().equals(Material.ACACIA_SAPLING) ||
+                                b.getType().equals(Material.BIRCH_SAPLING) ||
+                                b.getType().equals(Material.OAK_SAPLING) ||
+                                b.getType().equals(Material.DARK_OAK_SAPLING) ||
+                                b.getType().equals(Material.JUNGLE_SAPLING)
+                        ) {
+                            localPollution--;
+                        }
+                        if(b.getType().equals(Material.NOTE_BLOCK)) {
+                            if (Util.compareBlocks(SolarPanel.getInstance(),(NoteBlock) b.getBlockData())){
+                                localPollution--;
+                            }
                         }
                     }
                 }
