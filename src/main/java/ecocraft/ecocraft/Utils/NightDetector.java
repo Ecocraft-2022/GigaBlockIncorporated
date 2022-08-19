@@ -47,7 +47,7 @@ public class NightDetector {
             }
             Bukkit.getPluginManager().callEvent(event);
 
-        }, 0, 100L);
+        }, 0, 25L);
 
     }
 
