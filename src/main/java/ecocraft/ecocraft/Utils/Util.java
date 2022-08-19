@@ -115,7 +115,7 @@ public class Util {
 
                 if(bl.getRelative(BlockFace.UP).equals(Material.NOTE_BLOCK)){
                     NoteBlock relativeUP = (NoteBlock)bl.getRelative(BlockFace.UP);
-                    res.add(compareBlocks(SolarPanelBase.getInstance(), nb) && compareBlocks(SolarPanel.getInstance(),relativeUP) && world.getHighestBlockAt(bl.getRelative(BlockFace.UP).getLocation()) == bl.getRelative(BlockFace.UP));
+                    res.add(compareBlocks(SolarPanelBase.getInstance(), nb) && compareBlocks(SolarPanel.getInstance(),relativeUP) && world.getHighestBlockAt(bl.getRelative(BlockFace.UP).getLocation()).equals(bl.getRelative(BlockFace.UP)));
                 }
 
                 if (compareBlocks(Cable.getInstance(), nb)) {
