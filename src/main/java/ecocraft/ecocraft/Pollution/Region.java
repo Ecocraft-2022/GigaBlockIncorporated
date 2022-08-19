@@ -15,7 +15,7 @@ public class Region {
 
     private static Map<Pair<Integer,Integer>,Region> regionMap = new HashMap<>();
 
-    private Integer localPollution = null;
+    private Integer localPollution = 0;
 
     private Pair<Integer,Integer> center;
 
@@ -110,14 +110,9 @@ public class Region {
 
         // format lat;lng
         StringBuilder sb  = new StringBuilder();
-
-
-       Pair<Double,Double> coordinates =  Util.calculateToRealCoordinates(Double.valueOf(blockX),Double.valueOf(blockZ));
-
-
+        Pair<Double,Double> coordinates =  Util.calculateToRealCoordinates(Double.valueOf(blockX),Double.valueOf(blockZ));
         Double lang = coordinates.getValue1();
         Double lat = coordinates.getValue0();
-
         return sb.append(lat).append(";").append(lang).toString();
 
     }

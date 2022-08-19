@@ -13,7 +13,10 @@ import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 
 import ecocraft.ecocraft.Handlers.*;
 
+import ecocraft.ecocraft.Pollution.PollutionHandler;
 import ecocraft.ecocraft.Pollution.Regions;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -51,10 +54,16 @@ public final class Ecocraft extends JavaPlugin {
         MainEventHandler.init(this);
 
         RecyclerBlock.register(this);
+
+        for(Player player: Bukkit.getOnlinePlayers()){
+            PollutionHandler.initRegion(player);
+        }
+
     }
 
     @Override
     public void onDisable() {
+        PollutionHandler.getBossBar().removeAll();
         // Plugin shutdown logic
     }
 
