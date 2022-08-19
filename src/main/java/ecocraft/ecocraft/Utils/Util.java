@@ -6,6 +6,7 @@ import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import ecocraft.ecocraft.Pollution.Regions;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
@@ -110,11 +111,11 @@ public class Util {
 
             if (bl.getType().equals(Material.NOTE_BLOCK)) {
                 NoteBlock nb = (NoteBlock) data;
-
+                World world = block.getWorld();
 
                 if(bl.getRelative(BlockFace.UP).equals(Material.NOTE_BLOCK)){
                     NoteBlock relativeUP = (NoteBlock)bl.getRelative(BlockFace.UP);
-                    res.add(compareBlocks(SolarPanelBase.getInstance(), nb) && compareBlocks(SolarPanel.getInstance(),relativeUP));
+                    res.add(compareBlocks(SolarPanelBase.getInstance(), nb) && compareBlocks(SolarPanel.getInstance(),relativeUP) && world.getHighestBlockAt(bl.getRelative(BlockFace.UP).getLocation()).equals(bl.getRelative(BlockFace.UP)));
                 }
 
                 if (compareBlocks(Cable.getInstance(), nb)) {
@@ -139,6 +140,12 @@ public class Util {
 
 
     public static boolean compareBlocks(CompareBlocks block1, NoteBlock block2) {
+        return block1.getNote().equals(block2.getNote()) && block1.getInstrument().equals(block2.getInstrument());
+    }
+
+    public static boolean compareBlocks(CompareBlocks block1, Block block) {
+        if(block.getType()!=Material.NOTE_BLOCK) return false;
+        NoteBlock block2 = (NoteBlock) block.getBlockData();
         return block1.getNote().equals(block2.getNote()) && block1.getInstrument().equals(block2.getInstrument());
     }
 

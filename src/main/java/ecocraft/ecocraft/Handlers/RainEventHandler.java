@@ -44,7 +44,9 @@ public class RainEventHandler implements Listener {
         if(!e.getWorld().hasStorm()) {
             task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> rain.rain(), 0, 30);
         }else {
-            Bukkit.getScheduler().cancelTask(task);
+            if(task>0) {
+                Bukkit.getScheduler().cancelTask(task);
+            }
         }
     }
 
@@ -65,8 +67,8 @@ public class RainEventHandler implements Listener {
 
                 for (int x = cx; x < cx + 16; x++) {
                     for (int z = cz; z < cz + 16; z++) {
-                        for (int y = 0; y < 128; y++) {
-                            Block test = w.getBlockAt(x, y, z);
+
+                            Block test = w.getHighestBlockAt(x,z);
 
                             if (test.getType().equals(Material.NOTE_BLOCK) && Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) test.getBlockData())) {
                                 Util u = new Util();
@@ -87,7 +89,7 @@ public class RainEventHandler implements Listener {
                                                 }
                                             }
                                     );
-                                }
+
                             }
                         }
                     }

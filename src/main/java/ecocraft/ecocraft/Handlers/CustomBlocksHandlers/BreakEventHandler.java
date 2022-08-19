@@ -31,6 +31,8 @@ public class BreakEventHandler implements Listener {
         Util.deactivateFurnaces(e.getBlock(), plugin);
     }
 
+
+
     @EventHandler
     public void onSolarPanelDestroyed(BlockBreakEvent e) {
         Block block = e.getBlock();
@@ -56,9 +58,7 @@ public class BreakEventHandler implements Listener {
                        furnace.setBurnTime(Short.parseShort("0"));
                        furnace.update();
                    });
-
                }
-
             },2);
 
         }

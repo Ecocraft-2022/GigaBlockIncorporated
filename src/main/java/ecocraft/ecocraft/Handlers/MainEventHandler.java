@@ -16,7 +16,6 @@ public class MainEventHandler {
     private MainEventHandler(Plugin plugin){
         new BreakEventHandler(plugin);
         new FurnaceEventHandler(plugin);
-        new MapEventHandler(plugin);
         new PollutionHandler(plugin);
         new FishingListener(plugin);
         new RainEventHandler(plugin);

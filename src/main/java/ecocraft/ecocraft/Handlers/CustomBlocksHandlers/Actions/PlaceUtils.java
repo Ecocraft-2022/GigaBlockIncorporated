@@ -10,6 +10,7 @@ import ecocraft.ecocraft.Utils.NightDetector;
 import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.*;
 
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import org.bukkit.block.data.type.NoteBlock;
@@ -38,15 +39,18 @@ public class PlaceUtils {
 //        u.findDesiredBlocks(e.getBlockPlaced().getRelative(BlockFace.DOWN));
         e.getPlayer().sendMessage("Solar panel is producing power");
 
-        u.findFurnaces(e.getBlockPlaced().getRelative(BlockFace.DOWN)).stream().forEach(
-                f -> {
-                    if(!NightDetector.getInstance(plugin).isNight()){
-                    f.setBurnTime(Short.MAX_VALUE);
-                    f.update();
+        World world = e.getBlock().getWorld();
+        Block highestBlock = world.getHighestBlockAt(e.getBlockPlaced().getX(),e.getBlockPlaced().getZ());
+        if(Util.compareBlocks(SolarPanel.getInstance(),highestBlock)) {
+            u.findFurnaces(e.getBlockPlaced().getRelative(BlockFace.DOWN)).stream().forEach(
+                    f -> {
+                        if (!NightDetector.getInstance(plugin).isNight()) {
+                            f.setBurnTime(Short.MAX_VALUE);
+                            f.update();
+                        }
                     }
-                }
-        );
-
+            );
+        }
     }
 
 
