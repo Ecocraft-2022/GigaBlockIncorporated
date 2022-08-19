@@ -20,6 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -36,7 +37,7 @@ import java.util.Map;
 
 public class PollutionHandler implements Listener {
 
-    Plugin plugin;
+    private static Plugin plugin;
 
     public PollutionHandler(Plugin plugin) {
         this.plugin = plugin;
@@ -46,7 +47,18 @@ public class PollutionHandler implements Listener {
 
     @EventHandler
     public void regionChangeJoin(PlayerJoinEvent join) {
-        regionChangeEvent(join.getPlayer());
+        initRegion(join.getPlayer());
+    }
+
+    public static void initRegion(Player player){
+        Location playerLocation = player.getLocation();
+        Region region;
+        try {
+            region =Region.getPlayerRegion(playerLocation.getBlockX(),playerLocation.getBlockZ());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        handlePollution(player,region);
     }
 
     @EventHandler
@@ -55,7 +67,7 @@ public class PollutionHandler implements Listener {
     }
 
 
-    private void regionChangeEvent(Player player) {
+    public static void regionChangeEvent(Player player) {
         Scoreboard sb = player.getScoreboard();
         Objective obj;
 
@@ -81,7 +93,6 @@ public class PollutionHandler implements Listener {
 
     @EventHandler
     public void localPollution(ChangeRegionEvent e) {
-
         Region region = e.getRegion();
         Integer localPollution = region.getLocalPollution();
         if (localPollution == null) {
@@ -257,13 +268,13 @@ public class PollutionHandler implements Listener {
 //        }
 //        handlePollution(p,pollutionCount);
 //    }
-    private BossBar b;
+    private static BossBar b;
 
     public static boolean between(int variable, int minValueInclusive, int maxValueInclusive) {
         return variable >= minValueInclusive && variable <= maxValueInclusive;
     }
 
-    private void handlePollution(Player p, Region region) {
+    private static void handlePollution(Player p, Region region) {
 
         StringBuilder BossBarTitle = new StringBuilder();
         Integer overallPollution = region.getPollutionLevel() + region.getLocalPollution();
@@ -330,6 +341,10 @@ public class PollutionHandler implements Listener {
 //            p.removePotionEffect(PotionEffectType.SLOW);
 //        }
 
+    }
+
+    public static BossBar getBossBar(){
+        return b;
     }
 
 }
