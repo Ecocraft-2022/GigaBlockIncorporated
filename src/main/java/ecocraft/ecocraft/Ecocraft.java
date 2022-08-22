@@ -14,6 +14,7 @@ import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import ecocraft.ecocraft.Handlers.*;
 
 import ecocraft.ecocraft.Pollution.PollutionHandler;
+import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Pollution.Regions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -56,7 +57,8 @@ public final class Ecocraft extends JavaPlugin {
         RecyclerBlock.register(this);
 
         for(Player player: Bukkit.getOnlinePlayers()){
-            PollutionHandler.initRegion(player);
+            Region region = PollutionHandler.initRegion(player);
+            PollutionHandler.handleLocalPollution(player,region);
         }
 
     }

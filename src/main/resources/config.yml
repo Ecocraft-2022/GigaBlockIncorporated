@@ -18,3 +18,7 @@ maxPollution: 120
 lowPollutionEnd: 40
 #Upper boundary of medium pollution level (some negative effects)
 mediumPollutionEnd: 80
+
+#Acid rain damage
+lightAcidRain: 1
+heavyAcidRain: 5

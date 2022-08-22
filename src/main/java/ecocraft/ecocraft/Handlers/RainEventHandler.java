@@ -20,6 +20,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,13 @@ public class RainEventHandler implements Listener {
     public void onWeatherChange(WeatherChangeEvent e) {
         AcidRain rain = new AcidRain();
         if(!e.getWorld().hasStorm()) {
-            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> rain.rain(), 0, 30);
+            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+                try {
+                    rain.rain();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }, 0, 30);
         }else {
             if(task>0) {
                 Bukkit.getScheduler().cancelTask(task);
