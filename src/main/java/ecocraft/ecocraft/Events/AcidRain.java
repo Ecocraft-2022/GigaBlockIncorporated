@@ -1,86 +1,136 @@
 package ecocraft.ecocraft.Events;
 
+import ecocraft.ecocraft.Ecocraft;
+import ecocraft.ecocraft.Pollution.Region;
+import ecocraft.ecocraft.Pollution.Regions;
 import org.bukkit.Bukkit;
+import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.type.Leaves;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.javatuples.Pair;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class AcidRain {
 
-    public void rain() {
+    private final Plugin plugin = Ecocraft.getPlugin(Ecocraft.class);
+    private Integer mediumPollution = plugin.getConfig().getInt("mediumPollutionEnd");
+    private Integer lowPollutionEnd = plugin.getConfig().getInt("lowPollutionEnd");
+
+    private Integer lowDamage = plugin.getConfig().getInt("lightAcidRain");
+    private Integer highDamage = plugin.getConfig().getInt("heavyAcidRain");
+    public void rain() throws IOException {
 
         List<Block> allBlocks = new ArrayList<>();
 
-        List<Entity> allEntries = new ArrayList<>();
+
+
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            int radius = 20;
 
-             getBlocksFromPlayerLevel(player, radius).forEach(b->{
-                 allBlocks.add(b);
-             });
+            Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
 
-            player.getNearbyEntities(10, 10, 10).forEach(entity -> {
-              allEntries.add(entity);
-            });
+                //player.getClientViewDistance() zwraca ilosc chunk
+                getBlocksFromPlayerLevel(player).forEach(b -> {
+                    allBlocks.add(b);
+                });
 
+            if (region.getPollutionLevel() + region.getLocalPollution() > lowPollutionEnd) {
+                World w = player.getWorld();
+                player.getNearbyEntities(20, 20, 20).forEach(entity -> {
+
+                    if(entity instanceof LivingEntity) {
+                        LivingEntity livingEntity = (LivingEntity) entity;
+                        if(w.getHighestBlockAt(entity.getLocation()).getY() < entity.getLocation().getY()){
+                        livingEntity.damage(region.getLocalPollution() + region.getPollutionLevel() > mediumPollution ? highDamage : lowDamage);
+                    }
+
+                }});
+                if(w.getHighestBlockAt(player.getLocation()).getY() < player.getLocation().getY()){
+                    player.damage(region.getLocalPollution() + region.getPollutionLevel() > mediumPollution ? highDamage/2 : lowDamage);
+                }
+            }
+
+
+            decayBlocks(allBlocks);
         }
-         decayBlocks(allBlocks,allEntries);
-
     }
 
-    private void decayBlocks(List<Block> blocks,List<Entity> entities ){
-
+    private void decayBlocks(List<Block> blocks) {
+        if (blocks.size() > 0) {
             Random random = new Random();
+
+
 
             int randomIndex = random.nextInt(blocks.size());
             Block randomElement = blocks.get(randomIndex);
             blocks.remove(randomIndex);
 
-            if (randomElement.getBlockData() instanceof Leaves) {
+            if (randomElement.getBlockData() instanceof Leaves ||  isCrop(randomElement)) {
                 randomElement.setType(Material.AIR);
             }
 
             if (randomElement.getType().equals(Material.GRASS_BLOCK)) {
                 randomElement.setType(Material.DIRT);
             }
+        }
 
-            entities.forEach(entity -> {
-                LivingEntity livingEntity = (LivingEntity) entity;
-                livingEntity.damage(1);
-            });
 
     }
 
-    private List<Block> getBlocksFromPlayerLevel(Player player, Integer radios) {
-        int z = player.getLocation().getBlockZ();
-        int x = player.getLocation().getBlockX();
+    private List<Block> getBlocksFromPlayerLevel(Player player) {
+
+        //player.getClientViewDistance() zwraca ilosc chunk
+
+
+
+
         List<Block> result = new ArrayList<>();
-        World w = Bukkit.getWorld(player.getWorld().getName());
-        for (int xc = x - radios; xc < x + radios; xc++) {
-            for (int zc = z - radios; zc < z + radios; zc++) {
 
-                Block b = w.getHighestBlockAt(xc,zc);
+        List<Region> regions = Regions.loadedRegions.get(player);
 
-                if ( b.getBlockData() instanceof Leaves
-                        || b.getType().equals(Material.GRASS)
-                        || b.getType().equals(Material.TALL_GRASS)
-                        || b.getType().equals(Material.GRASS_BLOCK)
-                ) {
-                    result.add(b);
+        for (Region region : regions) {
+            if (region.getPollutionLevel() + region.getLocalPollution() > lowPollutionEnd) {
+
+                Pair<Integer, Integer> center = region.getCenter();
+                World world = player.getWorld();
+                for (double x = center.getValue0() - (Regions.regionDim / 2); x <= center.getValue0() + (Regions.regionDim / 2); x++) {
+                    for (double z = center.getValue1() - (Regions.regionDim / 2); z <= center.getValue1() + (Regions.regionDim / 2); z++) {
+                        Block block = world.getHighestBlockAt((int) x, (int) z);
+
+                        if (block.getBlockData() instanceof Leaves || block.getType().equals(Material.GRASS_BLOCK) || isCrop(block)) {
+                            result.add(block);
+                        }
+
+                    }
                 }
             }
         }
+
         return result;
     }
+
+    private static boolean isCrop(Block block){
+
+        Material blockMaterial = block.getType();
+
+        return blockMaterial.equals(Material.WHEAT)||
+                blockMaterial.equals(Material.CARROTS)||
+                blockMaterial.equals(Material.TALL_GRASS)||
+                blockMaterial.equals(Material.POTATO);
+    }
+
 }
 
 

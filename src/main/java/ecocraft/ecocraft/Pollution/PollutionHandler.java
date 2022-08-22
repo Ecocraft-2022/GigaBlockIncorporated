@@ -32,6 +32,8 @@ import org.javatuples.Pair;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,18 +49,25 @@ public class PollutionHandler implements Listener {
 
     @EventHandler
     public void regionChangeJoin(PlayerJoinEvent join) {
-        initRegion(join.getPlayer());
+        Region region = initRegion(join.getPlayer());
+
+        handleLocalPollution(join.getPlayer(), region);
     }
 
-    public static void initRegion(Player player){
+    public static Region initRegion(Player player) {
         Location playerLocation = player.getLocation();
         Region region;
+
         try {
-            region =Region.getPlayerRegion(playerLocation.getBlockX(),playerLocation.getBlockZ());
+            loadRegions(player);
+
+            region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
+            handlePollution(player, region);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        handlePollution(player,region);
+        return region;
     }
 
     @EventHandler
@@ -77,7 +86,13 @@ public class PollutionHandler implements Listener {
             obj = sb.registerNewObjective("", "dummy", "");
         }
         Score score = obj.getScore("region");
-        Pair<Integer, Integer> regionN = Region.getRegionNumber(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+
+        Integer playerX = player.getLocation().getBlockX();
+
+        Integer playerZ = player.getLocation().getBlockZ();
+
+        Pair<Integer, Integer> regionN = Region.getRegionNumber(playerX, playerZ);
+
 
         if (score.getScore() != regionN.getValue0() + regionN.getValue1()) {
             score.setScore(regionN.getValue0() + regionN.getValue1());
@@ -89,23 +104,57 @@ public class PollutionHandler implements Listener {
                 throw new RuntimeException(ex);
             }
         }
+
+        loadRegions(player);
+
+    }
+
+    private static void loadRegions(Player player) {
+        Integer playerX = player.getLocation().getBlockX();
+
+        Integer playerZ = player.getLocation().getBlockZ();
+
+        List<Region> loadedRegions = new ArrayList<>();
+
+        Region region;
+        try {
+            region = Region.getPlayerRegion(playerX, playerZ);
+
+            Pair<Integer, Integer> center = region.getCenter();
+
+            for (double x = center.getValue0() - Regions.regionDim; x <= center.getValue0() + Regions.regionDim; x += Regions.regionDim) {
+                for (double z = center.getValue1() - Regions.regionDim; z <= center.getValue1() + Regions.regionDim; z += Regions.regionDim) {
+                    loadedRegions.add(Region.getPlayerRegion((int) x, (int) z));
+                }
+            }
+            Regions.loadedRegions.put(player, loadedRegions);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @EventHandler
     public void localPollution(ChangeRegionEvent e) {
-        Region region = e.getRegion();
+        handleLocalPollution(e.getPlayer(), e.getRegion());
+    }
+
+    public static void handleLocalPollution(Player player, Region r) {
+        Region region = r;
         Integer localPollution = region.getLocalPollution();
         if (localPollution == null) {
+
             localPollution = 0;
-            Pair<Integer, Integer> leftBottom = new Pair<>(Double.valueOf(region.getCenter().getValue0() - Regions.regionDim).intValue()
-                    , Double.valueOf(region.getCenter().getValue1() - Regions.regionDim).intValue());
-            Pair<Integer, Integer> rightTop = new Pair<>(Double.valueOf(region.getCenter().getValue0() + Regions.regionDim).intValue()
-                    , Double.valueOf(region.getCenter().getValue1() + Regions.regionDim).intValue());
 
-            World world = e.getPlayer().getWorld();
+            Pair<Integer, Integer> leftBottom = new Pair<>(region.getCenter().getValue0() - Double.valueOf(Regions.regionDim / 2).intValue()
+                    , region.getCenter().getValue1() - Double.valueOf(Regions.regionDim / 2).intValue());
 
-            for (int x = leftBottom.getValue0(); x < rightTop.getValue0(); x++) {
-                for (int z = leftBottom.getValue1(); z < rightTop.getValue1(); z++) {
+            Pair<Integer, Integer> rightTop = new Pair<>(region.getCenter().getValue0() + Double.valueOf(Regions.regionDim / 2).intValue()
+                    , region.getCenter().getValue1() + Double.valueOf(Regions.regionDim / 2).intValue());
+
+            World world = player.getWorld();
+
+            for (int x = leftBottom.getValue0(); x <= rightTop.getValue0(); x++) {
+                for (int z = leftBottom.getValue1(); z <= rightTop.getValue1(); z++) {
                     for (int y = 20; y < 255; y++) {
                         Block b = world.getBlockAt(new Location(world, x, y, z));
                         localPollution = goodPollution(localPollution, b);
@@ -114,15 +163,16 @@ public class PollutionHandler implements Listener {
             }
             region.setLocalPollution(localPollution);
         }
-        handlePollution(e.getPlayer(), region);
+        handlePollution(player, region);
     }
 
 
-    private Integer goodPollution(Integer polluton, Block b) {
+    private static Integer goodPollution(Integer pollution, Block b) {
 
-        Integer localPollution = polluton;
+        Integer localPollution = pollution;
 
         if (b.getType().equals(Material.FURNACE)) {
+
             localPollution++;
         }
 
@@ -212,28 +262,29 @@ public class PollutionHandler implements Listener {
     }
 
     @EventHandler
-    public void UpdateRegionData(ChangeRegionEvent e){
+    public void updateRegionData(ChangeRegionEvent e) {
         Region r = e.getRegion();
         Player player = e.getPlayer();
 
-        Map<String,String> data =r.regionInfo;
+        Map<String, String> data = r.regionInfo;
 
-        if( player.getScoreboard().getObjective("LocalPollution") == null){
+        if (player.getScoreboard().getObjective("LocalPollution") == null) {
             return;
         }
         Scoreboard sb = player.getScoreboard();
         Objective obj = sb.getObjective("LocalPollution");
 
-        for (String key : data.keySet()){
+        for (String key : data.keySet()) {
             //region data that is usefull here is stored in JSON format
             //this try checks if its JSON, if it is sets new score to scoreboard
             try {
-                if(key.equals("pm25")|| key.equals("pm10")||key.equals("o3")||key.equals("no2")||key.equals("so2")||key.equals("co")) {
+                if (key.equals("pm25") || key.equals("pm10") || key.equals("o3") || key.equals("no2") || key.equals("so2") || key.equals("co")) {
                     Score score = obj.getScore(key.toUpperCase());
                     JSONObject v = new JSONObject(data.get(key));
                     score.setScore(v.getInt("v"));
                 }
-            }catch (Exception xe){}
+            } catch (Exception xe) {
+            }
         }
 
         (player).setScoreboard(sb);
@@ -277,7 +328,13 @@ public class PollutionHandler implements Listener {
     private static void handlePollution(Player p, Region region) {
 
         StringBuilder BossBarTitle = new StringBuilder();
-        Integer overallPollution = region.getPollutionLevel() + region.getLocalPollution();
+        Integer overallPollution;
+        if (region.getLocalPollution() == null) {
+            overallPollution = region.getPollutionLevel();
+        } else {
+            overallPollution = region.getPollutionLevel() + region.getLocalPollution();
+        }
+
         String title = BossBarTitle
 //               .append("Local Pollution: ").append(region.getLocalPollution()).append("\n")
                 .append("Pollution: ").append(overallPollution).toString();
@@ -287,8 +344,6 @@ public class PollutionHandler implements Listener {
         }
 
 
-
-
         b.setTitle(title);
 
         b.setVisible(true);
@@ -296,7 +351,6 @@ public class PollutionHandler implements Listener {
             b.addPlayer(p);
         }
 
-        Integer pollution = region.getLocalPollution() + region.getPollutionLevel();
 
         Integer maxPollution = plugin.getConfig().getInt("maxPollution");
 
@@ -304,18 +358,18 @@ public class PollutionHandler implements Listener {
 
         Integer mediumPollution = plugin.getConfig().getInt("mediumPollutionEnd");
 
-        Float barPol = (float) pollution / maxPollution;
+        Float barPol = (float) overallPollution / maxPollution;
 
 
         if (between(overallPollution, 0, lowPollution)) {
             b.setColor(BarColor.GREEN);
         }
 
-        if (between(overallPollution, lowPollution+1, mediumPollution)) {
+        if (between(overallPollution, lowPollution + 1, mediumPollution)) {
             b.setColor(BarColor.YELLOW);
         }
 
-        if (between(overallPollution, mediumPollution+1, maxPollution)) {
+        if (between(overallPollution, mediumPollution + 1, maxPollution)) {
             b.setColor(BarColor.RED);
         }
 
@@ -343,7 +397,7 @@ public class PollutionHandler implements Listener {
 
     }
 
-    public static BossBar getBossBar(){
+    public static BossBar getBossBar() {
         return b;
     }
 

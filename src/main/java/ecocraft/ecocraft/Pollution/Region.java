@@ -15,7 +15,7 @@ public class Region {
 
     private static Map<Pair<Integer,Integer>,Region> regionMap = new HashMap<>();
 
-    private Integer localPollution = 0;
+    private Integer localPollution = null;
 
     private Pair<Integer,Integer> center;
 

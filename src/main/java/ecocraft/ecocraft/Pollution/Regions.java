@@ -1,7 +1,11 @@
 package ecocraft.ecocraft.Pollution;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Regions {
@@ -14,6 +18,8 @@ public class Regions {
     public static Integer height;
 
     public static String apiToken;
+
+    public static Map<Player, List<Region>> loadedRegions = new HashMap<>();
 
     private Regions(Integer width, Integer height,Integer numberOfRegions) {
         this.width = width;
