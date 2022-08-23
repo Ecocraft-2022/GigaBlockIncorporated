@@ -299,34 +299,6 @@ public class PollutionHandler implements Listener {
 
     }
 
-    //    @EventHandler
-//    public void isPlayerCloseToPollution(PlayerMoveEvent e){
-//        Player p  = e.getPlayer();
-//        int x = p.getLocation().getBlockX();
-//        int z = p.getLocation().getBlockZ();
-//        int y = p.getLocation().getBlockY();
-//
-//        int pollutionCount = 0;
-//
-//        List<Furnace> furnaces= new ArrayList<>();
-//        for (int i = x-5;i<=x+5;i++){
-//            for(int j = z-5;j<z+5;j++){
-//                for (int k = y-3; k <= y+3; k++) {
-//                    Block b = Bukkit.getWorld(Bukkit.getWorlds().stream().findFirst().get().getName()).getBlockAt(i,k,j);
-//                    if(b.getType().equals(Material.FURNACE)){
-//                        furnaces.add((Furnace )b.getState());
-//                    }
-//                }
-//            }
-//        }
-//
-//        for(Furnace f : furnaces){
-//            if(f.getInventory().getFuel()!=null && f.getInventory().getFuel().getType().equals(Material.COAL)&& f.getCookTime()>0){
-//                pollutionCount++;
-//            }
-//        }
-//        handlePollution(p,pollutionCount);
-//    }
     private static BossBar b;
 
     public static boolean between(int variable, int minValueInclusive, int maxValueInclusive) {
@@ -386,22 +358,6 @@ public class PollutionHandler implements Listener {
         }
 
         b.setProgress(barPol);
-//        try {
-//            if (p.getInventory().getHelmet().getType().equals(Material.TURTLE_HELMET)) {
-//                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-//            } else {
-//                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
-//                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-//            }
-//        } catch (Exception e) {
-//            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, pollution * 100, pollution));
-//            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, pollution * 100, pollution));
-//        }
-
-//        if (pollution == 0) {
-//            p.removePotionEffect(PotionEffectType.BLINDNESS);
-//            p.removePotionEffect(PotionEffectType.SLOW);
-//        }
 
     }
 

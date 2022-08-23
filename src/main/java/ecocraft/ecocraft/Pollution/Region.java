@@ -24,7 +24,7 @@ public class Region {
     public  Map<String,String> regionInfo = new HashMap<>();
 
     private final String url = "https://api.waqi.info/feed";
-    //TODO token do config
+
     private final String token = Regions.apiToken;
 
     private HttpURLConnection httpURLConnection;
