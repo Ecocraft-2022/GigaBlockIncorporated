@@ -30,6 +30,7 @@ public class FishingListener implements Listener {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
+
     @EventHandler
     public void onFishCaught(PlayerFishEvent event) {
         Integer mediumPollution = plugin.getConfig().getInt("mediumPollutionEnd");
@@ -41,56 +42,64 @@ public class FishingListener implements Listener {
         Player player = event.getPlayer();
         Region region;
         try {
-           region=  Region.getPlayerRegion(player.getLocation().getBlockX(),player.getLocation().getBlockZ());
+            region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
-        if(overallPollution>mediumPollution) {
+        if (overallPollution > mediumPollution) {
             Item item = (Item) event.getCaught();
             handleFish(item);
         }
     }
+
     @EventHandler
-    public void eatDeadFishEvent(PlayerItemConsumeEvent e){
+    public void eatDeadFishEvent(PlayerItemConsumeEvent e) {
+
         ItemStack item = e.getItem();
-        String name = item.getItemMeta().getDisplayName();
-        Player player = e.getPlayer();
-        if(name.contains("Dead")){
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,50,2));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,90,10));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER,500,10));
+        if (item.getItemMeta().hasLore()) {
+            String name = item.getItemMeta().getDisplayName();
+            Player player = e.getPlayer();
+            if (name.contains("Dead")) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 50, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 90, 10));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 500, 10));
+            }
         }
     }
+
     @EventHandler
-    public void smeltDeadFishEvent(FurnaceSmeltEvent e){
-       Furnace furnace = (Furnace) e.getBlock().getState();
-       if(furnace.getInventory().getSmelting().getItemMeta().getLore().contains("Fish died because of pollution")){
-           ItemStack result = new ItemStack(Material.DRIED_KELP);
+    public void smeltDeadFishEvent(FurnaceSmeltEvent e) {
+        Furnace furnace = (Furnace) e.getBlock().getState();
+        ItemStack item = furnace.getInventory().getSmelting();
+        if (item.getItemMeta().hasLore()) {
+            if (item.getItemMeta().getLore().contains("Fish died because of pollution")) {
+                ItemStack result = new ItemStack(Material.DRIED_KELP);
 
-           ItemMeta meta = result.getItemMeta();
-           meta.setDisplayName("Cooked Dead Fish");
+                ItemMeta meta = result.getItemMeta();
+                meta.setDisplayName("Cooked Dead Fish");
 
-           List<String> lore = new ArrayList<>();
+                List<String> lore = new ArrayList<>();
 
-           lore.add("You really shouldn't eat it");
+                lore.add("You really shouldn't eat it");
 
-           meta.setLore(lore);
+                meta.setLore(lore);
 
-           result.setItemMeta(meta);
+                result.setItemMeta(meta);
 
-           e.setResult(result);
-       }
+                e.setResult(result);
+            }
+        }
     }
 
 
-    private static void handleFish(Item item){
+    private static void handleFish(Item item) {
 
         ItemStack itemStack = item.getItemStack();
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        itemMeta.setDisplayName("Dead " + item.getName().replaceFirst("Raw ",""));
+        itemMeta.setDisplayName("Dead " + item.getName().replaceFirst("Raw ", ""));
 
         List<String> lore = new ArrayList<>();
 
