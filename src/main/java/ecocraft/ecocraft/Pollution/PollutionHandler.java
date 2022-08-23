@@ -1,5 +1,6 @@
 package ecocraft.ecocraft.Pollution;
 
+import com.google.common.collect.Lists;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.Events.ChangeRegionEvent;
 import ecocraft.ecocraft.Utils.Util;
@@ -50,8 +51,8 @@ public class PollutionHandler implements Listener {
     @EventHandler
     public void regionChangeJoin(PlayerJoinEvent join) {
         Region region = initRegion(join.getPlayer());
-
-        handleLocalPollution(join.getPlayer(), region);
+        loadRegions(join.getPlayer());
+        handleLocalPollution(join.getPlayer(),region);
     }
 
     public static Region initRegion(Player player) {
@@ -60,7 +61,6 @@ public class PollutionHandler implements Listener {
 
         try {
             loadRegions(player);
-
             region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
             handlePollution(player, region);
 
@@ -99,20 +99,23 @@ public class PollutionHandler implements Listener {
             try {
                 ChangeRegionEvent event = new ChangeRegionEvent(player);
                 Bukkit.getServer().getPluginManager().callEvent(event);
+                loadRegions(player);
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
 
-        loadRegions(player);
+
 
     }
 
-    private static void loadRegions(Player player) {
-        Integer playerX = player.getLocation().getBlockX();
+    public static void loadRegions(Player player) {
 
-        Integer playerZ = player.getLocation().getBlockZ();
+
+        Integer playerX = player.getLocation().getBlockX() -  Double.valueOf(Math.ceil( player.getLocation().getDirection().getX())).intValue();
+
+        Integer playerZ = player.getLocation().getBlockZ() - Double.valueOf(Math.ceil( player.getLocation().getDirection().getZ())).intValue();
 
         List<Region> loadedRegions = new ArrayList<>();
 
@@ -121,9 +124,9 @@ public class PollutionHandler implements Listener {
             region = Region.getPlayerRegion(playerX, playerZ);
 
             Pair<Integer, Integer> center = region.getCenter();
-
-            for (double x = center.getValue0() - Regions.regionDim; x <= center.getValue0() + Regions.regionDim; x += Regions.regionDim) {
-                for (double z = center.getValue1() - Regions.regionDim; z <= center.getValue1() + Regions.regionDim; z += Regions.regionDim) {
+            Regions.loadedRegions.put(player, Lists.newArrayList(region));
+            for (double x = center.getValue0() - Regions.regionDim; x <= center.getValue0() + Regions.regionDim; x += Regions.regionDim/2) {
+                for (double z = center.getValue1() - Regions.regionDim; z <= center.getValue1() + Regions.regionDim; z += Regions.regionDim/2) {
                     loadedRegions.add(Region.getPlayerRegion((int) x, (int) z));
                 }
             }
@@ -135,35 +138,40 @@ public class PollutionHandler implements Listener {
 
     @EventHandler
     public void localPollution(ChangeRegionEvent e) {
-        handleLocalPollution(e.getPlayer(), e.getRegion());
+        handleLocalPollution(e.getPlayer(),e.getRegion());
     }
 
-    public static void handleLocalPollution(Player player, Region r) {
-        Region region = r;
-        Integer localPollution = region.getLocalPollution();
-        if (localPollution == null) {
+    public static void handleLocalPollution(Player player,Region reg) {
 
-            localPollution = 0;
+        for(Region region : Regions.loadedRegions.get(player)) {
 
-            Pair<Integer, Integer> leftBottom = new Pair<>(region.getCenter().getValue0() - Double.valueOf(Regions.regionDim / 2).intValue()
-                    , region.getCenter().getValue1() - Double.valueOf(Regions.regionDim / 2).intValue());
+            Integer localPollution = region.getLocalPollution();
+            if (localPollution == null) {
 
-            Pair<Integer, Integer> rightTop = new Pair<>(region.getCenter().getValue0() + Double.valueOf(Regions.regionDim / 2).intValue()
-                    , region.getCenter().getValue1() + Double.valueOf(Regions.regionDim / 2).intValue());
+                localPollution = 0;
 
-            World world = player.getWorld();
+                Pair<Integer, Integer> leftBottom = new Pair<>(region.getCenter().getValue0() - Double.valueOf(Regions.regionDim/2).intValue()
+                        , region.getCenter().getValue1() - Double.valueOf(Regions.regionDim/2).intValue());
+                Pair<Integer, Integer> rightTop = new Pair<>(region.getCenter().getValue0() + Double.valueOf(Regions.regionDim/2).intValue()
+                        , region.getCenter().getValue1() + Double.valueOf(Regions.regionDim/2).intValue());
 
-            for (int x = leftBottom.getValue0(); x <= rightTop.getValue0(); x++) {
-                for (int z = leftBottom.getValue1(); z <= rightTop.getValue1(); z++) {
-                    for (int y = 20; y < 255; y++) {
-                        Block b = world.getBlockAt(new Location(world, x, y, z));
-                        localPollution = goodPollution(localPollution, b);
+                for(int x = leftBottom.getValue0(); x<=rightTop.getValue0();x++){
+                    for(int z = leftBottom.getValue1();z<=rightTop.getValue1();z++){
+                        for(int y = 20; y<200; y++) {
+
+                            World world = player.getWorld();
+
+                            Block b = world.getBlockAt(new Location(world, x, y, z));
+
+                            localPollution = goodPollution(localPollution, b);
+
+                        }
                     }
+                    region.setLocalPollution(localPollution);
                 }
             }
-            region.setLocalPollution(localPollution);
         }
-        handlePollution(player, region);
+        handlePollution(player, reg);
     }
 
 

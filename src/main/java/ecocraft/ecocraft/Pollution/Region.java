@@ -34,8 +34,8 @@ public class Region {
         Pair<Integer,Integer> regionNumber = getRegionNumber(blockX,blockZ);
 
         //Center of region square
-        blockX = Double.valueOf((Regions.regionDim * regionNumber.getValue1()) - Regions.regionDim).intValue()  ;
-        blockZ = Double.valueOf((Regions.regionDim * regionNumber.getValue0()) - Regions.regionDim).intValue();
+        blockX = Double.valueOf((Regions.regionDim * regionNumber.getValue1()) - Regions.regionDim/2).intValue()  ;
+        blockZ = Double.valueOf((Regions.regionDim * regionNumber.getValue0()) - Regions.regionDim/2).intValue();
 
         this.center = new Pair<>(blockX,blockZ);
 
@@ -126,8 +126,8 @@ public class Region {
 
 
     public static Pair<Integer,Integer> getRegionNumber(Integer blockX,Integer blockZ ){
-        Integer height = Double.valueOf(blockZ/Regions.regionDim).intValue();
-        Integer width =  Double.valueOf(blockX/ Regions.regionDim).intValue();
+        Integer height = Double.valueOf(blockZ/Regions.regionDim).intValue() ;
+        Integer width =  Double.valueOf(blockX/ Regions.regionDim).intValue() +1 ;
         return new Pair<Integer, Integer>(height,width);
     }
 
