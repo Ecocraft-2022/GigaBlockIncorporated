@@ -59,6 +59,9 @@ public final class Ecocraft extends JavaPlugin {
         for(Player player: Bukkit.getOnlinePlayers()){
             Region region = PollutionHandler.initRegion(player);
             PollutionHandler.handleLocalPollution(player,region);
+            PollutionHandler.loadRegions(player);
+
+
         }
 
     }
