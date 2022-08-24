@@ -112,9 +112,8 @@ public class Util {
             if (bl.getType().equals(Material.NOTE_BLOCK)) {
                 NoteBlock nb = (NoteBlock) data;
                 World world = block.getWorld();
-
-                if(bl.getRelative(BlockFace.UP).equals(Material.NOTE_BLOCK)){
-                    NoteBlock relativeUP = (NoteBlock)bl.getRelative(BlockFace.UP);
+                if(bl.getRelative(BlockFace.UP).getType().equals(Material.NOTE_BLOCK)){
+                    NoteBlock relativeUP = (NoteBlock)bl.getRelative(BlockFace.UP).getBlockData();
                     res.add(compareBlocks(SolarPanelBase.getInstance(), nb) && compareBlocks(SolarPanel.getInstance(),relativeUP) && world.getHighestBlockAt(bl.getRelative(BlockFace.UP).getLocation()).equals(bl.getRelative(BlockFace.UP)));
                 }
 
@@ -178,6 +177,8 @@ public class Util {
             Util util = new Util();
 
             List<Furnace> furnaces = util.findFurnaces(block);
+
+            System.out.println(furnaces.size());
 
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> furnaces.stream().filter(f -> util.isConnectedToGrid(f.getBlock())).forEach(furnace -> {
                         furnace.setBurnTime(Short.MAX_VALUE);

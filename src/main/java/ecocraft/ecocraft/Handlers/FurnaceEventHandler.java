@@ -1,6 +1,10 @@
 package ecocraft.ecocraft.Handlers;
 
-import ecocraft.ecocraft.Ecocraft;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Lists;
+import ecocraft.ecocraft.Pollution.PollutionHandler;
+import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Utils.NightDetector;
 import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Bukkit;
@@ -16,6 +20,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,7 +29,9 @@ public class FurnaceEventHandler implements Listener, Runnable {
 
     private static Thread worker;
 
-    public static Map<Furnace, Integer> activeFurnaces = new HashMap<>();
+    private static Map<Furnace, Integer> activeFurnaces = new HashMap<>();
+
+    public static Map<Region, List<Furnace>> furnaces = new HashMap<>();
     private final static AtomicBoolean running = new AtomicBoolean(false);
     private int interval = 200;
 
@@ -56,23 +63,40 @@ public class FurnaceEventHandler implements Listener, Runnable {
 
     @EventHandler
     public void onFurnaceBurn(FurnaceBurnEvent e) {
-        if (e.getFuel().getType().equals(Material.COAL)) {
 
+        if (e.getFuel().getType().equals(Material.COAL)) {
             if (!running.get()) {
                 this.start();
             }
-
             if (e.isBurning()) {
-                activeFurnaces.put((Furnace) e.getBlock().getState(), e.getBurnTime());
+                Furnace furnace = (Furnace) e.getBlock().getState();
+                activeFurnaces.put(furnace, e.getBurnTime());
+                try {
+                    Region region = Region.getPlayerRegion(furnace.getX(),furnace.getZ());
+                    region.setLocalPollution(region.getLocalPollution()+1);
+                    if(!furnaces.containsKey(region)) furnaces.put(region, Lists.newArrayList(furnace)); else furnaces.get(region).add(furnace);
+                    updatePollution(region);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
 
+    private static void updatePollution(Region region){
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            try {
+                if(Region.getPlayerRegion(player.getLocation().getBlockX(),player.getLocation().getBlockZ()).equals(region)){
+                    PollutionHandler.handlePollution(player,region);
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
 
     private static void start() {
-
         worker = new Thread(new FurnaceEventHandler(plugin));
-
         worker.start();
     }
 
@@ -91,8 +115,7 @@ public class FurnaceEventHandler implements Listener, Runnable {
             for (Furnace e : activeFurnaces.keySet()) {
 
                 if (activeFurnaces.get(e) == 0) {
-                    activeFurnaces.remove(e);
-                    break;
+                    HandleLocalPollution(e);
                 }
                 try {
                     Directional direction = (Directional) e.getBlock().getBlockData();
@@ -108,11 +131,10 @@ public class FurnaceEventHandler implements Listener, Runnable {
 
                     furnaceLocation.getWorld().spawnParticle(Particle.SMOKE_LARGE, particleLocation, 5, 0, 1, 0, 0.1);
 
-
                     Integer time = (activeFurnaces.get(e)) - Double.valueOf(4).intValue();
                     activeFurnaces.put(e, time);
                 } catch (Exception ex) {
-                    activeFurnaces.remove(e);
+                    HandleLocalPollution(e);
                     break;
                 }
             }
@@ -124,8 +146,24 @@ public class FurnaceEventHandler implements Listener, Runnable {
                 System.out.println("Thread was interrupted, Failed to complete operation");
             }
 
-            if (activeFurnaces.isEmpty()) stop();
+            if (activeFurnaces.isEmpty()) {
+                stop();
+            };
         }
+    }
+
+    private void HandleLocalPollution(Furnace e) {
+        activeFurnaces.remove(e);
+        furnaces.entrySet().forEach(value-> {
+            value.getValue().stream().forEach(furnace ->{
+                if(furnace.equals(e)){
+                    value.getKey().setLocalPollution(value.getKey().getLocalPollution()-1);
+                    updatePollution(value.getKey());
+                }
+            });
+
+        });
+        return;
     }
 }
 

@@ -14,18 +14,15 @@ import org.bukkit.block.data.type.Sapling;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Boss;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -34,6 +31,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -179,10 +177,7 @@ public class PollutionHandler implements Listener {
 
         Integer localPollution = pollution;
 
-        if (b.getType().equals(Material.FURNACE)) {
 
-            localPollution++;
-        }
 
         if (b.getType().equals(Material.SPRUCE_SAPLING) ||
                 b.getType().equals(Material.ACACIA_SAPLING) ||
@@ -245,9 +240,6 @@ public class PollutionHandler implements Listener {
 
         Integer localPollution = region.getLocalPollution();
 
-        if (blockPlaced.getType().equals(Material.FURNACE)) {
-            localPollution--;
-        }
 
         if (blockPlaced.getType().equals(Material.SPRUCE_SAPLING) ||
                 blockPlaced.getType().equals(Material.ACACIA_SAPLING) ||
@@ -299,14 +291,15 @@ public class PollutionHandler implements Listener {
 
     }
 
-    private static BossBar b;
+
 
     public static boolean between(int variable, int minValueInclusive, int maxValueInclusive) {
         return variable >= minValueInclusive && variable <= maxValueInclusive;
     }
 
-    private static void handlePollution(Player p, Region region) {
+    public static Map<Player,BossBar> bossBarMap = new HashMap<>();
 
+    public static void handlePollution(Player p, Region region) {
         StringBuilder BossBarTitle = new StringBuilder();
         Integer overallPollution;
         if (region.getLocalPollution() == null) {
@@ -318,10 +311,16 @@ public class PollutionHandler implements Listener {
         String title = BossBarTitle
 //               .append("Local Pollution: ").append(region.getLocalPollution()).append("\n")
                 .append("Pollution: ").append(overallPollution).toString();
+        BossBar b;
+        if(!bossBarMap.containsKey(p)) {
+            b = Bukkit.createBossBar("",BarColor.WHITE,BarStyle.SOLID);
 
-        if (b == null) {
-            b = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
+        }else {
+            b = bossBarMap.get(p);
         }
+
+
+
 
 
         b.setTitle(title);
@@ -358,11 +357,9 @@ public class PollutionHandler implements Listener {
         }
 
         b.setProgress(barPol);
-
+        bossBarMap.put(p,b);
     }
 
-    public static BossBar getBossBar() {
-        return b;
-    }
+
 
 }
