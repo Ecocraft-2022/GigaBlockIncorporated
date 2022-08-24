@@ -1,6 +1,10 @@
 package ecocraft.ecocraft.Pollution;
 import com.google.gson.JsonObject;
 import ecocraft.ecocraft.Utils.Util;
+import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.javatuples.Pair;
 import org.json.*;
 import java.io.BufferedReader;
@@ -12,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Region {
+
 
     private static Map<Pair<Integer,Integer>,Region> regionMap = new HashMap<>();
 
@@ -145,5 +150,7 @@ public class Region {
     public void setLocalPollution(Integer localPollution) {
         this.localPollution = localPollution;
     }
+
+
 }
 

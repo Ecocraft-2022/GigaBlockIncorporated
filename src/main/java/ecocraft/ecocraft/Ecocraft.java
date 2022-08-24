@@ -68,7 +68,7 @@ public final class Ecocraft extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        PollutionHandler.getBossBar().removeAll();
+        PollutionHandler.bossBarMap.values().forEach(bar -> bar.removeAll());
         // Plugin shutdown logic
     }
 

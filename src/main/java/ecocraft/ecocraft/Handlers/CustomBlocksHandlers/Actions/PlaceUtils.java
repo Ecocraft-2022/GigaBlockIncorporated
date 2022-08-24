@@ -61,6 +61,7 @@ public class PlaceUtils {
 
     public static void onCablePlaced(BlockPlaceEvent e,Plugin plugin) {
         addBlockData(e, Cable.getInstance());
+
         Util.activateFurnaces(e.getBlock(),plugin);
 //        Util u = new Util();
 //        Block block = e.getBlockPlaced();
