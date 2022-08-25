@@ -220,5 +220,15 @@ public class Util {
         });
     }
 
+    public static boolean isCrop(Block block){
+
+        Material blockMaterial = block.getType();
+
+        return blockMaterial.equals(Material.WHEAT)||
+                blockMaterial.equals(Material.CARROTS)||
+                blockMaterial.equals(Material.TALL_GRASS)||
+                blockMaterial.equals(Material.POTATO);
+    }
+
 }
 

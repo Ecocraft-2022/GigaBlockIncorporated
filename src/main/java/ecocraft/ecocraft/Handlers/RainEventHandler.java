@@ -5,6 +5,7 @@ import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import ecocraft.ecocraft.Events.AcidRain;
 import ecocraft.ecocraft.Events.NightEvent;
+import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -15,6 +16,8 @@ import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.Plugin;
@@ -24,12 +27,15 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RainEventHandler implements Listener {
 
     Plugin plugin;
 
     AcidRain acidRain;
+
+
 
     int task = -1;
 
@@ -39,6 +45,22 @@ public class RainEventHandler implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    @EventHandler
+    public void pollutedDestroy(BlockBreakEvent e){
+
+        Integer mediumPollution = plugin.getConfig().getInt("mediumPollutionEnd");
+
+        Block block = e.getBlock();
+        if(Util.isCrop(block)) {
+            Location blockLocation = block.getLocation();
+            Region region = Region.getPlayerRegion(blockLocation.getBlockX(), blockLocation.getBlockZ());
+            Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
+            if(overallPollution>mediumPollution){
+                Random random = new Random();
+                    e.setDropItems(random.nextBoolean());
+            }
+        }
+    }
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent e) {
         AcidRain rain = new AcidRain();
