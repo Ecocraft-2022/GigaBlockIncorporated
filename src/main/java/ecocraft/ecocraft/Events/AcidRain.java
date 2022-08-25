@@ -3,6 +3,7 @@ package ecocraft.ecocraft.Events;
 import ecocraft.ecocraft.Ecocraft;
 import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Pollution.Regions;
+import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
@@ -77,7 +78,7 @@ public class AcidRain {
             Block randomElement = blocks.get(randomIndex);
             blocks.remove(randomIndex);
 
-            if (randomElement.getBlockData() instanceof Leaves ||  isCrop(randomElement)) {
+            if (randomElement.getBlockData() instanceof Leaves ||  Util.isCrop(randomElement)) {
                 randomElement.setType(Material.AIR);
             }
 
@@ -109,7 +110,7 @@ public class AcidRain {
                     for (double z = center.getValue1() - (Regions.regionDim / 2); z <= center.getValue1() + (Regions.regionDim / 2); z++) {
                         Block block = world.getHighestBlockAt((int) x, (int) z);
 
-                        if (block.getBlockData() instanceof Leaves || block.getType().equals(Material.GRASS_BLOCK) || isCrop(block)) {
+                        if (block.getBlockData() instanceof Leaves || block.getType().equals(Material.GRASS_BLOCK) || Util.isCrop(block)) {
                             result.add(block);
                         }
 
@@ -121,15 +122,7 @@ public class AcidRain {
         return result;
     }
 
-    private static boolean isCrop(Block block){
 
-        Material blockMaterial = block.getType();
-
-        return blockMaterial.equals(Material.WHEAT)||
-                blockMaterial.equals(Material.CARROTS)||
-                blockMaterial.equals(Material.TALL_GRASS)||
-                blockMaterial.equals(Material.POTATO);
-    }
 
 }
 
