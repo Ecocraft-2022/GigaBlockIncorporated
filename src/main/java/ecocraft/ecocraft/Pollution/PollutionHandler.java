@@ -213,7 +213,7 @@ public class PollutionHandler implements Listener {
 
             region.setLocalPollution(localPollution);
 
-            handlePollution(e.getPlayer(), region);
+            Util.updatePollution(region);
         }, 2);
     }
 
@@ -249,7 +249,7 @@ public class PollutionHandler implements Listener {
 
         region.setLocalPollution(localPollution);
 
-        handlePollution(e.getPlayer(), region);
+       Util.updatePollution(region);
     }
 
     @EventHandler
