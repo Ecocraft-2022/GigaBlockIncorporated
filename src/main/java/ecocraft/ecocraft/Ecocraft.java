@@ -12,13 +12,16 @@ import ecocraft.ecocraft.CustomBlocks.RecyclerBlock;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 
+import ecocraft.ecocraft.Events.GiveDamageEvent;
 import ecocraft.ecocraft.Handlers.*;
 
 import ecocraft.ecocraft.Pollution.PollutionHandler;
 import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Pollution.Regions;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -66,6 +69,25 @@ public final class Ecocraft extends JavaPlugin {
 
 
         }
+
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this,()->{
+            Integer mediumPollution = getConfig().getInt("mediumPollutionEnd");
+            Bukkit.getOnlinePlayers().forEach(player -> {
+
+                Location playerLocation = player.getLocation();
+
+                Region region = Region.getPlayerRegion(playerLocation.getBlockX(),playerLocation.getBlockZ());
+                if(region.getLocalPollution()!=null) {
+                    Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
+                    if (overallPollution > mediumPollution) {
+                        Event event = new GiveDamageEvent(player);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    }
+                }
+            });
+        },0,100);
+
 
     }
 

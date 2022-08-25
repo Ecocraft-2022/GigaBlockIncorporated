@@ -3,6 +3,7 @@ package ecocraft.ecocraft.Pollution;
 import com.google.common.collect.Lists;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.Events.ChangeRegionEvent;
+import ecocraft.ecocraft.Events.GiveDamageEvent;
 import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -192,6 +193,12 @@ public class PollutionHandler implements Listener {
         }
 
         return localPollution;
+    }
+
+
+    @EventHandler
+    public void damagePlayer(GiveDamageEvent event){
+        event.getPlayer().damage(2);
     }
 
     @EventHandler

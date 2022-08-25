@@ -35,9 +35,6 @@ public class AcidRain {
 
         List<Block> allBlocks = new ArrayList<>();
 
-
-
-
         for (Player player : Bukkit.getOnlinePlayers()) {
 
             Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
@@ -62,8 +59,6 @@ public class AcidRain {
                     player.damage(region.getLocalPollution() + region.getPollutionLevel() > mediumPollution ? highDamage/2 : lowDamage);
                 }
             }
-
-
             decayBlocks(allBlocks);
         }
     }
