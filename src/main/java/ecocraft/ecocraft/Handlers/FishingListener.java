@@ -40,12 +40,10 @@ public class FishingListener implements Listener {
             return;
 
         Player player = event.getPlayer();
-        Region region;
-        try {
-            region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+
+        Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+
         Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
         if (overallPollution > mediumPollution) {
             Item item = (Item) event.getCaught();

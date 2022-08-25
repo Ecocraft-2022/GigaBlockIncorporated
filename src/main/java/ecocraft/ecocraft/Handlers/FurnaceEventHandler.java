@@ -71,29 +71,17 @@ public class FurnaceEventHandler implements Listener, Runnable {
             if (e.isBurning()) {
                 Furnace furnace = (Furnace) e.getBlock().getState();
                 activeFurnaces.put(furnace, e.getBurnTime());
-                try {
+
                     Region region = Region.getPlayerRegion(furnace.getX(),furnace.getZ());
                     region.setLocalPollution(region.getLocalPollution()+1);
                     if(!furnaces.containsKey(region)) furnaces.put(region, Lists.newArrayList(furnace)); else furnaces.get(region).add(furnace);
-                    updatePollution(region);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                    Util.updatePollution(region);
+
             }
         }
     }
 
-    private static void updatePollution(Region region){
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            try {
-                if(Region.getPlayerRegion(player.getLocation().getBlockX(),player.getLocation().getBlockZ()).equals(region)){
-                    PollutionHandler.handlePollution(player,region);
-                }
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-    }
+
 
     private static void start() {
         worker = new Thread(new FurnaceEventHandler(plugin));
@@ -157,8 +145,7 @@ public class FurnaceEventHandler implements Listener, Runnable {
         furnaces.entrySet().forEach(value-> {
             value.getValue().stream().forEach(furnace ->{
                 if(furnace.equals(e)){
-                    value.getKey().setLocalPollution(value.getKey().getLocalPollution()-1);
-                    updatePollution(value.getKey());
+                    Util.updatePollution(value.getKey());
                 }
             });
 

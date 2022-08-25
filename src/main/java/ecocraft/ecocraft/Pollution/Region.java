@@ -34,7 +34,7 @@ public class Region {
 
     private HttpURLConnection httpURLConnection;
 
-    private Region(Integer blockX,Integer blockZ) throws IOException {
+    private Region(Integer blockX,Integer blockZ) {
 
         Pair<Integer,Integer> regionNumber = getRegionNumber(blockX,blockZ);
 
@@ -47,50 +47,51 @@ public class Region {
         String coordinates = minecraftCoordinatesToRealCoordinates(blockX,blockZ);
 
         StringBuilder builder = new StringBuilder(url);
+        try {
+            //population gur
+            URL populatedUrl = new URL(builder.append(geoString(coordinates)).append(getToken(token)).toString());
 
-        //population gur
-        URL populatedUrl = new URL(builder.append(geoString(coordinates)).append(getToken(token)).toString());
+            //connection to api
+            httpURLConnection = (HttpURLConnection) populatedUrl.openConnection();
+            httpURLConnection.setRequestMethod("GET");
 
-        //connection to api
-        httpURLConnection = (HttpURLConnection) populatedUrl.openConnection();
-        httpURLConnection.setRequestMethod("GET");
+            //Reaing data
+            BufferedReader content;
 
-        //Reaing data
-        BufferedReader content;
+            if (httpURLConnection.getResponseCode() != 200) throw new IOException();
 
-        if(httpURLConnection.getResponseCode()!=200) throw new IOException();
+            content = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
 
-        content = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            StringBuilder response = new StringBuilder();
 
-        StringBuilder response = new StringBuilder();
+            String currentLine;
 
-        String currentLine;
-
-        while ((currentLine = content.readLine())!=null){
-            response.append(currentLine);
-        }
-        content.close();
-
-        JSONObject jsonObject = new JSONObject(response.toString());
-
-
-
-        JSONObject data = new JSONObject(jsonObject.get("data").toString());
-
-        JSONObject iaqi = new JSONObject(data.get("iaqi").toString());
-
-        JSONObject city = new JSONObject(data.get("city").toString());
-
-
-        addToHashmap(iaqi);
-        addToHashmap(city);
-
-            if( Integer.valueOf(data.get("aqi").toString())>300){
-                this.pollutionLevel = 5;
-            }else {
-                this.pollutionLevel = Double.valueOf(  Integer.valueOf(data.get("aqi").toString())).intValue();
+            while ((currentLine = content.readLine()) != null) {
+                response.append(currentLine);
             }
+            content.close();
 
+            JSONObject jsonObject = new JSONObject(response.toString());
+
+
+            JSONObject data = new JSONObject(jsonObject.get("data").toString());
+
+            JSONObject iaqi = new JSONObject(data.get("iaqi").toString());
+
+            JSONObject city = new JSONObject(data.get("city").toString());
+
+
+            addToHashmap(iaqi);
+            addToHashmap(city);
+
+            if (Integer.valueOf(data.get("aqi").toString()) > 300) {
+                this.pollutionLevel = 5;
+            } else {
+                this.pollutionLevel = Double.valueOf(Integer.valueOf(data.get("aqi").toString())).intValue();
+            }
+        }catch (IOException exception){
+            this.pollutionLevel = 0;
+        }
     }
 
 
@@ -122,7 +123,7 @@ public class Region {
 
     }
 
-    public static Region getPlayerRegion(Integer blockX,Integer blockZ ) throws IOException {
+    public static Region getPlayerRegion(Integer blockX,Integer blockZ ) {
         if(!regionMap.containsKey(getRegionNumber(blockX,blockZ))){
            regionMap.put(getRegionNumber(blockX,blockZ),new Region(blockX,blockZ));
         }

@@ -20,3 +20,5 @@ commands:
     description: teleport based on real coordinates
   details:
     description: region details
+  localPollution:
+    description: set local pollution

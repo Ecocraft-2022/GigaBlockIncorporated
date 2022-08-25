@@ -27,24 +27,24 @@ public class MainBlockHandler implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
     }
-    @EventHandler
-    public void onBlockPlacedAboveSolarPanel(BlockPlaceEvent e){
 
-        if(!Util.compareBlocks(SolarPanel.getInstance(),e.getBlockPlaced().getRelative(BlockFace.DOWN))) return;
+    @EventHandler
+    public void onBlockPlacedAboveSolarPanel(BlockPlaceEvent e) {
+
+        if (!Util.compareBlocks(SolarPanel.getInstance(), e.getBlockPlaced().getRelative(BlockFace.DOWN))) return;
 
         Util util = new Util();
 
-        List<Block> solarPanels= util.getSolarPanels(e.getBlockPlaced().getRelative(BlockFace.DOWN));
+        List<Block> solarPanels = util.getSolarPanels(e.getBlockPlaced().getRelative(BlockFace.DOWN));
 
-        long count = solarPanels.stream().filter((panel)->{
+        long count = solarPanels.stream().filter((panel) -> {
             World w = panel.getWorld();
             Block highest = w.getHighestBlockAt(panel.getLocation());
             return highest.equals(panel);
         }).count();
 
 
-
-        if (count == 0){
+        if (count == 0) {
 
             util.findFurnaces(e.getBlockPlaced().getRelative(BlockFace.DOWN).getRelative(BlockFace.DOWN)).forEach((furnace -> {
                 furnace.setBurnTime(Short.valueOf("0"));
@@ -57,6 +57,7 @@ public class MainBlockHandler implements Listener {
     public void placeCustomBlock(PlayerInteractEvent e) {
         if (e.getItem() == null) return;
         if (!e.getItem().getType().equals(Material.NOTE_BLOCK)) return;
+        if (!e.getItem().getItemMeta().hasDisplayName()) return;
         switch (e.getItem().getItemMeta().getDisplayName()) {
             case ("Solar Panel"):
                 function = PlaceUtils::onSolarPanelPlaced;
@@ -74,7 +75,7 @@ public class MainBlockHandler implements Listener {
     @EventHandler
     public void handle(BlockPlaceEvent e) {
         if (function != null) {
-            function.handle(e,plugin);
+            function.handle(e, plugin);
         }
         function = null;
     }
