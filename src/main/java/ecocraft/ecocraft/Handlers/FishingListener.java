@@ -2,8 +2,13 @@ package ecocraft.ecocraft.Handlers;
 
 
 import ecocraft.ecocraft.Pollution.Region;
+import ecocraft.ecocraft.Utils.Util;
+import org.bukkit.Instrument;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
@@ -68,6 +73,17 @@ public class FishingListener implements Listener {
 
     @EventHandler
     public void smeltDeadFishEvent(FurnaceSmeltEvent e) {
+
+        for(BlockFace face : Util.list){
+            Block relative =   e.getBlock().getRelative(face);
+            if(relative.getType().equals(Material.NOTE_BLOCK)){
+                NoteBlock noteBlock = (NoteBlock) relative.getBlockData();
+                noteBlock.setInstrument(Instrument.GUITAR);
+            }
+        }
+
+
+
         Furnace furnace = (Furnace) e.getBlock().getState();
         ItemStack item = furnace.getInventory().getSmelting();
         if (item.getItemMeta().hasLore()) {

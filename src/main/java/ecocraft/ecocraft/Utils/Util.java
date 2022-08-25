@@ -24,7 +24,7 @@ import java.util.List;
 
 
 public class Util {
-    private static final BlockFace list[] = {BlockFace.DOWN, BlockFace.EAST, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
+    public static final BlockFace list[] = {BlockFace.DOWN, BlockFace.EAST, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
 
     public List<Furnace> findFurnaces(Block block) {
         return findDesiredBlocks(block, new ArrayList<>(), new ArrayList<>());
