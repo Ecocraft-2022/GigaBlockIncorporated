@@ -35,8 +35,6 @@ public class RainEventHandler implements Listener {
 
     AcidRain acidRain;
 
-
-
     int task = -1;
 
     public RainEventHandler(Plugin plugin) {

@@ -28,11 +28,12 @@ public class FurnaceEventHandler implements Listener, Runnable {
     private static Plugin plugin;
 
     private static Thread worker;
+    private final static AtomicBoolean running = new AtomicBoolean(false);
+
 
     private static Map<Furnace, Integer> activeFurnaces = new HashMap<>();
 
     public static Map<Region, List<Furnace>> furnaces = new HashMap<>();
-    private final static AtomicBoolean running = new AtomicBoolean(false);
     private int interval = 200;
 
     public FurnaceEventHandler(Plugin plugin) {
