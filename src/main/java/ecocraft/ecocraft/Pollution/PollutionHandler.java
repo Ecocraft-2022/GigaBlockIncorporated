@@ -55,16 +55,14 @@ public class PollutionHandler implements Listener {
 
     public static Region initRegion(Player player) {
         Location playerLocation = player.getLocation();
-        Region region;
 
-        try {
-            loadRegions(player);
-            region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
-            handlePollution(player, region);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        loadRegions(player);
+        Region region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
+        handlePollution(player, region);
+
+
         return region;
     }
 
@@ -117,9 +115,9 @@ public class PollutionHandler implements Listener {
 
         List<Region> loadedRegions = new ArrayList<>();
 
-        Region region;
-        try {
-            region = Region.getPlayerRegion(playerX, playerZ);
+
+
+            Region region = Region.getPlayerRegion(playerX, playerZ);
 
             Pair<Integer, Integer> center = region.getCenter();
             Regions.loadedRegions.put(player, Lists.newArrayList(region));
@@ -129,9 +127,7 @@ public class PollutionHandler implements Listener {
                 }
             }
             Regions.loadedRegions.put(player, loadedRegions);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     @EventHandler
@@ -205,13 +201,11 @@ public class PollutionHandler implements Listener {
 
             Player player = e.getPlayer();
 
-            Region region;
 
-            try {
-                region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-            } catch (IOException ex) {
-                return;
-            }
+
+
+            Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+
 
             Integer localPollution = region.getLocalPollution();
 
@@ -230,13 +224,10 @@ public class PollutionHandler implements Listener {
 
         Player player = e.getPlayer();
 
-        Region region;
 
-        try {
-            region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-        } catch (IOException ex) {
-            return;
-        }
+
+        Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+
 
         Integer localPollution = region.getLocalPollution();
 
@@ -299,6 +290,8 @@ public class PollutionHandler implements Listener {
 
     public static Map<Player,BossBar> bossBarMap = new HashMap<>();
 
+
+
     public static void handlePollution(Player p, Region region) {
         StringBuilder BossBarTitle = new StringBuilder();
         Integer overallPollution;
@@ -307,6 +300,8 @@ public class PollutionHandler implements Listener {
         } else {
             overallPollution = region.getPollutionLevel() + region.getLocalPollution();
         }
+
+        overallPollution = overallPollution < 0 ? 0 : overallPollution;
 
         String title = BossBarTitle
 //               .append("Local Pollution: ").append(region.getLocalPollution()).append("\n")
@@ -348,7 +343,7 @@ public class PollutionHandler implements Listener {
             b.setColor(BarColor.YELLOW);
         }
 
-        if (between(overallPollution, mediumPollution + 1, maxPollution)) {
+        if (overallPollution >= mediumPollution + 1) {
             b.setColor(BarColor.RED);
         }
 

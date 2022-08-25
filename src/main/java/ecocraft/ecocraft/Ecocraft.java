@@ -2,6 +2,7 @@ package ecocraft.ecocraft;
 
 import ecocraft.ecocraft.Commands.Pollution.PollutionDetails;
 import ecocraft.ecocraft.Commands.Pollution.RealCoordinatesCommand;
+import ecocraft.ecocraft.Commands.Pollution.SetLocalPollution;
 import ecocraft.ecocraft.Commands.Pollution.WhereCommand;
 import ecocraft.ecocraft.Commands.SolarPanles.CableCommands;
 import ecocraft.ecocraft.Commands.SolarPanles.SolarPanelBaseCommands;
@@ -38,7 +39,9 @@ public final class Ecocraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("cable")).setExecutor(new CableCommands());
         Objects.requireNonNull(getCommand("where")).setExecutor(new WhereCommand());
         Objects.requireNonNull(getCommand("details")).setExecutor(new PollutionDetails());
-       
+        Objects.requireNonNull(getCommand("localPollution")).setExecutor(new SetLocalPollution());
+
+
 
 
 

@@ -14,7 +14,7 @@ public class WhereCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
-        if(!(sender instanceof Player)){
+        if (!(sender instanceof Player)) {
             sender.sendMessage("Unable to send message");
             return true;
         }
@@ -22,19 +22,14 @@ public class WhereCommand implements CommandExecutor {
 
         Location playerLocation = player.getLocation();
 
-        Map<String,String> regionData;
 
-        try {
-            Region region = Region.getPlayerRegion(playerLocation.getBlockX(),playerLocation.getBlockZ());
+        Region region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
 
 
-            regionData = region.regionInfo;
-        } catch (IOException e) {
-           regionData = null;
-            return false;
-        }
+        Map<String, String> regionData = region.regionInfo;
 
-        String message = String.format("City: %s \n Location: %s",regionData.get("name"),regionData.get("geo"));
+
+        String message = String.format("City: %s \n Location: %s", regionData.get("name"), regionData.get("geo"));
 
         player.sendMessage(message);
 

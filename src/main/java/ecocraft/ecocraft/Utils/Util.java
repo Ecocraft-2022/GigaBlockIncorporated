@@ -4,7 +4,10 @@ import ecocraft.ecocraft.CustomBlocks.Cable;
 import ecocraft.ecocraft.CustomBlocks.CompareBlocks;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
+import ecocraft.ecocraft.Pollution.PollutionHandler;
+import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Pollution.Regions;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -209,7 +212,13 @@ public class Util {
 
         return new Pair<>(blockX,blockZ);
     }
-
+    public static void updatePollution(Region region){
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ()).equals(region)) {
+                PollutionHandler.handlePollution(player, region);
+            }
+        });
+    }
 
 }
 
