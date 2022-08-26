@@ -22,3 +22,5 @@ commands:
     description: region details
   localPollution:
     description: set local pollution
+  mask:
+    description: gives mask
