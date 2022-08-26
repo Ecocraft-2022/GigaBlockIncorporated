@@ -1,5 +1,6 @@
 package ecocraft.ecocraft;
 
+import ecocraft.ecocraft.Commands.CustomItems.MaskCommand;
 import ecocraft.ecocraft.Commands.Pollution.PollutionDetails;
 import ecocraft.ecocraft.Commands.Pollution.RealCoordinatesCommand;
 import ecocraft.ecocraft.Commands.Pollution.SetLocalPollution;
@@ -12,6 +13,7 @@ import ecocraft.ecocraft.CustomBlocks.RecyclerBlock;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 
+import ecocraft.ecocraft.CustomItems.Mask;
 import ecocraft.ecocraft.Events.GiveDamageEvent;
 import ecocraft.ecocraft.Handlers.*;
 
@@ -43,42 +45,43 @@ public final class Ecocraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("where")).setExecutor(new WhereCommand());
         Objects.requireNonNull(getCommand("details")).setExecutor(new PollutionDetails());
         Objects.requireNonNull(getCommand("localPollution")).setExecutor(new SetLocalPollution());
-
-
-
-
+        Objects.requireNonNull(getCommand("mask")).setExecutor(new MaskCommand());
 
         // Initialize regions using config file
 
         Regions.init(getConfig());
 
         MainEventHandler.init(this);
-        SolarPanel.getInstance();
-        SolarPanelBase.getInstance();
-
-        Cable.getInstance();
 
         MainEventHandler.init(this);
 
         RecyclerBlock.register(this);
 
-        for(Player player: Bukkit.getOnlinePlayers()){
+        SolarPanel.getInstance();
+        SolarPanelBase.getInstance();
+        Cable.getInstance();
+        Mask.getInstance();
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
             Region region = PollutionHandler.initRegion(player);
-            PollutionHandler.handleLocalPollution(player,region);
+            PollutionHandler.handleLocalPollution(player, region);
             PollutionHandler.loadRegions(player);
-
-
         }
 
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this,()->{
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             Integer mediumPollution = getConfig().getInt("mediumPollutionEnd");
-            Bukkit.getOnlinePlayers().forEach(player -> {
+            Bukkit.getOnlinePlayers().stream().filter(player ->
+                    player.getInventory().getHelmet()==null
+                            || !player.getInventory().getHelmet().hasItemMeta()
+                            || !player.getInventory().getHelmet().getItemMeta().hasLore()
+                            || !player.getInventory().getHelmet().getItemMeta().getDisplayName().equals("Mask")
+            ).forEach(player -> {
 
                 Location playerLocation = player.getLocation();
 
-                Region region = Region.getPlayerRegion(playerLocation.getBlockX(),playerLocation.getBlockZ());
-                if(region.getLocalPollution()!=null) {
+                Region region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
+                if (region.getLocalPollution() != null) {
                     Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
                     if (overallPollution > mediumPollution) {
                         Event event = new GiveDamageEvent(player);
@@ -86,7 +89,7 @@ public final class Ecocraft extends JavaPlugin {
                     }
                 }
             });
-        },0,100);
+        }, 0, 100);
 
 
     }
