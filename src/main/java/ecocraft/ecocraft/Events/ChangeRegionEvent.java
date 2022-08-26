@@ -1,14 +1,9 @@
 package ecocraft.ecocraft.Events;
 
 import ecocraft.ecocraft.Pollution.Region;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.io.IOException;
 
@@ -21,7 +16,7 @@ public final class ChangeRegionEvent extends Event {
 
     public ChangeRegionEvent(Player player) throws IOException {
         this.player = player;
-        this.region = Region.getPlayerRegion(player.getLocation().getBlockX(),player.getLocation().getBlockZ());
+        this.region = Region.getRegionBy(player);
 
     }
 

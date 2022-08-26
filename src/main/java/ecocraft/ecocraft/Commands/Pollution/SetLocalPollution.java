@@ -1,9 +1,7 @@
 package ecocraft.ecocraft.Commands.Pollution;
 
-import ecocraft.ecocraft.Pollution.PollutionHandler;
 import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Utils.Util;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,9 +16,10 @@ public class SetLocalPollution implements CommandExecutor {
             return true;
         }
 
-        Location playerLocation = ((Player) sender).getLocation();
+        Player player = ((Player) sender).getPlayer();
 
-        Region region = Region.getPlayerRegion(playerLocation.getBlockX(),playerLocation.getBlockZ());
+        assert player != null;
+        Region region = Region.getRegionBy(player);
         try {
             region.setLocalPollution(Integer.valueOf(strings[0]));
             Util.updatePollution(region);

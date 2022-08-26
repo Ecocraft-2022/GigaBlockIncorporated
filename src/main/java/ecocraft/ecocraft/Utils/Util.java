@@ -214,7 +214,7 @@ public class Util {
     }
     public static void updatePollution(Region region){
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ()).equals(region)) {
+            if (Region.getRegionBy(player).equals(region)) {
                 PollutionHandler.handlePollution(player, region);
             }
         });

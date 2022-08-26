@@ -5,17 +5,12 @@ import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.Events.ChangeRegionEvent;
 import ecocraft.ecocraft.Events.GiveDamageEvent;
 import ecocraft.ecocraft.Utils.Util;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.block.data.type.Sapling;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Boss;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +18,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -38,9 +34,7 @@ import java.util.Map;
 
 
 public class PollutionHandler implements Listener {
-
     private static Plugin plugin;
-
     public PollutionHandler(Plugin plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -57,12 +51,9 @@ public class PollutionHandler implements Listener {
     public static Region initRegion(Player player) {
         Location playerLocation = player.getLocation();
 
-
-
         loadRegions(player);
-        Region region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
+        Region region = Region.getRegionBy(player);
         handlePollution(player, region);
-
 
         return region;
     }
@@ -85,11 +76,9 @@ public class PollutionHandler implements Listener {
         Score score = obj.getScore("region");
 
         Integer playerX = player.getLocation().getBlockX();
-
         Integer playerZ = player.getLocation().getBlockZ();
 
         Pair<Integer, Integer> regionN = Region.getRegionNumber(playerX, playerZ);
-
 
         if (score.getScore() != regionN.getValue0() + regionN.getValue1()) {
             score.setScore(regionN.getValue0() + regionN.getValue1());
@@ -102,32 +91,21 @@ public class PollutionHandler implements Listener {
                 throw new RuntimeException(ex);
             }
         }
-
-
-
     }
 
     public static void loadRegions(Player player) {
-
-
-        Integer playerX = player.getLocation().getBlockX() -  Double.valueOf(Math.ceil( player.getLocation().getDirection().getX())).intValue();
-
-        Integer playerZ = player.getLocation().getBlockZ() - Double.valueOf(Math.ceil( player.getLocation().getDirection().getZ())).intValue();
-
         List<Region> loadedRegions = new ArrayList<>();
 
+        Region region = Region.getRegionBy(player);
 
-
-            Region region = Region.getPlayerRegion(playerX, playerZ);
-
-            Pair<Integer, Integer> center = region.getCenter();
-            Regions.loadedRegions.put(player, Lists.newArrayList(region));
-            for (double x = center.getValue0() - Regions.regionDim; x <= center.getValue0() + Regions.regionDim; x += Regions.regionDim/2) {
-                for (double z = center.getValue1() - Regions.regionDim; z <= center.getValue1() + Regions.regionDim; z += Regions.regionDim/2) {
-                    loadedRegions.add(Region.getPlayerRegion((int) x, (int) z));
-                }
+        Pair<Integer, Integer> center = region.getCenter();
+        Regions.loadedRegions.put(player, Lists.newArrayList(region));
+        for (double x = center.getValue0() - Regions.regionDim; x <= center.getValue0() + Regions.regionDim; x += Regions.regionDim/2) {
+            for (double z = center.getValue1() - Regions.regionDim; z <= center.getValue1() + Regions.regionDim; z += Regions.regionDim/2) {
+                loadedRegions.add(Region.getRegionBy((int) x, (int) z));
             }
-            Regions.loadedRegions.put(player, loadedRegions);
+        }
+        Regions.loadedRegions.put(player, loadedRegions);
 
     }
 
@@ -174,18 +152,6 @@ public class PollutionHandler implements Listener {
 
         Integer localPollution = pollution;
 
-
-
-        if (b.getType().equals(Material.SPRUCE_SAPLING) ||
-                b.getType().equals(Material.ACACIA_SAPLING) ||
-                b.getType().equals(Material.BIRCH_SAPLING) ||
-                b.getType().equals(Material.OAK_SAPLING) ||
-                b.getType().equals(Material.DARK_OAK_SAPLING) ||
-                b.getType().equals(Material.JUNGLE_SAPLING)
-        ) {
-            localPollution--;
-        }
-
         if (b.getType().equals(Material.NOTE_BLOCK)) {
             if (Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) b.getBlockData())) {
                 localPollution--;
@@ -195,24 +161,38 @@ public class PollutionHandler implements Listener {
         return localPollution;
     }
 
-
     @EventHandler
     public void damagePlayer(GiveDamageEvent event){
         event.getPlayer().damage(2);
     }
 
     @EventHandler
+    public void localPollutionOnTreeGrow(StructureGrowEvent e){
+        Location location = e.getLocation();
+        Region region = Region.getRegionBy(location);
+        Integer localPollution= region.getLocalPollution();
+        TreeType tree = e.getSpecies();
+        int pollutionDelta;
+        switch (tree){
+            case BIG_TREE:
+            case DARK_OAK:
+            case JUNGLE:
+                pollutionDelta = -2; break;
+            case BROWN_MUSHROOM:
+            case RED_MUSHROOM:
+                pollutionDelta = 0; break;
+            default:
+                pollutionDelta = -1;
+        }
+        region.setLocalPollution(localPollution + pollutionDelta);
+    }
+    @EventHandler
     public void localPollutionOnPlace(BlockPlaceEvent e) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             Block blockPlaced = e.getBlockPlaced();
 
             Player player = e.getPlayer();
-
-
-
-
-            Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-
+            Region region = Region.getRegionBy(player);
 
             Integer localPollution = region.getLocalPollution();
 
@@ -230,24 +210,10 @@ public class PollutionHandler implements Listener {
         Block blockPlaced = e.getBlock();
 
         Player player = e.getPlayer();
-
-
-
-        Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-
+        Region region = Region.getRegionBy(player);
 
         Integer localPollution = region.getLocalPollution();
 
-
-        if (blockPlaced.getType().equals(Material.SPRUCE_SAPLING) ||
-                blockPlaced.getType().equals(Material.ACACIA_SAPLING) ||
-                blockPlaced.getType().equals(Material.BIRCH_SAPLING) ||
-                blockPlaced.getType().equals(Material.OAK_SAPLING) ||
-                blockPlaced.getType().equals(Material.DARK_OAK_SAPLING) ||
-                blockPlaced.getType().equals(Material.JUNGLE_SAPLING)
-        ) {
-            localPollution++;
-        }
         if (blockPlaced.getType().equals(Material.NOTE_BLOCK)) {
             if (Util.compareBlocks(SolarPanel.getInstance(), (NoteBlock) blockPlaced.getBlockData())) {
                 localPollution++;
@@ -286,18 +252,13 @@ public class PollutionHandler implements Listener {
         }
 
         (player).setScoreboard(sb);
-
     }
-
-
 
     public static boolean between(int variable, int minValueInclusive, int maxValueInclusive) {
         return variable >= minValueInclusive && variable <= maxValueInclusive;
     }
 
     public static Map<Player,BossBar> bossBarMap = new HashMap<>();
-
-
 
     public static void handlePollution(Player p, Region region) {
         StringBuilder BossBarTitle = new StringBuilder();
@@ -321,17 +282,12 @@ public class PollutionHandler implements Listener {
             b = bossBarMap.get(p);
         }
 
-
-
-
-
         b.setTitle(title);
 
         b.setVisible(true);
         if (!b.getPlayers().contains(p)) {
             b.addPlayer(p);
         }
-
 
         Integer maxPollution = plugin.getConfig().getInt("maxPollution");
 
@@ -361,7 +317,4 @@ public class PollutionHandler implements Listener {
         b.setProgress(barPol);
         bossBarMap.put(p,b);
     }
-
-
-
 }

@@ -6,10 +6,21 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class HeatTimer extends BukkitRunnable {
+    private static final Material[] HEAT_BLOCKS = {
+            Material.BLACK_CONCRETE,
+            Material.GRAY_CONCRETE,
+            Material.BROWN_CONCRETE,
+            Material.BLACK_CONCRETE_POWDER,
+            Material.GRAY_CONCRETE_POWDER,
+            Material.BROWN_CONCRETE_POWDER,
+            Material.BLACK_WOOL,
+            Material.GRAY_WOOL,
+            Material.BROWN_WOOL,
+            Material.IRON_BLOCK
+    };
     @Override
     public void run() {
         long time = Objects.requireNonNull(Bukkit.getWorld("world")).getTime();
@@ -22,7 +33,7 @@ public class HeatTimer extends BukkitRunnable {
                         playerLocation.getBlockZ()
                 ).getBlockData().getMaterial();
 
-                if(blockMaterial == Material.GRAY_WOOL){
+                if(Arrays.stream(HEAT_BLOCKS).anyMatch(block -> block == blockMaterial)){
                     int ft = p.getFreezeTicks();
                     if(ft <= 200){
                         p.setFreezeTicks(ft + 5);

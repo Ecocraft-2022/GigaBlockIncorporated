@@ -16,14 +16,12 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +43,7 @@ public class FishingListener implements Listener {
             return;
 
         Player player = event.getPlayer();
-
-
-        Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+        Region region = Region.getRegionBy(player);
 
         Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
         if (overallPollution > mediumPollution) {

@@ -80,7 +80,7 @@ public final class Ecocraft extends JavaPlugin {
 
                 Location playerLocation = player.getLocation();
 
-                Region region = Region.getPlayerRegion(playerLocation.getBlockX(), playerLocation.getBlockZ());
+                Region region = Region.getRegionBy(player);
                 if (region.getLocalPollution() != null) {
                     Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
                     if (overallPollution > mediumPollution) {

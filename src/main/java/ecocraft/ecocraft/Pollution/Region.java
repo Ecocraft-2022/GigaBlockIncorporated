@@ -1,10 +1,7 @@
 package ecocraft.ecocraft.Pollution;
-import com.google.gson.JsonObject;
 import ecocraft.ecocraft.Utils.Util;
-import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.javatuples.Pair;
 import org.json.*;
 import java.io.BufferedReader;
@@ -123,9 +120,27 @@ public class Region {
 
     }
 
-    public static Region getPlayerRegion(Integer blockX,Integer blockZ ) {
+    public static Region getRegionBy(Player player) {
+        Integer blockX = player.getLocation().getBlockX();
+        Integer blockZ = player.getLocation().getBlockX();
         if(!regionMap.containsKey(getRegionNumber(blockX,blockZ))){
            regionMap.put(getRegionNumber(blockX,blockZ),new Region(blockX,blockZ));
+        }
+        return regionMap.get(getRegionNumber(blockX,blockZ));
+    }
+
+    public static Region getRegionBy(Location location) {
+        Integer blockX = location.getBlockX();
+        Integer blockZ = location.getBlockX();
+        if(!regionMap.containsKey(getRegionNumber(blockX,blockZ))){
+            regionMap.put(getRegionNumber(blockX,blockZ),new Region(blockX,blockZ));
+        }
+        return regionMap.get(getRegionNumber(blockX,blockZ));
+    }
+
+    public static Region getRegionBy(Integer blockX, Integer blockZ) {
+        if(!regionMap.containsKey(getRegionNumber(blockX,blockZ))){
+            regionMap.put(getRegionNumber(blockX,blockZ),new Region(blockX,blockZ));
         }
         return regionMap.get(getRegionNumber(blockX,blockZ));
     }
