@@ -5,16 +5,12 @@ import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Pollution.Regions;
 import ecocraft.ecocraft.Utils.Util;
 import org.bukkit.Bukkit;
-import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.type.Leaves;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.javatuples.Pair;
 
@@ -37,7 +33,7 @@ public class AcidRain {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
 
-            Region region = Region.getPlayerRegion(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+            Region region = Region.getRegionBy(player);
 
                 //player.getClientViewDistance() zwraca ilosc chunk
                 getBlocksFromPlayerLevel(player).forEach(b -> {

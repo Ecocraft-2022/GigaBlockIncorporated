@@ -1,6 +1,5 @@
 package ecocraft.ecocraft.Handlers;
 
-import com.google.common.collect.Lists;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 import ecocraft.ecocraft.Events.AcidRain;
@@ -11,21 +10,14 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
-import org.bukkit.block.data.type.Leaves;
 import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +43,7 @@ public class RainEventHandler implements Listener {
         Block block = e.getBlock();
         if(Util.isCrop(block)) {
             Location blockLocation = block.getLocation();
-            Region region = Region.getPlayerRegion(blockLocation.getBlockX(), blockLocation.getBlockZ());
+            Region region = Region.getRegionBy(blockLocation.getBlockX(), blockLocation.getBlockZ());
             Integer overallPollution = region.getLocalPollution() + region.getPollutionLevel();
             if(overallPollution>mediumPollution){
                 Random random = new Random();

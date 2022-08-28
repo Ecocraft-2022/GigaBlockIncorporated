@@ -1,13 +1,9 @@
 package ecocraft.ecocraft.Handlers;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
-import ecocraft.ecocraft.Pollution.PollutionHandler;
 import ecocraft.ecocraft.Pollution.Region;
 import ecocraft.ecocraft.Utils.NightDetector;
 import ecocraft.ecocraft.Utils.Util;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -20,7 +16,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -73,7 +68,7 @@ public class FurnaceEventHandler implements Listener, Runnable {
                 Furnace furnace = (Furnace) e.getBlock().getState();
                 activeFurnaces.put(furnace, e.getBurnTime());
 
-                    Region region = Region.getPlayerRegion(furnace.getX(),furnace.getZ());
+                    Region region = Region.getRegionBy(furnace.getX(),furnace.getZ());
                     region.setLocalPollution(region.getLocalPollution()+1);
                     if(!furnaces.containsKey(region)) furnaces.put(region, Lists.newArrayList(furnace)); else furnaces.get(region).add(furnace);
                     Util.updatePollution(region);

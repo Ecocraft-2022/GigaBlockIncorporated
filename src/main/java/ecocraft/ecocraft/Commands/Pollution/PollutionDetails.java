@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class PollutionDetails implements CommandExecutor {
@@ -29,17 +28,12 @@ public class PollutionDetails implements CommandExecutor {
         //getting scoreboard manager
         ScoreboardManager sm = Bukkit.getScoreboardManager();
 
-
         Scoreboard sb = sm.getNewScoreboard();
+        Player player = ((Player) sender).getPlayer();
 
-        Integer blockX = ((Player) sender).getLocation().getBlockX();
-        Integer blockZ = ((Player) sender).getLocation().getBlockZ();
-
-
-
-
-            //fetching region data
-        Map<String, String>  data = Region.getPlayerRegion(blockX, blockZ).regionInfo;
+        //fetching region data
+        assert player != null;
+        Map<String, String>  data = Region.getRegionBy(player).regionInfo;
 
 
         //creating new objective on scoreboard
