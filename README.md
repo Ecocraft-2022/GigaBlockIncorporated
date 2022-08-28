@@ -338,5 +338,5 @@ The most important one are world *dimensions*,*number of regions*
 
 <div id="instalation"/>
 
-## **Instalation**
+## **Installation**
 First you have to download [earth map](https://earth.motfe.net/map-downloads/) and replace your *world* folder with it.To install plugin you have to build jar file inside plugin folder located in your server file. Next you have to make changes to [configuration file](#configuration-file) (input width, height, api token and number of regions).
