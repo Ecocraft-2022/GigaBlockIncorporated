@@ -29,6 +29,7 @@ import java.util.Objects;
 
 
 public final class Ecocraft extends JavaPlugin {
+    private Integer mediumPollution;
     @Override
     public void onEnable() {
         // Loading main config file
@@ -37,6 +38,8 @@ public final class Ecocraft extends JavaPlugin {
 
         if (!getDataFolder().exists()) getDataFolder().mkdir();
         saveDefaultConfig();
+        mediumPollution = getConfig().getInt("mediumPollutionEnd");
+
         Objects.requireNonNull(getCommand("realTp")).setExecutor(new RealCoordinatesCommand());
         Objects.requireNonNull(getCommand("solar")).setExecutor(new SolarPanelCommands());
         Objects.requireNonNull(getCommand("solarbase")).setExecutor(new SolarPanelBaseCommands());
@@ -54,7 +57,6 @@ public final class Ecocraft extends JavaPlugin {
 
         MainEventHandler.init(this);
 
-
         SolarPanel.getInstance();
         SolarPanelBase.getInstance();
         Cable.getInstance();
@@ -66,17 +68,13 @@ public final class Ecocraft extends JavaPlugin {
             PollutionHandler.loadRegions(player);
         }
 
-
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            Integer mediumPollution = getConfig().getInt("mediumPollutionEnd");
             Bukkit.getOnlinePlayers().stream().filter(player ->
                     player.getInventory().getHelmet()==null
                             || !player.getInventory().getHelmet().hasItemMeta()
                             || !player.getInventory().getHelmet().getItemMeta().hasLore()
                             || !player.getInventory().getHelmet().getItemMeta().getDisplayName().equals("Mask")
             ).forEach(player -> {
-
-                Location playerLocation = player.getLocation();
 
                 Region region = Region.getRegionBy(player);
                 if (region.getLocalPollution() != null) {
@@ -88,14 +86,10 @@ public final class Ecocraft extends JavaPlugin {
                 }
             });
         }, 0, 100);
-
-
     }
-
     @Override
     public void onDisable() {
         PollutionHandler.bossBarMap.values().forEach(bar -> bar.removeAll());
         // Plugin shutdown logic
     }
-
 }

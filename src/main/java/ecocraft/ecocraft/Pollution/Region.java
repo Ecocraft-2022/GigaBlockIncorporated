@@ -153,7 +153,7 @@ public class Region {
     }
 
     public  Integer getPollutionLevel() {
-        return   pollutionLevel ;
+        return pollutionLevel ;
     }
     public Pair<Integer, Integer> getCenter() {
         return center;
