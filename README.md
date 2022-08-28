@@ -87,12 +87,20 @@ It is the main (other way -> [click](#c-details)) way of indication how polluted
 There are three main indications:
 
 * **Low Pollution** 
+ <br/>
+
 ![low_pollution](./photos/lowPollution.png "Low_Pollution")
 
 * **Medium Pollution** 
+
+ <br/>
+
 ![medium_pollution](./photos/mediumPollution.png "Medium_Pollution")
 
 * **High Pollution** 
+
+ <br/>
+
 ![high_pollution](./photos/highPollution.png "High_Pollution")
 
 Look at [this](#pollution-effects) for further information about pollution effects.
@@ -175,6 +183,7 @@ This block is required to transport energy from photovoltaic panel to cable. To 
 
 ## **Cable**
 This block is required to transport energy from photovoltaic panel base to furnace. To obtain this block use either [./solarbase](#c-cable) command od use [crafting](#cr-cable) recipe. 
+<br/>
 ![base](photos/cable.png)
 
 
@@ -196,7 +205,11 @@ The reason behind entering word dimensions is that it enable us to calculate in-
 
 ## **Heat Islands**
 
-//TODO
+Heat islands are urbanized areas that experience higher temperatures than outlying areas. This is caused by structures such as buildings, roads and other infrastructure absorb energy from sun an then re-emit it in form of heat. In our implantation we replaced this behavior. We categorized some blocks as heat absorbing (for example concrete). When players is standing to on heat absorbing block he starts to take damage (only when he does not wear armor on his feet).
+
+<br/>
+
+![heat](./photos/heat.png)
 
 <div id="commands"/>
 
@@ -260,20 +273,34 @@ Format of the command is `/localpollution <value>`.
 
 ## **Mask**
 Crafting of the [mask](#mask)
+<br/>
+
+![mask_c](./photos/mask_c.png)
 
 <div id="cr-solar-panel"/>
 
 ## **Photovoltaic Panel**
 Crafting of the [photovoltaic panel](#solar-panel)
+<br/>
+
+![solar_crafitn](./photos/solar_panel.png)
 <div id="cr-solar-panel-base"/>
 
 ## **Photovoltaic Panel Base**
 Crafting of the [photovoltaic panel base](#solar-panel-base)
+<br/>
+
+![solar_base_c](./photos/solar_base_c.png)
+
+
 
 <div id="cr-cable"/>
 
 ## **Cable**
 Crafting of the [cable](#cable)
+<br/>
+
+![cable_crafting](./photos/cable_c.png)
 
 <div id="texture-pack"/>
 
