@@ -9,7 +9,6 @@ import ecocraft.ecocraft.Commands.SolarPanles.CableCommands;
 import ecocraft.ecocraft.Commands.SolarPanles.SolarPanelBaseCommands;
 import ecocraft.ecocraft.Commands.SolarPanles.SolarPanelCommands;
 import ecocraft.ecocraft.CustomBlocks.Cable;
-import ecocraft.ecocraft.CustomBlocks.RecyclerBlock;
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
 import ecocraft.ecocraft.CustomBlocks.SolarPanelBase;
 
@@ -55,7 +54,6 @@ public final class Ecocraft extends JavaPlugin {
 
         MainEventHandler.init(this);
 
-        RecyclerBlock.register(this);
 
         SolarPanel.getInstance();
         SolarPanelBase.getInstance();
