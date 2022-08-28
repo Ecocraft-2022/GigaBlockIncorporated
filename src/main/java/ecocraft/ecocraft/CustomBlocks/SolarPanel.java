@@ -62,10 +62,11 @@ public class SolarPanel implements CompareBlocks {
         ShapedRecipe sr = new ShapedRecipe(key, solarPanel);
         sr.shape(
                 "RRR",
-                "BBB",
+                "CBC",
                 "PPP");
         sr.setIngredient('R', Material.LIGHT_BLUE_STAINED_GLASS);
-        sr.setIngredient('B', Material.REDSTONE_BLOCK);
+        sr.setIngredient('B', Material.QUARTZ_BLOCK);
+        sr.setIngredient('C', Material.REDSTONE_BLOCK);
         sr.setIngredient('P',Material.COPPER_BLOCK);
 
         Bukkit.addRecipe(sr);
