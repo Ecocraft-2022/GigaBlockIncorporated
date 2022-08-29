@@ -53,6 +53,8 @@
 
 **[9 Instalation](#instalation)**
 
+**[10 Miscellaneous](#misc)
+
 
  
 
@@ -207,8 +209,16 @@ The reason behind entering word dimensions is that it enable us to calculate in-
 
 ## **Heat Islands**
 
-Heat islands are urbanized areas that experience higher temperatures than outlying areas. This is caused by structures such as buildings, roads and other infrastructure absorb energy from sun an then re-emit it in form of heat. In our implantation we replaced this behavior. We categorized some blocks as heat absorbing (for example concrete). When players is standing to on heat absorbing block he starts to take damage (only when he does not wear armor on his feet).
+Heat islands are urbanized areas that experience higher temperatures 
+than outlying areas. This is caused by structures such as buildings, 
+roads and other infrastructure absorb energy from sun an 
+then re-emit it in form of heat. 
 
+In our visualization we tried to replicate that phenomena, but also keep the game playable.
+In order to achieve that goal, we categorized some blocks as heat absorbent. (for example concrete). 
+If the player stands in the heat for an extended period of time on such blocks, 
+he starts to take damage. To avoid taking damage player can wear leather boots, 
+action action which decreases her/his armor points.
 <br/>
 
 ![heat](./photos/heat.png)
@@ -346,3 +356,20 @@ The most important one are world *dimensions*, *number of regions*
 
 ## **Installation**
 First, you have to download [earth map] (https://earth.motfe.net/map-downloads/) and replace your *world* folder with it. To install the plugin you have to build a jar file inside the plugin folder located in your server file. Next, you have to make changes to [configuration file] (#configuration-file) (input width, height, API token and number of regions).
+
+
+## **Miscellaneous**
+<div id="misc"/>
+
+>List of absorbent blocks
+>---------
+>*  BLACK_CONCRETE
+>*  GRAY_CONCRETE
+>*  BROWN_CONCRETE
+>*  BLACK_CONCRETE_POWDER
+>*  GRAY_CONCRETE_POWDER
+>*  BROWN_CONCRETE_POWDER
+>*  BLACK_WOOL
+>*  GRAY_WOOL
+>*  BROWN_WOOL
+>*  IRON_BLOCK
