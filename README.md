@@ -288,7 +288,7 @@ Crafting of the [solar panel](#solar-panel)
 ![solar_crafitn](./photos/solar_panel.png)
 <div id="cr-solar-panel-base"/>
 
-## **Sp;ar Panel Base**
+## **Solar Panel Base**
 Crafting of the [solar panel base](#solar-panel-base)
 <br/>
 
