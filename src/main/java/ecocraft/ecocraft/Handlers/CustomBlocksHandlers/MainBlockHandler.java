@@ -1,12 +1,15 @@
 package ecocraft.ecocraft.Handlers.CustomBlocksHandlers;
 
 import ecocraft.ecocraft.CustomBlocks.SolarPanel;
+import ecocraft.ecocraft.Events.NightEvent;
 import ecocraft.ecocraft.Handlers.CustomBlocksHandlers.Actions.PlaceUtils;
 import ecocraft.ecocraft.Utils.Util;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -22,10 +25,32 @@ public class MainBlockHandler implements Listener {
 
     private FunctionalInterface function;
 
+
+
     public MainBlockHandler(Plugin plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
+    }
+
+    @EventHandler
+    public void onNightEvent(NightEvent e){
+        World world = plugin.getServer().getWorld("world");
+        Chunk[] chunks = world.getLoadedChunks();
+        for(Chunk chunk : chunks) {
+            for (int x = chunk.getX()<<4; x <= 15; x++) {
+                for (int z = chunk.getZ() << 4; z <= 15; z++) {
+                    Block block =  world.getHighestBlockAt(x,z);
+                    if( Util.compareBlocks(SolarPanel.getInstance(),block)){
+                        if(e.isNight()){
+                            Util.deactivateFurnaces(block,plugin);
+                        }else{
+                            Util.activateFurnaces(block,plugin);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler
@@ -45,7 +70,6 @@ public class MainBlockHandler implements Listener {
 
 
         if (count == 0) {
-
             util.findFurnaces(e.getBlockPlaced().getRelative(BlockFace.DOWN).getRelative(BlockFace.DOWN)).forEach((furnace -> {
                 furnace.setBurnTime(Short.valueOf("0"));
                 furnace.update();
