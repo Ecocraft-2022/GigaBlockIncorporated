@@ -20,16 +20,16 @@
     - [1.5.5. Mask](#mask) 
   
   
-**[2 Photovoltaic Instalation](#solar-panel-h)**
-  * [2.1. Photovoltaic Panel](#solar-panel) 
-  * [2.2. Photovoltaic Panel Base](#solar-panel-base)
+**[2 Photovoltaic Installation](#solar-panel-h)**
+  * [2.1. Solar Panel](#solar-panel) 
+  * [2.2. Solar Panel Base](#solar-panel-base)
   * [3.3. Cable](#cable)
   
 **[3 Regions](#regions)**
   * [3.1. Use of world map](#word-map) 
   * [3.2. Data from geo-location](#geo-location)
 
-**[4 Heat Isnalnds](#heat-islands)**
+**[4 Heat Islands](#heat-islands)**
 
 **[5 Commands](#commands)**
   * [5.1. /mask](#c-mask) 
@@ -51,7 +51,9 @@
 
 **[8 Configuration File](#configuration-file)**
 
-**[9 Instalation](#instalation)**
+**[9 Installation](#instalation)**
+
+**[10 Miscellaneous](#misc)**
 
 
  
@@ -60,24 +62,26 @@
 <div id="introduction"/>
 
 ## **GigaBlockIncorporated - Ecocraft**
-Main purpose of this plugin it to widen general knowledge about pollution an its negative effects. We decided to show how pollution affects certain areas of the word so this plugin is mend to be played on map that resembles earth such as maps found [here](https://earth.motfe.net/map-downloads/). In plugin showcase we decided to use map in scale 1:1000. We also used open source [api](https://aqicn.org/) to fetch pollution data in different parts of the world. But pollution is not only feature.
+The main purpose of this plugin is to broaden the general knowledge on pollution and its negative impacts. We decided to show how pollution affects certain areas of the word so this plugin is mended to be played on a map that resembles earth such as maps found [here](https://earth.motfe.net/map-downloads/). In plugin showcase we decided to use maps in scale 1:1000. We also used the open source [api](https://aqicn.org/) to retrieve pollution information from different parts of the world.
 
 <div id="pollution"/>
 
 ## **Pollution**
 
-This feature is supposed to show how pollution affect everything around us, and how strongly we affect environment and the other way.Basic principle behind pollution are [regions](#regions). Every region has certain attributes. In this section we will examine [global](#global-pollution) and [local](#local-pollution) pollution.Pollution that is taken into account is **overall pollution** - this is the sum of local and global pollution. There are three levels of pollution - low pollution (has no negative effects), medium pollution (has some negative effects) and high pollution (has game changing effects). Look at [this](#pollution-effects) for further information about pollution effects.
+This feature is supposed to show how pollution affects everything around us, and how strongly we affect the environment and the other way. The core principle underlying pollution are [regions] (#regions). Every region has certain attributes. In this section, we will focus on [global] (#global-pollution) and [local] (#local-pollution) pollution.The pollution accounted for is **overallpollution** - the sum of local and global pollution. There are three levels of pollution - low pollution (has no negative effects), moderate pollution (has certain negative effects) and high pollution (has revolutionary effects). Look at [this] (#pollution-effects) for further information about pollution effects.
+
 <div id="global-pollution"/>
 
 ## **Global Pollution**
 
-Global Pollution is fetched from api, and it cannot be changed by player - its the base pollution level for given [region](#regions). Global pollution value is the vale from the station situated nearest [regions](#regions) centre so it actual vale may be offset or does not match with actual geo location.
+Global Pollution is fetched from API, and it cannot be changed by player - it's the base pollution level for given [region] (#regions). Global pollution value is the value from the station situated in nearest [regions] (#regions) centre so its actual value may be offset or does not match with actual Geo location.
 
 <div id="local-pollution"/>
 
 
 
-Local Pollution is calculated on certain events - when player plants a tree, when player changes a region, and when furance is burning. Local pollution can be changed by the player it can be [increased](#increase-pollution) and [decreased](#decrease-pollution) by certain player actions. Players should control pollution level because it can affect them. It can by negative thus it can lover pollution level in region below base value.
+
+Local Pollution is calculated on certain events - when player plants a tree, when player changes a region, and when furnace is burning. Local pollution can be changed by the player it can be [increased](#increase-pollution) and [decreased](#decrease-pollution) by certain player actions. Players should control pollution level because it can affect them. It can by negative thus it can lover pollution level in region below base value.
 
 <div id="pollution-bar"/>
 
@@ -127,11 +131,10 @@ You can decrease pollution level by either planting sapling or placing [solar pa
 
 <div id="pollution-effects"/>
 
-There are no positive pollution effects. The upper bound of low, medium and high pollution can be changed in [configuration file](#configuration-file). When pollution in low there are no negative effects, when pollution is medium there are some negative effects ([acid rain](#acid-rain)) and when pollution is high there are plenty of negative effects ([acid rain](#acid-rain), [pollution damage](#pollution-damage), [no drop from crops](#no-drop-form-crops) and [dead fish in reservoirs](#dead-fish)).
-<div id="pollution-effects"/>
+There are no positive pollution effects. The upper bound of low, medium and high pollution can be changed in [configuration file](#configuration-file). When pollution in low there are no negative effects, when pollution is medium there are some negative effects ([acid rain](#acid-rain)) and when pollution is high there are plenty of negative effects ([acid rain](#acid-rain), [pollution damage](#pollution-damage), [no drop from crops](#no-drop-form-crops) and [dead fish in reservoirs](#dead-fish)).<div id="pollution-effects"/>
 
 ## **Acid Rain**
-This effect appears when pollution level is medium or higher.Acid rain takes place of normal rain.It destroys leafs,grass, and crops. It also damages living creatures including player. Damage vary from level. Damage values and pollution boundires can be set in [configuration file]("#configuration-file).
+This effect appears when pollution level is medium or higher.Acid rain takes place of normal rain.It destroys leafs,grass, and crops. It also damages living creatures including player. Damage vary from level. Damage values and pollution boundaries can be set in [configuration file]("#configuration-file).
 <div id="pollution-damage"/>
 
 ## **Pollution Damage**
@@ -160,20 +163,20 @@ This is the countermeasure to [pollution damage](#pollution-damage). When player
 <div id="solar-panel-h"/>
 
 ## **Photovoltaic installation**
-Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [photovoltaic panel base](#solar-panel-base) and [photovoltaic panel](#solar-panel). [Photovoltaic panel](#solar-panel) must be placed on [photovoltaic panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connet furnaces use [cable](#cable).
+Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [solar panel base](#solar-panel-base) and [solar panel](#solar-panel). [solar panel](#solar-panel) must be placed on [solar panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connect furnaces use [cable](#cable).
 
-![instalation](/photos/instalation.png)
+![installation](/photos/instalation.png)
 
 <div id="solar-panel"/>
 
-## **Photovoltaic panel**
-It is the source of energy in [photovoltaic installation](#solar-panel-h). To obtain this block use either [./solar](#c-solar) command od use [crafting](#cr-solar-panel) recipe.
+## **Solar panel**
+It is the source of energy in [photovoltaic installation](#solar-panel-h). To obtain this block use either [. /solar](#c-solar) command or use [crafting](#cr-solar-panel) recipe.
 <br/>
 
 ![panel](photos/panel.png)
 <div id="solar-panel-base"/>
 
-## **Photovoltaic panel base**
+## **Solar panel base**
 This block is required to transport energy from photovoltaic panel to cable. To obtain this block use either [./solarbase](#c-solar-panel-base) command od use [crafting](#cr-solar-panel-base) recipe. 
 <br/>
 
@@ -182,7 +185,7 @@ This block is required to transport energy from photovoltaic panel to cable. To 
 <div id="cable"/>
 
 ## **Cable**
-This block is required to transport energy from photovoltaic panel base to furnace. To obtain this block use either [./solarbase](#c-cable) command od use [crafting](#cr-cable) recipe. 
+This block is required to transport energy from photovoltaic panel base to furnace. To obtain this block use either [./cable](#c-cable) command od use [crafting](#cr-cable) recipe. 
 <br/>
 ![base](photos/cable.png)
 
@@ -196,6 +199,7 @@ Region is base on which pollution system is build. In [configuration file](#conf
 
 ## **Use of world map**
 Our plugin use word map influence to more immersion. Thanks to that player can play for eg. in their home country and experience how polluted is this area.
+
 <div id="geo-location"/>
 
 ## **Data from geo-location**
@@ -205,8 +209,16 @@ The reason behind entering word dimensions is that it enable us to calculate in-
 
 ## **Heat Islands**
 
-Heat islands are urbanized areas that experience higher temperatures than outlying areas. This is caused by structures such as buildings, roads and other infrastructure absorb energy from sun an then re-emit it in form of heat. In our implantation we replaced this behavior. We categorized some blocks as heat absorbing (for example concrete). When players is standing to on heat absorbing block he starts to take damage (only when he does not wear armor on his feet).
+Heat islands are urbanized areas that experience higher temperatures 
+than outlying areas. This is caused by structures such as buildings, 
+roads and other infrastructure absorb energy from sun an 
+then re-emit it in form of heat. 
 
+In our visualization we tried to replicate that phenomena, but also keep the game playable.
+In order to achieve that goal, we categorized some blocks as heat absorbent. (for example concrete). 
+If the player stands in the heat for an extended period of time on such blocks, 
+he starts to take damage. To avoid taking damage player can wear leather boots, 
+action action which decreases her/his armor points.
 <br/>
 
 ![heat](./photos/heat.png)
@@ -214,7 +226,7 @@ Heat islands are urbanized areas that experience higher temperatures than outlyi
 <div id="commands"/>
 
 ## **Commands**
-Those commands can only be used by admin
+Those commands can only be used by admin except [./where](#where) and [./details](#details).
 
 <div id="c-mask"/>
 
@@ -224,12 +236,12 @@ Gives player [mask](#mask)
 <div id="c-solar-panel"/>
 
 ## **/solar**
-Gives player [photovoltaic panel](#solar-panel)
+Gives player [solar panel](#solar-panel)
 
 <div id="c-solar-panel-base"/>
 
 ## **/solarbase**
-Gives player [photovoltaic panel base](#solar-panel-base)
+Gives player [solar panel base](#solar-panel-base)
 
 <div id="c-solar-panel-base"/>
 
@@ -247,19 +259,19 @@ Format of the command is `/realTp <latitude> <longitude> <y-value>`.
 <div id="c-where"/>
 
 ## **/where**
-This command displays on chat current region location. Location is fetched from center of the region
+This command displays on chat current region location. Location is fetched from center of the region.
 
 <div id="c-details"/>
 
 ## **/details**
-Shows detailed pollution values of current regions on the right of the screen. 
+Shows detailed pollution values of the current regions on the right of the screen. 
 
 ![details](/photos/details.png)
 
 <div id="c-localpollution"/>
 
 ## **/localpollution**
-Sets vale of local pollution to given value.
+Sets vale of local pollution to the given value.
 <br/>
 Format of the command is `/localpollution <value>`.
 
@@ -279,15 +291,15 @@ Crafting of the [mask](#mask)
 
 <div id="cr-solar-panel"/>
 
-## **Photovoltaic Panel**
-Crafting of the [photovoltaic panel](#solar-panel)
+## **Solar Panel**
+Crafting of the [solar panel](#solar-panel)
 <br/>
 
-![solar_crafitn](./photos/solar_panel.png)
+![solar_crafting](./photos/solar_panel.png)
 <div id="cr-solar-panel-base"/>
 
-## **Photovoltaic Panel Base**
-Crafting of the [photovoltaic panel base](#solar-panel-base)
+## **Solar Panel Base**
+Crafting of the [solar panel base](#solar-panel-base)
 <br/>
 
 ![solar_base_c](./photos/solar_base_c.png)
@@ -304,19 +316,19 @@ Crafting of the [cable](#cable)
 
 <div id="texture-pack"/>
 
-## **Texture Packe**
+## **Texture Pack**
 
-The texture pack is mostly based on noteblocks. This particular block has the most states. This property us to make the custom blocks used in our plugin, such as [cable](#cable),[Photovoltaic panel](#photovoltaic-panel) and [Photovoltaic panel base](#photovoltaic-panel-base). It also introduces the fiery screen, visible during the [heat island](#heat-islands) phenomenon and [face mask](#face-mask), which can be worn by the player.
+The texture pack is mostly based on notebooks. This particular block has the most states. This property us to make the custom blocks used in our plugin, such as [cable](#cable),[Solar panel](#solar-panel) and [Solar panel base](#solar-panel-base). It also introduces the fiery screen, visible during the [heat island](#heat-islands) phenomenon and [face mask](#face-mask), which can be worn by the player.
 
 <div id="configuration-file"/>
 
 ## **Configuration File**
-Configuration file (config.yml) is located in plugin folder (EcoCraft) inside plugin folder located in server files. 
+Configuration file (config. yml) is located in the plugin folder (EcoCraft) inside the plugin folder located in server files. 
 <br/>
 In configuration file you declare the base values required for plugin to work.
 <br/>
 
-The most important one are world *dimensions*,*number of regions*
+The most important one are world *dimensions*, *number of regions*
 
 ![worldDim](./photos/world_dim.png)
 <br/>
@@ -326,17 +338,38 @@ The most important one are world *dimensions*,*number of regions*
 
 ![apiToken](./photos/apiToken.png)
  <br/>
-  width and hight of the map, if they are wrong coordinates wil be calculated wrong thus breaking pollution system and without api token data will not be fetched from api.
+  width and height of the map, if they are wrong coordinates will be calculated wrong, thus breaking pollution system and without API token data will not be fetched from API.
   <br/>
 
-  Next values that can be chnged are *pollution boundaries* and *acid rain damage* those values are optional and set do default vales.
+   Next values that can be changed are *pollution boundaries* and *acid rain damage* those values are optional and set do default vales.
+   
+  
 <br/>
 
 ![pollutionValues](./photos/pollution-config.png)
 
 <br/>
 
-<div id="instalation"/>
+ Also *showcase mode* is optional. This mode gives admin reserved commands (implemented in [commands](#commands) to everyone.
+<br/>
+<div id="installation"/>
 
 ## **Installation**
-First you have to download [earth map](https://earth.motfe.net/map-downloads/) and replace your *world* folder with it.To install plugin you have to build jar file inside plugin folder located in your server file. Next you have to make changes to [configuration file](#configuration-file) (input width, height, api token and number of regions).
+First, you have to download [earth map] (https://earth.motfe.net/map-downloads/) and replace your *world* folder with it. To install the plugin you have to build a jar file inside the plugin folder located in your server file. Next, you have to make changes to [configuration file] (#configuration-file) (input width, height, API token and number of regions).
+
+
+## **Miscellaneous**
+<div id="misc"/>
+
+>List of absorbent blocks
+>---------
+>*  BLACK_CONCRETE
+>*  GRAY_CONCRETE
+>*  BROWN_CONCRETE
+>*  BLACK_CONCRETE_POWDER
+>*  GRAY_CONCRETE_POWDER
+>*  BROWN_CONCRETE_POWDER
+>*  BLACK_WOOL
+>*  GRAY_WOOL
+>*  BROWN_WOOL
+>*  IRON_BLOCK
