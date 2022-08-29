@@ -160,7 +160,7 @@ This is the countermeasure to [pollution damage](#pollution-damage). When player
 <div id="solar-panel-h"/>
 
 ## **Photovoltaic installation**
-Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [photovoltaic panel base](#solar-panel-base) and [photovoltaic panel](#solar-panel). [Photovoltaic panel](#solar-panel) must be placed on [photovoltaic panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connet furnaces use [cable](#cable).
+Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [solar panel base](#solar-panel-base) and [solar panel](#solar-panel). [solar panel](#solar-panel) must be placed on [photovoltaic panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connet furnaces use [cable](#cable).
 
 ![instalation](/photos/instalation.png)
 
@@ -279,15 +279,15 @@ Crafting of the [mask](#mask)
 
 <div id="cr-solar-panel"/>
 
-## **Photovoltaic Panel**
-Crafting of the [photovoltaic panel](#solar-panel)
+## **Solar Panel**
+Crafting of the [solar panel](#solar-panel)
 <br/>
 
 ![solar_crafitn](./photos/solar_panel.png)
 <div id="cr-solar-panel-base"/>
 
-## **Photovoltaic Panel Base**
-Crafting of the [photovoltaic panel base](#solar-panel-base)
+## **Sp;ar Panel Base**
+Crafting of the [solar panel base](#solar-panel-base)
 <br/>
 
 ![solar_base_c](./photos/solar_base_c.png)
@@ -306,7 +306,7 @@ Crafting of the [cable](#cable)
 
 ## **Texture Packe**
 
-The texture pack is mostly based on noteblocks. This particular block has the most states. This property us to make the custom blocks used in our plugin, such as [cable](#cable),[Photovoltaic panel](#photovoltaic-panel) and [Photovoltaic panel base](#photovoltaic-panel-base). It also introduces the fiery screen, visible during the [heat island](#heat-islands) phenomenon and [face mask](#face-mask), which can be worn by the player.
+The texture pack is mostly based on noteblocks. This particular block has the most states. This property us to make the custom blocks used in our plugin, such as [cable](#cable),[Solar panel](#solar-panel) and [Solar panel base](#solar-panel-base). It also introduces the fiery screen, visible during the [heat island](#heat-islands) phenomenon and [face mask](#face-mask), which can be worn by the player.
 
 <div id="configuration-file"/>
 
