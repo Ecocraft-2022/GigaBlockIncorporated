@@ -18,7 +18,7 @@ public class TexturePackHandler implements Listener {
     @EventHandler
     public void applyTexturePack(PlayerJoinEvent e){
         //will be working when repo will be public
-        e.getPlayer().setResourcePack("https://github.com/Ecocraft-2022/GigaBlockIncorporated/raw/main/src/main/resources/giga-resourcepackv4.zip");
+        e.getPlayer().setResourcePack("https://github.com/Ecocraft-2022/GigaBlockIncorporated/blob/main/src/main/resources/giga-resourcepackv4.zip?raw=true");
     }
 
 }
