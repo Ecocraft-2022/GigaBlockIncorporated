@@ -21,8 +21,8 @@
   
   
 **[2 Photovoltaic Instalation](#solar-panel-h)**
-  * [2.1. Photovoltaic Panel](#solar-panel) 
-  * [2.2. Photovoltaic Panel Base](#solar-panel-base)
+  * [2.1. Solar Panel](#solar-panel) 
+  * [2.2. Solar Panel Base](#solar-panel-base)
   * [3.3. Cable](#cable)
   
 **[3 Regions](#regions)**
@@ -168,7 +168,7 @@ Photovoltaic installation is an alternative way of smelting in furnaces, without
 <div id="solar-panel"/>
 
 ## **Solar panel**
-It is the source of energy in [photovoltaic installation] (#solar-panel-h). To obtain this block use either [. /solar] (#c-solar) command or use [crafting] (#cr-solar-panel) recipe.
+It is the source of energy in [photovoltaic installation](#solar-panel-h). To obtain this block use either [. /solar](#c-solar) command or use [crafting](#cr-solar-panel) recipe.
 <br/>
 
 ![panel](photos/panel.png)
