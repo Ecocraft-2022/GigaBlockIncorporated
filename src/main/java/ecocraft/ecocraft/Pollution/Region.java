@@ -122,7 +122,8 @@ public class Region {
 
     public static Region getRegionBy(Player player) {
         Integer blockX = player.getLocation().getBlockX();
-        Integer blockZ = player.getLocation().getBlockX();
+        Integer blockZ = player.getLocation().getBlockZ();
+
         if(!regionMap.containsKey(getRegionNumber(blockX,blockZ))){
            regionMap.put(getRegionNumber(blockX,blockZ),new Region(blockX,blockZ));
         }
@@ -131,7 +132,7 @@ public class Region {
 
     public static Region getRegionBy(Location location) {
         Integer blockX = location.getBlockX();
-        Integer blockZ = location.getBlockX();
+        Integer blockZ = location.getBlockZ();
         if(!regionMap.containsKey(getRegionNumber(blockX,blockZ))){
             regionMap.put(getRegionNumber(blockX,blockZ),new Region(blockX,blockZ));
         }

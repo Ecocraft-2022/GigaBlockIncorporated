@@ -20,6 +20,9 @@ public class WhereCommand implements CommandExecutor {
 
         Region region = Region.getRegionBy(player);
 
+
+
+
         Map<String, String> regionData = region.regionInfo;
 
         String message = String.format("City: %s \n Location: %s", regionData.get("name"), regionData.get("geo"));
