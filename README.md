@@ -20,7 +20,7 @@
     - [1.5.5. Mask](#mask) 
   
   
-**[2 Photovoltaic Instalation](#solar-panel-h)**
+**[2 Photovoltaic Installation](#solar-panel-h)**
   * [2.1. Solar Panel](#solar-panel) 
   * [2.2. Solar Panel Base](#solar-panel-base)
   * [3.3. Cable](#cable)
@@ -29,7 +29,7 @@
   * [3.1. Use of world map](#word-map) 
   * [3.2. Data from geo-location](#geo-location)
 
-**[4 Heat Isnalnds](#heat-islands)**
+**[4 Heat Islands](#heat-islands)**
 
 **[5 Commands](#commands)**
   * [5.1. /mask](#c-mask) 
@@ -51,9 +51,9 @@
 
 **[8 Configuration File](#configuration-file)**
 
-**[9 Instalation](#instalation)**
+**[9 Installation](#instalation)**
 
-**[10 Miscellaneous](#misc)
+**[10 Miscellaneous](#misc)**
 
 
  
@@ -81,7 +81,7 @@ Global Pollution is fetched from API, and it cannot be changed by player - it's 
 
 
 
-Local Pollution is calculated on certain events - when player plants a tree, when player changes a region, and when furance is burning. Local pollution can be changed by the player it can be [increased](#increase-pollution) and [decreased](#decrease-pollution) by certain player actions. Players should control pollution level because it can affect them. It can by negative thus it can lover pollution level in region below base value.
+Local Pollution is calculated on certain events - when player plants a tree, when player changes a region, and when furnace is burning. Local pollution can be changed by the player it can be [increased](#increase-pollution) and [decreased](#decrease-pollution) by certain player actions. Players should control pollution level because it can affect them. It can by negative thus it can lover pollution level in region below base value.
 
 <div id="pollution-bar"/>
 
@@ -134,7 +134,7 @@ You can decrease pollution level by either planting sapling or placing [solar pa
 There are no positive pollution effects. The upper bound of low, medium and high pollution can be changed in [configuration file](#configuration-file). When pollution in low there are no negative effects, when pollution is medium there are some negative effects ([acid rain](#acid-rain)) and when pollution is high there are plenty of negative effects ([acid rain](#acid-rain), [pollution damage](#pollution-damage), [no drop from crops](#no-drop-form-crops) and [dead fish in reservoirs](#dead-fish)).<div id="pollution-effects"/>
 
 ## **Acid Rain**
-This effect appears when pollution level is medium or higher.Acid rain takes place of normal rain.It destroys leafs,grass, and crops. It also damages living creatures including player. Damage vary from level. Damage values and pollution boundires can be set in [configuration file]("#configuration-file).
+This effect appears when pollution level is medium or higher.Acid rain takes place of normal rain.It destroys leafs,grass, and crops. It also damages living creatures including player. Damage vary from level. Damage values and pollution boundaries can be set in [configuration file]("#configuration-file).
 <div id="pollution-damage"/>
 
 ## **Pollution Damage**
@@ -163,9 +163,9 @@ This is the countermeasure to [pollution damage](#pollution-damage). When player
 <div id="solar-panel-h"/>
 
 ## **Photovoltaic installation**
-Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [solar panel base](#solar-panel-base) and [solar panel](#solar-panel). [solar panel](#solar-panel) must be placed on [solar panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connet furnaces use [cable](#cable).
+Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [solar panel base](#solar-panel-base) and [solar panel](#solar-panel). [solar panel](#solar-panel) must be placed on [solar panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connect furnaces use [cable](#cable).
 
-![instalation](/photos/instalation.png)
+![installation](/photos/instalation.png)
 
 <div id="solar-panel"/>
 
@@ -295,7 +295,7 @@ Crafting of the [mask](#mask)
 Crafting of the [solar panel](#solar-panel)
 <br/>
 
-![solar_crafitn](./photos/solar_panel.png)
+![solar_crafting](./photos/solar_panel.png)
 <div id="cr-solar-panel-base"/>
 
 ## **Solar Panel Base**
@@ -316,9 +316,9 @@ Crafting of the [cable](#cable)
 
 <div id="texture-pack"/>
 
-## **Texture Packe**
+## **Texture Pack**
 
-The texture pack is mostly based on noteblocks. This particular block has the most states. This property us to make the custom blocks used in our plugin, such as [cable](#cable),[Solar panel](#solar-panel) and [Solar panel base](#solar-panel-base). It also introduces the fiery screen, visible during the [heat island](#heat-islands) phenomenon and [face mask](#face-mask), which can be worn by the player.
+The texture pack is mostly based on notebooks. This particular block has the most states. This property us to make the custom blocks used in our plugin, such as [cable](#cable),[Solar panel](#solar-panel) and [Solar panel base](#solar-panel-base). It also introduces the fiery screen, visible during the [heat island](#heat-islands) phenomenon and [face mask](#face-mask), which can be worn by the player.
 
 <div id="configuration-file"/>
 
@@ -341,7 +341,7 @@ The most important one are world *dimensions*, *number of regions*
   width and height of the map, if they are wrong coordinates will be calculated wrong, thus breaking pollution system and without API token data will not be fetched from API.
   <br/>
 
-   Next values that can be chnged are *pollution boundaries* and *acid rain damage* those values are optional and set do default vales.
+   Next values that can be changed are *pollution boundaries* and *acid rain damage* those values are optional and set do default vales.
    
   
 <br/>
@@ -350,9 +350,9 @@ The most important one are world *dimensions*, *number of regions*
 
 <br/>
 
- Also *showcase mode* is optioanl. This mode gives admin reserved commands (implemented in [commands](#commands) to everyone.
+ Also *showcase mode* is optional. This mode gives admin reserved commands (implemented in [commands](#commands) to everyone.
 <br/>
-<div id="instalation"/>
+<div id="installation"/>
 
 ## **Installation**
 First, you have to download [earth map] (https://earth.motfe.net/map-downloads/) and replace your *world* folder with it. To install the plugin you have to build a jar file inside the plugin folder located in your server file. Next, you have to make changes to [configuration file] (#configuration-file) (input width, height, API token and number of regions).
