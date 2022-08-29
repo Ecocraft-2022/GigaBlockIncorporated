@@ -218,7 +218,7 @@ In our visualization we tried to replicate that phenomena, but also keep the gam
 In order to achieve that goal, we categorized some blocks as heat absorbent. (for example concrete). 
 If the player stands in the heat for an extended period of time on such blocks, 
 he starts to take damage. To avoid taking damage player can wear leather boots, 
-action action which decreases her/his armor points.
+action which decreases her/his armor points.
 <br/>
 
 ![heat](./photos/heat.png)
