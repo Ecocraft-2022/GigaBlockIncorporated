@@ -161,7 +161,7 @@ This is the countermeasure to [pollution damage](#pollution-damage). When player
 <div id="solar-panel-h"/>
 
 ## **Photovoltaic installation**
-Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [solar panel base](#solar-panel-base) and [solar panel](#solar-panel). [solar panel](#solar-panel) must be placed on [photovoltaic panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connet furnaces use [cable](#cable).
+Photovoltaic installation is an alternative way of smelting in furnaces, without producing any pollution at all. To make photovoltaic installation you have to have [cable](#cable), [solar panel base](#solar-panel-base) and [solar panel](#solar-panel). [solar panel](#solar-panel) must be placed on [solar panel base](#solar-panel-base) and when the criteria are fulfilled (there is a day, solar panel is not obscured) installation will be producing power. To connet furnaces use [cable](#cable).
 
 ![instalation](/photos/instalation.png)
 
