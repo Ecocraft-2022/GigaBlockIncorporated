@@ -60,20 +60,22 @@
 <div id="introduction"/>
 
 ## **GigaBlockIncorporated - Ecocraft**
-Main purpose of this plugin it to widen general knowledge about pollution an its negative effects. We decided to show how pollution affects certain areas of the word so this plugin is mend to be played on map that resembles earth such as maps found [here](https://earth.motfe.net/map-downloads/). In plugin showcase we decided to use map in scale 1:1000. We also used open source [api](https://aqicn.org/) to fetch pollution data in different parts of the world. But pollution is not only feature.
+The main purpose of this plugin is to broaden the general knowledge on pollution and its negative impacts. We decided to show how pollution affects certain areas of the word so this plugin is mended to be played on a map that resembles earth such as maps found [here](https://earth.motfe.net/map-downloads/). In plugin showcase we decided to use maps in scale 1:1000. We also used the open source [api](https://aqicn.org/) to retrieve pollution information from different parts of the world.
 
 <div id="pollution"/>
 
 ## **Pollution**
 
-This feature is supposed to show how pollution affect everything around us, and how strongly we affect environment and the other way.Basic principle behind pollution are [regions](#regions). Every region has certain attributes. In this section we will examine [global](#global-pollution) and [local](#local-pollution) pollution.Pollution that is taken into account is **overall pollution** - this is the sum of local and global pollution. There are three levels of pollution - low pollution (has no negative effects), medium pollution (has some negative effects) and high pollution (has game changing effects). Look at [this](#pollution-effects) for further information about pollution effects.
+This feature is supposed to show how pollution affects everything around us, and how strongly we affect the environment and the other way. The core principle underlying pollution are [regions] (#regions). Every region has certain attributes. In this section, we will focus on [global] (#global-pollution) and [local] (#local-pollution) pollution.The pollution accounted for is **overallpollution** - the sum of local and global pollution. There are three levels of pollution - low pollution (has no negative effects), moderate pollution (has certain negative effects) and high pollution (has revolutionary effects). Look at [this] (#pollution-effects) for further information about pollution effects.
+
 <div id="global-pollution"/>
 
 ## **Global Pollution**
 
-Global Pollution is fetched from api, and it cannot be changed by player - its the base pollution level for given [region](#regions). Global pollution value is the vale from the station situated nearest [regions](#regions) centre so it actual vale may be offset or does not match with actual geo location.
+Global Pollution is fetched from API, and it cannot be changed by player - it's the base pollution level for given [region] (#regions). Global pollution value is the value from the station situated in nearest [regions] (#regions) centre so its actual value may be offset or does not match with actual Geo location.
 
 <div id="local-pollution"/>
+
 
 
 
@@ -127,8 +129,7 @@ You can decrease pollution level by either planting sapling or placing [solar pa
 
 <div id="pollution-effects"/>
 
-There are no positive pollution effects. The upper bound of low, medium and high pollution can be changed in [configuration file](#configuration-file). When pollution in low there are no negative effects, when pollution is medium there are some negative effects ([acid rain](#acid-rain)) and when pollution is high there are plenty of negative effects ([acid rain](#acid-rain), [pollution damage](#pollution-damage), [no drop from crops](#no-drop-form-crops) and [dead fish in reservoirs](#dead-fish)).
-<div id="pollution-effects"/>
+There are no positive pollution effects. The upper bound of low, medium and high pollution can be changed in [configuration file](#configuration-file). When pollution in low there are no negative effects, when pollution is medium there are some negative effects ([acid rain](#acid-rain)) and when pollution is high there are plenty of negative effects ([acid rain](#acid-rain), [pollution damage](#pollution-damage), [no drop from crops](#no-drop-form-crops) and [dead fish in reservoirs](#dead-fish)).<div id="pollution-effects"/>
 
 ## **Acid Rain**
 This effect appears when pollution level is medium or higher.Acid rain takes place of normal rain.It destroys leafs,grass, and crops. It also damages living creatures including player. Damage vary from level. Damage values and pollution boundires can be set in [configuration file]("#configuration-file).
@@ -166,14 +167,14 @@ Photovoltaic installation is an alternative way of smelting in furnaces, without
 
 <div id="solar-panel"/>
 
-## **Photovoltaic panel**
-It is the source of energy in [photovoltaic installation](#solar-panel-h). To obtain this block use either [./solar](#c-solar) command od use [crafting](#cr-solar-panel) recipe.
+## **Solar panel**
+It is the source of energy in [photovoltaic installation] (#solar-panel-h). To obtain this block use either [. /solar] (#c-solar) command or use [crafting] (#cr-solar-panel) recipe.
 <br/>
 
 ![panel](photos/panel.png)
 <div id="solar-panel-base"/>
 
-## **Photovoltaic panel base**
+## **Solar panel base**
 This block is required to transport energy from photovoltaic panel to cable. To obtain this block use either [./solarbase](#c-solar-panel-base) command od use [crafting](#cr-solar-panel-base) recipe. 
 <br/>
 
@@ -182,7 +183,7 @@ This block is required to transport energy from photovoltaic panel to cable. To 
 <div id="cable"/>
 
 ## **Cable**
-This block is required to transport energy from photovoltaic panel base to furnace. To obtain this block use either [./solarbase](#c-cable) command od use [crafting](#cr-cable) recipe. 
+This block is required to transport energy from photovoltaic panel base to furnace. To obtain this block use either [./cable](#c-cable) command od use [crafting](#cr-cable) recipe. 
 <br/>
 ![base](photos/cable.png)
 
@@ -196,6 +197,7 @@ Region is base on which pollution system is build. In [configuration file](#conf
 
 ## **Use of world map**
 Our plugin use word map influence to more immersion. Thanks to that player can play for eg. in their home country and experience how polluted is this area.
+
 <div id="geo-location"/>
 
 ## **Data from geo-location**
@@ -224,12 +226,12 @@ Gives player [mask](#mask)
 <div id="c-solar-panel"/>
 
 ## **/solar**
-Gives player [photovoltaic panel](#solar-panel)
+Gives player [solar panel](#solar-panel)
 
 <div id="c-solar-panel-base"/>
 
 ## **/solarbase**
-Gives player [photovoltaic panel base](#solar-panel-base)
+Gives player [solar panel base](#solar-panel-base)
 
 <div id="c-solar-panel-base"/>
 
@@ -247,19 +249,19 @@ Format of the command is `/realTp <latitude> <longitude> <y-value>`.
 <div id="c-where"/>
 
 ## **/where**
-This command displays on chat current region location. Location is fetched from center of the region
+This command displays on chat current region location. Location is fetched from center of the region.
 
 <div id="c-details"/>
 
 ## **/details**
-Shows detailed pollution values of current regions on the right of the screen. 
+Shows detailed pollution values of the current regions on the right of the screen. 
 
 ![details](/photos/details.png)
 
 <div id="c-localpollution"/>
 
 ## **/localpollution**
-Sets vale of local pollution to given value.
+Sets vale of local pollution to the given value.
 <br/>
 Format of the command is `/localpollution <value>`.
 
@@ -311,12 +313,12 @@ The texture pack is mostly based on noteblocks. This particular block has the mo
 <div id="configuration-file"/>
 
 ## **Configuration File**
-Configuration file (config.yml) is located in plugin folder (EcoCraft) inside plugin folder located in server files. 
+Configuration file (config. yml) is located in the plugin folder (EcoCraft) inside the plugin folder located in server files. 
 <br/>
 In configuration file you declare the base values required for plugin to work.
 <br/>
 
-The most important one are world *dimensions*,*number of regions*
+The most important one are world *dimensions*, *number of regions*
 
 ![worldDim](./photos/world_dim.png)
 <br/>
@@ -326,10 +328,10 @@ The most important one are world *dimensions*,*number of regions*
 
 ![apiToken](./photos/apiToken.png)
  <br/>
-  width and hight of the map, if they are wrong coordinates wil be calculated wrong thus breaking pollution system and without api token data will not be fetched from api.
+  width and height of the map, if they are wrong coordinates will be calculated wrong, thus breaking pollution system and without API token data will not be fetched from API.
   <br/>
 
-  Next values that can be chnged are *pollution boundaries* and *acid rain damage* those values are optional and set do default vales.
+   Next values that can be chnged are *pollution boundaries* and *acid rain damage* those values are optional and set do default vales.
 <br/>
 
 ![pollutionValues](./photos/pollution-config.png)
@@ -339,4 +341,4 @@ The most important one are world *dimensions*,*number of regions*
 <div id="instalation"/>
 
 ## **Installation**
-First you have to download [earth map](https://earth.motfe.net/map-downloads/) and replace your *world* folder with it.To install plugin you have to build jar file inside plugin folder located in your server file. Next you have to make changes to [configuration file](#configuration-file) (input width, height, api token and number of regions).
+First, you have to download [earth map] (https://earth.motfe.net/map-downloads/) and replace your *world* folder with it. To install the plugin you have to build a jar file inside the plugin folder located in your server file. Next, you have to make changes to [configuration file] (#configuration-file) (input width, height, API token and number of regions).
