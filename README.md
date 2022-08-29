@@ -216,7 +216,7 @@ Heat islands are urbanized areas that experience higher temperatures than outlyi
 <div id="commands"/>
 
 ## **Commands**
-Those commands can only be used by admin
+Those commands can only be used by admin except [./where](#where) and [./details](#details).
 
 <div id="c-mask"/>
 
@@ -332,12 +332,16 @@ The most important one are world *dimensions*, *number of regions*
   <br/>
 
    Next values that can be chnged are *pollution boundaries* and *acid rain damage* those values are optional and set do default vales.
+   
+  
 <br/>
 
 ![pollutionValues](./photos/pollution-config.png)
 
 <br/>
 
+ Also *showcase mode* is optioanl. This mode gives admin reserved commands (implemented in [commands](#commands) to everyone.
+<br/>
 <div id="instalation"/>
 
 ## **Installation**
