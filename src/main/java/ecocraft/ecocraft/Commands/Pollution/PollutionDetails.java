@@ -53,10 +53,7 @@ public class PollutionDetails implements CommandExecutor {
                 } catch (Exception e) {
                 }
             }
-
             ((Player) sender).setScoreboard(sb);
-
-
         }
         return true;
     }

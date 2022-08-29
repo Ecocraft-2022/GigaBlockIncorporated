@@ -26,8 +26,7 @@ public class MainEventHandler {
         new TexturePackHandler(plugin);
         NightDetector.getInstance(plugin).detectNight();
 
-
-        HeatTimer heatTimer = new HeatTimer();
+        HeatTimer heatTimer = new HeatTimer(plugin);
         heatTimer.runTaskTimer(plugin, 0, 2);
     }
 
