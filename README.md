@@ -355,7 +355,7 @@ The most important one are world *dimensions*, *number of regions*
 <div id="installation"/>
 
 ## **Installation**
-First, you have to download [earth map] (https://earth.motfe.net/map-downloads/) and replace your *world* folder with it. To install the plugin you have to build a jar file inside the plugin folder located in your server file. Next, you have to make changes to [configuration file] (#configuration-file) (input width, height, API token and number of regions). Lastly you have to install resource pack in your miecraft client [link](https://github.com/Ecocraft-2022/GigaBlockIncorporated/raw/main/src/main/resources/giga-resourcepackv4.zip).
+First, you have to download [earth map](https://earth.motfe.net/map-downloads/) and replace your *world* folder with it. To install the plugin you have to build a jar file inside the plugin folder located in your server file. Next, you have to make changes to [configuration file](#configuration-file) (input width, height, API token and number of regions). Lastly you have to install resource pack in your miecraft client [link](https://github.com/Ecocraft-2022/GigaBlockIncorporated/raw/main/src/main/resources/giga-resourcepackv4.zip).
 
 
 ## **Miscellaneous**
