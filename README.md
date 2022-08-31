@@ -68,13 +68,13 @@ The main purpose of this plugin is to broaden the general knowledge on pollution
 
 ## **Pollution**
 
-This feature is supposed to show how pollution affects everything around us, and how strongly we affect the environment and the other way. The core principle underlying pollution are [regions] (#regions). Every region has certain attributes. In this section, we will focus on [global] (#global-pollution) and [local] (#local-pollution) pollution.The pollution accounted for is **overallpollution** - the sum of local and global pollution. There are three levels of pollution - low pollution (has no negative effects), moderate pollution (has certain negative effects) and high pollution (has revolutionary effects). Look at [this] (#pollution-effects) for further information about pollution effects.
+This feature is supposed to show how pollution affects everything around us, and how strongly we affect the environment and the other way. The core principle underlying pollution are [regions](#regions). Every region has certain attributes. In this section, we will focus on [global](#global-pollution) and [local](#local-pollution) pollution.The pollution accounted for is **overallpollution** - the sum of local and global pollution. There are three levels of pollution - low pollution (has no negative effects), moderate pollution (has certain negative effects) and high pollution (has revolutionary effects). Look at [this](#pollution-effects) for further information about pollution effects.
 
 <div id="global-pollution"/>
 
 ## **Global Pollution**
 
-Global Pollution is fetched from API, and it cannot be changed by player - it's the base pollution level for given [region] (#regions). Global pollution value is the value from the station situated in nearest [regions] (#regions) centre so its actual value may be offset or does not match with actual Geo location.
+Global Pollution is fetched from API, and it cannot be changed by player - it's the base pollution level for given [region](#regions). Global pollution value is the value from the station situated in nearest [regions](#regions) centre so its actual value may be offset or does not match with actual Geo location.
 
 <div id="local-pollution"/>
 
